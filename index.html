@@ -4,254 +4,396 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Wassim Abdelkafi | Génie civil</title>
-
   <style>
-
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
-    body{
-      font-family:'Segoe UI',sans-serif;
-      background:#eef2f7;
-      color:#1f2937;
-      line-height:1.7;
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #eef2f7;
+      color: #1f2937;
+      line-height: 1.7;
     }
 
-    header{
-
-      background:
-      linear-gradient(rgba(15,23,42,0.78), rgba(15,23,42,0.78)),
-      url('banniere-genie-civil.png') center/cover no-repeat;
-
-      color:white;
-      padding:120px 30px;
-      text-align:center;
-      position:relative;
-      overflow:hidden;
+    header {
+      background: linear-gradient(120deg, #0f172a, #1e3a8a);
+      color: white;
+      padding: 90px 30px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
     }
 
-    header::before{
-      content:"";
-      position:absolute;
-      width:500px;
-      height:500px;
-      background:rgba(255,255,255,0.05);
-      border-radius:50%;
-      top:-200px;
-      right:-150px;
+    header::before {
+      content: "";
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 50%;
+      top: -200px;
+      right: -150px;
     }
 
-    header h1{
-      font-size:58px;
-      margin-bottom:18px;
-      position:relative;
-      z-index:1;
-      text-shadow:0 4px 12px rgba(0,0,0,0.45);
+    header h1 {
+      font-size: 52px;
+      margin-bottom: 15px;
+      position: relative;
+      z-index: 1;
     }
 
-    header p{
-      font-size:22px;
-      max-width:1100px;
-      margin:auto;
-      position:relative;
-      z-index:1;
-      text-shadow:0 2px 8px rgba(0,0,0,0.4);
+    header p {
+      font-size: 20px;
+      max-width: 950px;
+      margin: auto;
+      position: relative;
+      z-index: 1;
     }
 
-    nav{
-      background:white;
-      display:flex;
-      justify-content:center;
-      flex-wrap:wrap;
-      gap:20px;
-      padding:18px;
-      position:sticky;
-      top:0;
-      z-index:100;
-      box-shadow:0 4px 15px rgba(0,0,0,0.08);
+    nav {
+      background: white;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      padding: 18px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
     }
 
-    nav a{
-      color:#1e3a8a;
-      text-decoration:none;
-      font-weight:600;
-      transition:0.3s;
+    nav a {
+      color: #1e3a8a;
+      text-decoration: none;
+      font-weight: 600;
+      transition: 0.3s;
     }
 
-    nav a:hover{
-      color:#2563eb;
-      transform:translateY(-2px);
+    nav a:hover {
+      color: #2563eb;
+      transform: translateY(-2px);
     }
 
-    section{
-      max-width:1200px;
-      margin:45px auto;
-      padding:45px;
-      background:white;
-      border-radius:24px;
-      box-shadow:0 10px 30px rgba(0,0,0,0.07);
+    section {
+      max-width: 1200px;
+      margin: 45px auto;
+      padding: 45px;
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.07);
     }
 
-    h2{
-      color:#1e3a8a;
-      margin-bottom:30px;
-      font-size:34px;
-      border-left:6px solid #2563eb;
-      padding-left:18px;
+    h2 {
+      color: #1e3a8a;
+      margin-bottom: 30px;
+      font-size: 34px;
+      border-left: 6px solid #2563eb;
+      padding-left: 18px;
     }
 
-    h3{
-      color:#111827;
-      margin-top:40px;
-      margin-bottom:15px;
-      font-size:26px;
+    h3 {
+      color: #111827;
+      margin-top: 40px;
+      margin-bottom: 15px;
+      font-size: 26px;
     }
 
-    p{
-      margin-top:14px;
-      font-size:18px;
+    p {
+      margin-top: 14px;
+      font-size: 18px;
     }
 
-    ul{
-      margin-top:15px;
-      margin-left:25px;
+    ul {
+      margin-top: 15px;
+      margin-left: 25px;
     }
 
-    ul li{
-      margin-bottom:14px;
-      font-size:17px;
+    ul li {
+      margin-bottom: 14px;
+      font-size: 17px;
     }
 
-    .hero-buttons{
-      margin-top:35px;
-      position:relative;
-      z-index:1;
+    .hero-buttons {
+      margin-top: 35px;
+      position: relative;
+      z-index: 1;
     }
 
-    .btn{
-      display:inline-block;
-      padding:14px 24px;
-      border-radius:14px;
-      background:#2563eb;
-      color:white;
-      text-decoration:none;
-      margin:8px;
-      font-weight:bold;
-      transition:0.3s;
-      box-shadow:0 6px 18px rgba(37,99,235,0.3);
+    .btn {
+      display: inline-block;
+      padding: 14px 24px;
+      border-radius: 14px;
+      background: #2563eb;
+      color: white;
+      text-decoration: none;
+      margin: 8px;
+      font-weight: bold;
+      transition: 0.3s;
+      box-shadow: 0 6px 18px rgba(37,99,235,0.3);
     }
 
-    .btn:hover{
-      transform:translateY(-3px);
+    .btn:hover {
+      transform: translateY(-3px);
     }
 
-    .btn.secondary{
-      background:#111827;
-      box-shadow:0 6px 18px rgba(17,24,39,0.25);
+    .btn.secondary {
+      background: #111827;
+      box-shadow: 0 6px 18px rgba(17,24,39,0.25);
     }
 
-    .skills{
-      display:flex;
-      flex-wrap:wrap;
-      gap:12px;
-      margin-top:20px;
+    .skills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 20px;
     }
 
-    .skills span{
-      background:linear-gradient(135deg,#dbeafe,#eff6ff);
-      color:#1e3a8a;
-      padding:12px 18px;
-      border-radius:40px;
-      font-weight:600;
-      font-size:15px;
-      box-shadow:0 4px 10px rgba(0,0,0,0.05);
+    .skills span {
+      background: linear-gradient(135deg, #dbeafe, #eff6ff);
+      color: #1e3a8a;
+      padding: 12px 18px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     }
 
-    #presentation{
-      background:linear-gradient(180deg,#ffffff,#f8fbff);
+    #presentation {
+      background: linear-gradient(180deg, #ffffff, #f8fbff);
     }
 
-    #presentation p{
-      margin-bottom:34px;
-      line-height:2.1;
-      text-align:justify;
-      font-size:18px;
+    #presentation p {
+      margin-bottom: 34px;
+      line-height: 2.1;
+      text-align: justify;
+      font-size: 18px;
     }
 
-    footer{
-      background:#0f172a;
-      color:white;
-      text-align:center;
-      padding:35px;
-      margin-top:50px;
-      font-size:16px;
+    footer {
+      background: #0f172a;
+      color: white;
+      text-align: center;
+      padding: 35px;
+      margin-top: 50px;
+      font-size: 16px;
     }
 
-    @media (max-width:768px){
-
-      header h1{
-        font-size:38px;
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 36px;
       }
 
-      header p{
-        font-size:18px;
+      section {
+        padding: 30px;
       }
 
-      section{
-        padding:30px;
+      nav {
+        gap: 12px;
       }
-
-      nav{
-        gap:12px;
-      }
-
     }
-
   </style>
-
 </head>
-
 <body>
-
   <header>
-
     <h1>Wassim Abdelkafi</h1>
-
-    <p>
-      Diplômé en génie civil | Coordination technique | Suivi de chantier |
-      Contrôle qualité | Gestion de projet | OIQ en cours d’étude
-    </p>
-
-    <p style="margin-top:18px;font-size:18px;">
-      Localisation : Sherbrooke, Québec, Canada
-    </p>
-
+    <p>Diplômé en génie civil | Coordination technique | Suivi de chantier | Contrôle qualité | Gestion de projet | OIQ en cours d’étude</p>
+    <p style="margin-top:15px;font-size:16px;">Localisation : Sherbrooke, Québec, Canada</p>
     <div class="hero-buttons">
-
-      <a class="btn" href="#contact">
-        Me contacter
-      </a>
-
-      <a class="btn secondary"
-         href="CV_Wassim_Abdelkafi.pdf"
-         target="_blank">
-
-         Télécharger mon CV
-      </a>
-
-      <a class="btn secondary"
-         href="Lettre_Presentation_Wassim_Abdelkafi.pdf"
-         target="_blank">
-
-         Télécharger ma lettre de présentation
-      </a>
-
+      <a class="btn" href="#contact">Me contacter</a>
+      <a class="btn secondary" href="CV_Wassim_Abdelkafi.pdf" target="_blank">Télécharger mon CV</a>
+      <a class="btn secondary" href="Lettre_Presentation_Wassim_Abdelkafi.pdf" target="_blank">Télécharger ma lettre de présentation</a>
     </div>
-
   </header>
 
+  <nav>
+    <a href="#profil">Profil professionnel</a>
+    <a href="#experience">Expérience professionnelle</a>
+    <a href="#projets">Stages et projets académiques</a>
+    <a href="#formation">Formation</a>
+    <a href="#competences">Compétences</a>
+    <a href="#presentation">Lettre de présentation</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <section id="profil">
+    <h2>Profil professionnel</h2>
+    <p>
+      Diplômé en génie civil avec expérience en suivi de chantier, ouvrages d’art et coordination technique.
+      Ma demande d’admission à l’Ordre des ingénieurs du Québec (OIQ) a été déposée le 16 mars 2026 en vue d’obtenir officiellement le statut de CPI.
+      Je possède une bonne maîtrise d’AutoCAD, SolidWorks et des outils de conception technique. Je suis reconnu pour ma rigueur, mon autonomie et ma capacité à gérer les priorités en environnement de chantier.
+    </p>
+  </section>
+
+  <section id="experience">
+    <h2>Expérience professionnelle</h2>
+
+    <h3>Coordonnateur technique en ingénierie – De La Fontaine</h3>
+    <p><strong>Sherbrooke, Québec | Janvier 2024 – Présent</strong></p>
+    <ul>
+      <li>Coordination des équipes techniques, de conception et de production au Canada, en Tunisie et au Mexique.</li>
+      <li>Supervision et optimisation des activités de conception 3D, fabrication et traitement technique des commandes.</li>
+      <li>Validation de la conformité des produits selon les exigences techniques et les standards de qualité.</li>
+      <li>Résolution de problématiques techniques et opérationnelles dans un environnement manufacturier complexe.</li>
+    </ul>
+
+    <h3>Concepteur 3D – De La Fontaine</h3>
+    <p><strong>Sherbrooke, Québec | Juillet 2023 – Janvier 2024</strong></p>
+    <ul>
+      <li>Conception de modèles 3D de portes et cadres métalliques personnalisés avec SolidWorks.</li>
+      <li>Production de dessins techniques détaillés pour la fabrication.</li>
+      <li>Vérification de la conformité des conceptions selon les exigences de production et de qualité.</li>
+    </ul>
+
+    <h3>Inspecteur en structures de béton armé – AusculTECH Inc.</h3>
+    <p><strong>Sherbrooke, Québec | Janvier 2022 – Avril 2023</strong></p>
+    <ul>
+      <li>Inspections visuelles et techniques de structures en béton armé.</li>
+      <li>Essais de contrôle non destructif : radar, corrosion et résistivité.</li>
+      <li>Rédaction de rapports techniques et participation à l’évaluation de l’intégrité structurale.</li>
+    </ul>
+
+    <h3>Responsable des essais en laboratoire – Artelia</h3>
+    <p><strong>Sherbrooke, Québec | Juin 2021 – Août 2021</strong></p>
+    <ul>
+      <li>Essais sur matériaux de construction : compression, granulométrie et absorption.</li>
+      <li>Analyse des résultats et validation de la conformité selon les normes applicables.</li>
+    </ul>
+  </section>
+
+  <section id="projets">
+    <h2>Stages et projets académiques</h2>
+
+    <h3>Projet de maîtrise – Université de Sherbrooke</h3>
+    <p><strong>Maîtrise ès sciences appliquées en génie civil | 2021 – 2024</strong></p>
+    <ul>
+      <li>Réalisation d’un projet de recherche appliquée portant sur les barres en polymères renforcés de fibres de basalte (BFRP) utilisées dans les structures en béton armé.</li>
+      <li>Étude approfondie des propriétés physiques et mécaniques des matériaux composites destinés aux infrastructures et ouvrages de génie civil.</li>
+      <li>Analyse des effets de l’humidité, de l’alcalinité et des conditions environnementales agressives sur la durabilité et la performance structurale des barres BFRP.</li>
+      <li>Réalisation d’essais expérimentaux en laboratoire afin d’évaluer la résistance mécanique et le comportement à long terme des matériaux composites.</li>
+      <li>Analyse et interprétation des résultats expérimentaux pour l’évaluation de solutions innovantes en infrastructures durables.</li>
+      <li>Développement de compétences avancées en recherche appliquée, analyse technique et résolution de problèmes complexes.</li>
+    </ul>
+
+    <h3>Projet de fin d’études – Société Chaabane et Cie</h3>
+    <p><strong>Tunisie | Février 2018 – Juin 2018</strong></p>
+    <ul>
+      <li>Suivi technique des travaux de réalisation d’un échangeur routier reliant la GP10 à la Voie X.</li>
+      <li>Participation au contrôle des ouvrages d’art : pieux, semelles, piles et chevêtres.</li>
+      <li>Contrôle qualité des matériaux à l’aide d’essais de laboratoire et d’essais in situ.</li>
+      <li>Réalisation d’une étude de dimensionnement du corps de chaussée selon les résultats géotechniques et les données de trafic routier.</li>
+      <li>Participation au suivi de l’avancement des travaux et à l’application des normes techniques et de sécurité sur chantier.</li>
+    </ul>
+
+    <h3>Stage de perfectionnement – Société Chaabane et Cie</h3>
+    <p><strong>Médenine, Tunisie | Janvier 2017 – Février 2017</strong></p>
+    <ul>
+      <li>Participation au suivi technique des travaux de terrassement et d’ouvrages d’art sur chantier routier.</li>
+      <li>Observation des procédés d’exécution des infrastructures routières et des ouvrages d’art.</li>
+      <li>Participation au contrôle qualité des matériaux et au suivi des travaux selon les normes techniques.</li>
+      <li>Collaboration au suivi de l’avancement des travaux et à l’application des mesures de santé et sécurité.</li>
+    </ul>
+
+    <h3>Stage d’initiation – Adam Consulte</h3>
+    <p><strong>Sfax, Tunisie | Janvier 2016 – Février 2016</strong></p>
+    <ul>
+      <li>Participation au suivi des travaux de construction d’un immeuble résidentiel R+4 en béton armé.</li>
+      <li>Observation des travaux de coffrage, ferraillage, bétonnage et décoffrage.</li>
+      <li>Participation au suivi des planchers corps creux et des éléments structuraux.</li>
+      <li>Initiation à l’organisation et à la planification de chantier.</li>
+      <li>Participation au contrôle de l’exécution des travaux selon les plans et normes techniques.</li>
+    </ul>
+  </section>
+
+  <section id="formation">
+    <h2>Formation</h2>
+    <ul>
+      <li><strong>Maîtrise ès sciences appliquées en génie civil</strong> – Université de Sherbrooke</li>
+      <li><strong>DESS en génie civil</strong> – Université de Sherbrooke</li>
+      <li><strong>Baccalauréat en génie civil</strong> – Institut International de Technologie</li>
+      <li><strong>Licence appliquée en génie civil</strong> – Institut Supérieur des Études Technologiques</li>
+    </ul>
+  </section>
+
+  <section id="competences">
+    <h2>Compétences</h2>
+    <div class="skills">
+      <span>Génie civil</span><span>Coordination technique</span><span>Gestion de projet</span><span>Suivi de chantier</span>
+      <span>Contrôle qualité</span><span>Inspection de structures</span><span>Ouvrages d’art</span><span>Béton armé</span>
+      <span>AutoCAD</span><span>SolidWorks</span><span>Tekla Structures</span><span>Robot Structural Analysis</span>
+      <span>MS Project</span><span>Microsoft Office</span><span>Microsoft Dynamics AX</span><span>Lecture de plans et devis</span>
+    </div>
+  </section>
+
+  <section id="presentation">
+    <h2>Lettre de présentation</h2>
+
+    <p>
+      Bonjour,
+    </p>
+
+    <p>
+      Je m’appelle Wassim Abdelkafi et je suis diplômé en génie civil au Canada et en Tunisie. Mon parcours académique et professionnel m’a permis de développer une solide expertise technique en génie civil, en coordination de projets, en suivi de chantier ainsi qu’en contrôle qualité.
+    </p>
+
+    <p>
+      Mon cheminement dans le domaine du génie civil a débuté en Tunisie avec une formation technique en génie civil à l’Institut Supérieur des Études Technologiques de Sfax, où j’ai acquis des connaissances pratiques liées au béton armé, aux structures, aux travaux de chantier et aux infrastructures routières. J’ai ensuite poursuivi mes études à l’Institut International de Technologie afin d’obtenir un baccalauréat en génie civil, ce qui m’a permis d’approfondir mes compétences techniques et analytiques.
+    </p>
+
+    <p>
+      Durant mon parcours universitaire, j’ai effectué plusieurs stages en suivi de chantier et en infrastructures routières. J’ai notamment participé au suivi des travaux d’un échangeur routier reliant la GP10 à la Voie X en Tunisie, un projet qui m’a permis d’être impliqué dans le contrôle des ouvrages d’art, le suivi technique des travaux, le contrôle qualité des matériaux ainsi que le dimensionnement du corps de chaussée à partir d’analyses géotechniques et de données de trafic routier.
+    </p>
+
+    <p>
+      Mon stage d’initiation dans le domaine du bâtiment m’a également permis de participer au suivi des travaux de construction d’un immeuble résidentiel en béton armé et de mieux comprendre les différentes étapes de réalisation d’un chantier, incluant le coffrage, le ferraillage, le bétonnage et le contrôle des travaux selon les plans et devis.
+    </p>
+
+    <p>
+      Après mon arrivée au Canada, j’ai poursuivi mes études à l’Université de Sherbrooke où j’ai obtenu un DESS ainsi qu’une maîtrise en génie civil. Mon projet de maîtrise portait sur la caractérisation des propriétés physiques et mécaniques des barres en polymères renforcés de fibres de basalte (BFRP) utilisées dans les structures en béton armé. Ce projet m’a permis de développer des compétences avancées en recherche appliquée, en analyse technique et en évaluation de solutions innovantes pour les infrastructures durables.
+    </p>
+
+    <p>
+      Professionnellement, j’ai travaillé chez Artelia dans le domaine des essais sur matériaux de construction, où j’ai participé à des essais de compression, granulométrie et absorption afin de valider la conformité des matériaux selon les normes applicables.
+    </p>
+
+    <p>
+      J’ai également travaillé chez AusculTECH comme inspecteur en structures de béton armé, où j’ai réalisé des inspections visuelles et techniques ainsi que des essais de contrôle non destructif incluant radar, corrosion et résistivité. Cette expérience m’a permis de participer à l’évaluation de l’intégrité structurale de plusieurs ouvrages et de développer une excellente compréhension des problématiques liées à la durabilité des structures.
+    </p>
+
+    <p>
+      Actuellement, j’occupe le poste de coordonnateur technique en ingénierie chez De La Fontaine à Sherbrooke. Dans ce rôle, je supervise et optimise les activités de conception 3D, de fabrication et de traitement technique des commandes pour des projets spécialisés. Je coordonne également des équipes multidisciplinaires situées au Canada, en Tunisie et au Mexique afin d’assurer le respect des échéanciers, des exigences techniques et des standards de qualité.
+    </p>
+
+    <p>
+      Grâce à mon parcours varié, j’ai développé de solides compétences en coordination technique, gestion des priorités, résolution de problèmes, suivi de chantier et collaboration multidisciplinaire. Je maîtrise notamment AutoCAD, SolidWorks, Tekla Structures, Robot Structural Analysis, MS Project ainsi que plusieurs outils techniques utilisés dans le domaine du génie civil et de la gestion de projets.
+    </p>
+
+    <p>
+      Reconnu pour ma rigueur, mon autonomie et ma capacité d’adaptation, je suis motivé à poursuivre mon développement professionnel dans les domaines du génie civil, de la gestion de projets, du suivi de chantier et du contrôle qualité.
+    </p>
+
+    <p>
+      Ma demande d’admission à l’Ordre des ingénieurs du Québec (OIQ) afin d’obtenir officiellement le statut de CPI a été déposée le 16 mars 2026 et est actuellement en cours d’étude.
+    </p>
+
+    <p>
+      Merci pour votre visite et au plaisir d’échanger avec vous.
+    </p>
+  </section>
+
+  <section id="contact">
+    <h2>Contact</h2>
+    <p><strong>Courriel :</strong> <a href="mailto:Wassim.abdelkafi19@gmail.com">Wassim.abdelkafi19@gmail.com</a></p>
+    <p><strong>Téléphone :</strong> <a href="tel:+18198234462">+1 (819) 823-4462</a></p>
+    <p><strong>LinkedIn :</strong> <a href="https://www.linkedin.com/in/wassimabdelkafi/" target="_blank">linkedin.com/in/wassimabdelkafi</a></p>
+    <p><strong>Localisation :</strong> Sherbrooke, Québec, Canada</p>
+  </section>
+
+  <footer>
+    <p>© 2026 Wassim Abdelkafi – Génie civil</p>
+  </footer>
 </body>
 </html>
