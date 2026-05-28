@@ -21,6 +21,9 @@
       --accent-soft: #ead6c4;
       --line: rgba(27, 24, 21, 0.08);
       --shadow: 0 28px 70px rgba(59, 41, 22, 0.12);
+      --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+      --text-scale: 1;
+      --site-zoom: 1;
       --radius-xl: 36px;
       --radius-lg: 24px;
       --radius-md: 18px;
@@ -40,8 +43,10 @@
 
     body {
       font-family: "Outfit", sans-serif;
+      font-size: calc(16px * var(--text-scale));
       color: var(--ink);
       line-height: 1.75;
+      zoom: var(--site-zoom);
       background:
         radial-gradient(circle at top left, rgba(180, 122, 72, 0.16), transparent 24%),
         radial-gradient(circle at bottom right, rgba(23, 35, 45, 0.1), transparent 30%),
@@ -75,7 +80,7 @@
       position: sticky;
       top: 16px;
       z-index: 40;
-      width: min(1180px, calc(100% - 32px));
+      width: min(var(--container), calc(100% - 32px));
       margin: 16px auto 0;
       padding: 12px 16px;
       background: rgba(255, 252, 248, 0.65);
@@ -102,7 +107,7 @@
 
     .topbar a {
       text-decoration: none;
-      font-size: 14px;
+      font-size: calc(14px * var(--text-scale));
       font-weight: 700;
       color: var(--deep);
       padding: 11px 16px;
@@ -134,7 +139,7 @@
       padding: 10px 14px;
       border-radius: 999px;
       font: inherit;
-      font-size: 13px;
+      font-size: calc(13px * var(--text-scale));
       font-weight: 800;
       cursor: pointer;
       transition: 0.25s ease;
@@ -143,6 +148,59 @@
     .lang-btn.active {
       background: var(--deep);
       color: white;
+      box-shadow: 0 8px 20px rgba(23, 35, 45, 0.18);
+    }
+
+    .toolbar-controls {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      flex: 0 0 auto;
+    }
+
+    .text-size-switch {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px;
+      background: rgba(23, 35, 45, 0.06);
+      border: 1px solid rgba(23, 35, 45, 0.08);
+      border-radius: 999px;
+      flex: 0 0 auto;
+    }
+
+    .text-size-btn {
+      border: 0;
+      background: transparent;
+      color: var(--deep);
+      padding: 10px 13px;
+      border-radius: 999px;
+      font: inherit;
+      font-size: calc(13px * var(--text-scale));
+      font-weight: 800;
+      cursor: pointer;
+      transition: 0.25s ease;
+      min-width: 46px;
+    }
+
+    .text-size-btn:hover {
+      background: rgba(23, 35, 45, 0.08);
+    }
+
+    .text-size-btn:disabled {
+      opacity: 0.42;
+      cursor: not-allowed;
+    }
+
+    .zoom-value {
+      min-width: 68px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(23, 35, 45, 0.92);
+      color: white;
+      font-size: calc(13px * var(--text-scale));
+      font-weight: 800;
+      text-align: center;
       box-shadow: 0 8px 20px rgba(23, 35, 45, 0.18);
     }
 
@@ -179,6 +237,7 @@
       border-radius: 50%;
       background: radial-gradient(circle, rgba(180, 122, 72, 0.3), transparent 68%);
       z-index: -1;
+      animation: ambientFloat 10s ease-in-out infinite alternate;
     }
 
     .hero-shell::after {
@@ -191,12 +250,14 @@
       border-radius: 50%;
       background: radial-gradient(circle, rgba(255,255,255,0.08), transparent 70%);
       z-index: -1;
+      animation: ambientFloat 13s ease-in-out infinite alternate-reverse;
+      animation-delay: -2s;
     }
 
     .eyebrow {
       display: inline-block;
       margin-bottom: 16px;
-      font-size: 12px;
+      font-size: calc(12px * var(--text-scale));
       font-weight: 700;
       letter-spacing: 0.24em;
       text-transform: uppercase;
@@ -213,7 +274,7 @@
 
     .hero .lead {
       max-width: 720px;
-      font-size: 20px;
+      font-size: calc(20px * var(--text-scale));
       color: rgba(255,255,255,0.82);
     }
 
@@ -230,9 +291,22 @@
       background: rgba(255,255,255,0.08);
       border: 1px solid rgba(255,255,255,0.1);
       color: rgba(255,255,255,0.9);
-      font-size: 14px;
+      font-size: calc(14px * var(--text-scale));
       font-weight: 600;
       backdrop-filter: blur(10px);
+      animation: softDrift 7s ease-in-out infinite;
+    }
+
+    .hero-pill:nth-child(2) {
+      animation-delay: 0.6s;
+    }
+
+    .hero-pill:nth-child(3) {
+      animation-delay: 1.2s;
+    }
+
+    .hero-pill:nth-child(4) {
+      animation-delay: 1.8s;
     }
 
     .hero-actions {
@@ -249,6 +323,7 @@
       padding: 14px 22px;
       border-radius: 16px;
       text-decoration: none;
+      font-size: calc(15px * var(--text-scale));
       font-weight: 700;
       transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
     }
@@ -270,16 +345,36 @@
     }
 
     .btn-download {
+      position: relative;
+      overflow: hidden;
       background: linear-gradient(135deg, rgba(255, 249, 242, 0.98), rgba(243, 229, 214, 0.94));
       color: var(--deep);
       border: 1px solid rgba(215, 189, 166, 0.82);
       box-shadow: 0 16px 34px rgba(13, 20, 27, 0.18);
       font-weight: 800;
+      animation: downloadGlow 3.8s ease-in-out infinite;
     }
 
     .btn-download:hover {
       background: linear-gradient(135deg, #fffaf4, #f1ddca);
       box-shadow: 0 20px 38px rgba(13, 20, 27, 0.22);
+    }
+
+    .btn-download::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(115deg, transparent 25%, rgba(255,255,255,0.5) 50%, transparent 75%);
+      transform: translateX(-140%);
+      animation: sheenSweep 4.8s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    .hero-shell > div {
+      opacity: 0;
+      transform: translateY(22px);
+      animation: fadeUpIn 0.9s var(--ease-smooth) forwards;
+      animation-delay: 0.12s;
     }
 
     .portrait-panel {
@@ -301,6 +396,11 @@
       box-shadow:
         0 30px 70px rgba(0, 0, 0, 0.18),
         inset 0 0 0 1px rgba(255,255,255,0.7);
+      opacity: 0;
+      transform: translateY(20px) scale(0.98);
+      animation:
+        fadeScaleIn 1s var(--ease-smooth) forwards 0.2s,
+        portraitFloat 7s ease-in-out infinite 1.4s;
     }
 
     .portrait-frame::before {
@@ -321,70 +421,6 @@
       box-shadow: 0 12px 28px rgba(18, 23, 28, 0.18);
     }
 
-    .portrait-card {
-      margin-left: auto;
-      width: min(100%, 430px);
-      background: rgba(255, 251, 247, 0.92);
-      color: var(--ink);
-      border-radius: 28px;
-      padding: 26px;
-      border: 1px solid rgba(255,255,255,0.35);
-      box-shadow: 0 18px 44px rgba(7, 11, 15, 0.16);
-    }
-
-    .portrait-card .label {
-      display: inline-block;
-      margin-bottom: 10px;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
-    .portrait-card h2 {
-      font-family: "Cormorant Garamond", serif;
-      font-size: 34px;
-      line-height: 1;
-      margin-bottom: 16px;
-      color: var(--deep);
-    }
-
-    .portrait-card p {
-      color: var(--muted);
-      font-size: 15px;
-    }
-
-    .stat-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
-      margin-top: 20px;
-    }
-
-    .stat {
-      padding: 18px;
-      background: white;
-      border-radius: 20px;
-      border: 1px solid var(--line);
-    }
-
-    .stat strong {
-      display: block;
-      font-family: "Cormorant Garamond", serif;
-      font-size: 32px;
-      line-height: 1;
-      color: var(--deep);
-      margin-bottom: 6px;
-    }
-
-    .stat span {
-      display: block;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--muted);
-    }
-
     main {
       padding: 16px 0 50px;
     }
@@ -401,6 +437,20 @@
       margin-bottom: 24px;
     }
 
+    [data-reveal] {
+      opacity: 0;
+      transform: translateY(34px);
+      transition:
+        opacity 0.85s var(--ease-smooth),
+        transform 0.85s var(--ease-smooth);
+      transition-delay: var(--reveal-delay, 0ms);
+    }
+
+    [data-reveal].is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
     .section::before {
       content: "";
       position: absolute;
@@ -414,7 +464,7 @@
     .section-tag {
       display: inline-block;
       margin-bottom: 10px;
-      font-size: 12px;
+      font-size: calc(12px * var(--text-scale));
       font-weight: 700;
       letter-spacing: 0.22em;
       text-transform: uppercase;
@@ -423,7 +473,7 @@
 
     .section h2 {
       font-family: "Cormorant Garamond", serif;
-      font-size: clamp(36px, 5vw, 52px);
+      font-size: clamp(calc(36px * var(--text-scale)), 5vw, calc(52px * var(--text-scale)));
       line-height: 0.95;
       margin-bottom: 14px;
       color: var(--ink);
@@ -431,9 +481,23 @@
 
     .section-intro {
       max-width: 920px;
-      font-size: 18px;
+      font-size: calc(18px * var(--text-scale));
       color: var(--muted);
       margin-bottom: 26px;
+    }
+
+    .section-intro,
+    .glass-card p,
+    .clean-list li,
+    .timeline-role,
+    .timeline-content li,
+    .project-card p,
+    .project-card li,
+    .edu-card p,
+    .letter p {
+      text-align: justify;
+      text-justify: inter-word;
+      hyphens: auto;
     }
 
     .profile-grid {
@@ -451,13 +515,14 @@
 
     .glass-card h3 {
       font-family: "Cormorant Garamond", serif;
-      font-size: 30px;
+      font-size: calc(30px * var(--text-scale));
       margin-bottom: 10px;
       color: var(--deep);
     }
 
     .glass-card p {
       color: var(--muted);
+      font-size: calc(16px * var(--text-scale));
     }
 
     .clean-list {
@@ -470,6 +535,7 @@
       position: relative;
       padding-left: 18px;
       color: var(--muted);
+      font-size: calc(16px * var(--text-scale));
     }
 
     .clean-list li::before {
@@ -508,7 +574,7 @@
 
     .timeline-meta {
       color: var(--muted);
-      font-size: 14px;
+      font-size: calc(14px * var(--text-scale));
       font-weight: 600;
     }
 
@@ -519,7 +585,7 @@
       border-radius: 999px;
       background: rgba(180, 122, 72, 0.14);
       color: #7c4c23;
-      font-size: 12px;
+      font-size: calc(12px * var(--text-scale));
       font-weight: 700;
       letter-spacing: 0.14em;
       text-transform: uppercase;
@@ -527,13 +593,14 @@
 
     .timeline-content h3 {
       font-family: "Cormorant Garamond", serif;
-      font-size: 30px;
+      font-size: calc(30px * var(--text-scale));
       line-height: 1.03;
       color: var(--deep);
       margin-bottom: 6px;
     }
 
     .timeline-role {
+      font-size: calc(16px * var(--text-scale));
       font-weight: 700;
       margin-bottom: 12px;
       color: var(--ink);
@@ -542,6 +609,7 @@
     .timeline-content ul {
       padding-left: 18px;
       color: var(--muted);
+      font-size: calc(16px * var(--text-scale));
     }
 
     .timeline-content li + li {
@@ -570,7 +638,7 @@
       border-radius: 999px;
       background: rgba(180, 122, 72, 0.14);
       color: #7c4c23;
-      font-size: 12px;
+      font-size: calc(12px * var(--text-scale));
       font-weight: 700;
       letter-spacing: 0.12em;
       text-transform: uppercase;
@@ -578,7 +646,7 @@
 
     .project-card h3 {
       font-family: "Cormorant Garamond", serif;
-      font-size: 28px;
+      font-size: calc(28px * var(--text-scale));
       line-height: 1.08;
       margin-bottom: 8px;
       color: var(--deep);
@@ -586,12 +654,14 @@
 
     .project-card p {
       color: var(--muted);
+      font-size: calc(16px * var(--text-scale));
       margin-bottom: 12px;
     }
 
     .project-card ul {
       padding-left: 18px;
       color: var(--muted);
+      font-size: calc(16px * var(--text-scale));
     }
 
     .project-card li + li {
@@ -614,7 +684,7 @@
 
     .edu-card h3 {
       font-family: "Cormorant Garamond", serif;
-      font-size: 28px;
+      font-size: calc(28px * var(--text-scale));
       line-height: 1.08;
       color: var(--deep);
       margin-bottom: 10px;
@@ -622,6 +692,7 @@
 
     .edu-card p {
       color: var(--muted);
+      font-size: calc(16px * var(--text-scale));
       font-weight: 600;
     }
 
@@ -641,7 +712,7 @@
 
     .skill-box h3 {
       font-family: "Cormorant Garamond", serif;
-      font-size: 28px;
+      font-size: calc(28px * var(--text-scale));
       margin-bottom: 14px;
       color: var(--deep);
     }
@@ -658,7 +729,7 @@
       background: white;
       border: 1px solid var(--line);
       color: var(--deep);
-      font-size: 14px;
+      font-size: calc(14px * var(--text-scale));
       font-weight: 700;
     }
 
@@ -670,6 +741,7 @@
 
     .letter p {
       color: var(--muted);
+      font-size: calc(16px * var(--text-scale));
       margin-bottom: 18px;
       break-inside: avoid;
       text-align: justify;
@@ -689,7 +761,6 @@
       grid-template-columns: 1fr;
       gap: 20px;
       margin-top: 20px;
-      max-width: 720px;
     }
 
     .contact-dark {
@@ -702,12 +773,13 @@
 
     .contact-dark h3 {
       font-family: "Cormorant Garamond", serif;
-      font-size: 32px;
+      font-size: calc(32px * var(--text-scale));
       margin-bottom: 14px;
     }
 
     .contact-dark p,
     .contact-dark a {
+      font-size: calc(16px * var(--text-scale));
       color: rgba(255,255,255,0.9);
       text-decoration: none;
     }
@@ -719,8 +791,106 @@
     footer {
       text-align: center;
       color: var(--muted);
-      font-size: 14px;
+      font-size: calc(14px * var(--text-scale));
       padding: 6px 0 30px;
+    }
+
+    @keyframes fadeUpIn {
+      from {
+        opacity: 0;
+        transform: translateY(22px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeScaleIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.98);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes ambientFloat {
+      from {
+        transform: translate3d(0, 0, 0) scale(1);
+      }
+
+      to {
+        transform: translate3d(18px, -14px, 0) scale(1.05);
+      }
+    }
+
+    @keyframes portraitFloat {
+      0%, 100% {
+        transform: translateY(0) scale(1);
+      }
+
+      50% {
+        transform: translateY(-8px) scale(1.01);
+      }
+    }
+
+    @keyframes softDrift {
+      0%, 100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-5px);
+      }
+    }
+
+    @keyframes downloadGlow {
+      0%, 100% {
+        box-shadow: 0 16px 34px rgba(13, 20, 27, 0.18);
+      }
+
+      50% {
+        box-shadow: 0 18px 40px rgba(180, 122, 72, 0.24);
+      }
+    }
+
+    @keyframes sheenSweep {
+      0%, 70%, 100% {
+        transform: translateX(-140%);
+      }
+
+      32% {
+        transform: translateX(140%);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+
+      [data-reveal] {
+        opacity: 1;
+        transform: none;
+      }
+
+      .hero-shell > div,
+      .portrait-frame {
+        opacity: 1;
+        transform: none;
+      }
     }
 
     @media (max-width: 1080px) {
@@ -733,8 +903,7 @@
         grid-template-columns: 1fr;
       }
 
-      .portrait-frame,
-      .portrait-card {
+      .portrait-frame {
         margin-left: 0;
       }
 
@@ -754,12 +923,34 @@
         align-items: stretch;
       }
 
-      .lang-switch {
+      .toolbar-controls {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .lang-switch,
+      .text-size-switch {
         align-self: center;
       }
 
+      .topbar nav {
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding-bottom: 2px;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+      }
+
+      .topbar nav::-webkit-scrollbar {
+        display: none;
+      }
+
       .topbar a {
-        width: 100%;
+        width: auto;
+        flex: 0 0 auto;
+        white-space: nowrap;
         text-align: center;
       }
 
@@ -786,8 +977,175 @@
         width: 100%;
       }
 
-      .stat-grid {
-        grid-template-columns: 1fr 1fr;
+    }
+
+    @media (max-width: 640px) {
+      html {
+        scroll-padding-top: 28px;
+      }
+
+      body {
+        line-height: 1.62;
+      }
+
+      .topbar {
+        position: static;
+        margin-top: 12px;
+        padding: 10px 12px;
+        border-radius: 24px;
+      }
+
+      .topbar-inner {
+        gap: 12px;
+      }
+
+      .topbar a {
+        padding: 10px 14px;
+        font-size: calc(13px * var(--text-scale));
+      }
+
+      .lang-switch,
+      .text-size-switch {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .lang-btn,
+      .text-size-btn {
+        flex: 1 1 auto;
+        max-width: 120px;
+      }
+
+      .zoom-value {
+        min-width: 72px;
+      }
+
+      .hero {
+        padding: 18px 0 18px;
+      }
+
+      .hero-shell {
+        padding: 20px 18px;
+        gap: 20px;
+        border-radius: 28px;
+      }
+
+      .eyebrow {
+        margin-bottom: 12px;
+        font-size: calc(11px * var(--text-scale));
+        letter-spacing: 0.16em;
+      }
+
+      .hero h1 {
+        font-size: calc(44px * var(--text-scale));
+        line-height: 0.95;
+        margin-bottom: 14px;
+      }
+
+      .hero .lead {
+        font-size: calc(17px * var(--text-scale));
+      }
+
+      .hero-meta {
+        gap: 10px;
+        margin: 20px 0 24px;
+      }
+
+      .hero-pill {
+        width: 100%;
+        text-align: center;
+        font-size: calc(13px * var(--text-scale));
+        padding: 10px 13px;
+      }
+
+      .portrait-frame {
+        width: min(100%, 280px);
+        margin: 0 auto;
+      }
+
+      .section {
+        padding: 22px 16px;
+        margin-bottom: 18px;
+      }
+
+      .section::before {
+        left: 16px;
+        width: 72px;
+      }
+
+      .section-tag {
+        font-size: calc(11px * var(--text-scale));
+        letter-spacing: 0.14em;
+      }
+
+      .section h2 {
+        font-size: calc(31px * var(--text-scale));
+        line-height: 1;
+        margin-bottom: 12px;
+      }
+
+      .section-intro {
+        font-size: calc(16px * var(--text-scale));
+        margin-bottom: 20px;
+      }
+
+      .glass-card,
+      .timeline-item,
+      .project-card,
+      .edu-card,
+      .skill-box,
+      .contact-dark {
+        padding: 20px 16px;
+        border-radius: 22px;
+      }
+
+      .timeline {
+        gap: 14px;
+      }
+
+      .timeline-item {
+        gap: 14px;
+      }
+
+      .timeline-content h3,
+      .project-card h3,
+      .edu-card h3,
+      .skill-box h3,
+      .contact-dark h3 {
+        font-size: calc(24px * var(--text-scale));
+      }
+
+      .letter {
+        column-count: 1;
+        column-gap: 0;
+        margin-top: 16px;
+      }
+
+      .letter p {
+        margin-bottom: 16px;
+      }
+
+      .letter p:first-child::first-letter {
+        float: none;
+        font-size: inherit;
+        line-height: inherit;
+        padding-right: 0;
+        color: inherit;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .hero h1 {
+        font-size: calc(39px * var(--text-scale));
+      }
+
+      .section h2 {
+        font-size: calc(28px * var(--text-scale));
+      }
+
+      .btn {
+        min-height: 52px;
+        padding: 13px 18px;
       }
     }
   </style>
@@ -826,9 +1184,18 @@
         </a>
       </nav>
 
-      <div class="lang-switch" aria-label="Language switch">
-        <button class="lang-btn active" type="button" data-set-lang="fr" aria-pressed="true">Français</button>
-        <button class="lang-btn" type="button" data-set-lang="en" aria-pressed="false">English</button>
+      <div class="toolbar-controls">
+        <div class="lang-switch" aria-label="Language switch">
+          <button class="lang-btn active" type="button" data-set-lang="fr" aria-pressed="true">Français</button>
+          <button class="lang-btn" type="button" data-set-lang="en" aria-pressed="false">English</button>
+        </div>
+
+        <div class="text-size-switch" aria-label="Site zoom">
+          <button class="text-size-btn" type="button" data-zoom-action="decrease" aria-label="Réduire l'affichage">A-</button>
+          <button class="text-size-btn" type="button" data-zoom-action="reset" aria-label="Revenir à 100%">A</button>
+          <button class="text-size-btn" type="button" data-zoom-action="increase" aria-label="Agrandir l'affichage">A+</button>
+          <span class="zoom-value" id="zoom-value" aria-live="polite">100%</span>
+        </div>
       </div>
     </div>
   </div>
@@ -888,59 +1255,13 @@
           <div class="portrait-frame">
             <img src="Wassim image.png" alt="Portrait of Wassim Abdelkafi" />
           </div>
-
-          <div class="portrait-card">
-            <span class="label">
-              <span class="lang fr">Positionnement</span>
-              <span class="lang en">Profile</span>
-            </span>
-            <h2>
-              <span class="lang fr">Un profil technique avec présence et crédibilité</span>
-              <span class="lang en">A technical profile with presence and credibility</span>
-            </h2>
-            <p>
-              <span class="lang fr">Mon parcours relie recherche appliquée, chantier, inspection, production et coordination d’équipes techniques dans des environnements exigeants.</span>
-              <span class="lang en">My background connects applied research, site work, inspection, production, and coordination of technical teams in demanding environments.</span>
-            </p>
-
-            <div class="stat-grid">
-              <div class="stat">
-                <strong>2024</strong>
-                <span>
-                  <span class="lang fr">Coordonnateur technique en ingénierie</span>
-                  <span class="lang en">Engineering technical coordinator</span>
-                </span>
-              </div>
-              <div class="stat">
-                <strong>03.2026</strong>
-                <span>
-                  <span class="lang fr">Demande OIQ en cours d’étude</span>
-                  <span class="lang en">OIQ application under review</span>
-                </span>
-              </div>
-              <div class="stat">
-                <strong>3 pays</strong>
-                <span>
-                  <span class="lang fr">Canada, Tunisie, Mexique</span>
-                  <span class="lang en">Canada, Tunisia, Mexico</span>
-                </span>
-              </div>
-              <div class="stat">
-                <strong>CAD</strong>
-                <span>
-                  <span class="lang fr">AutoCAD, SolidWorks, Tekla</span>
-                  <span class="lang en">AutoCAD, SolidWorks, Tekla</span>
-                </span>
-              </div>
-            </div>
-          </div>
         </aside>
       </div>
     </div>
   </header>
 
   <main class="container">
-    <section class="section" id="profil">
+    <section class="section" id="profil" data-reveal style="--reveal-delay: 0ms;">
       <span class="section-tag">
         <span class="lang fr">01 · Profil professionnel</span>
         <span class="lang en">01 · Professional profile</span>
@@ -993,7 +1314,7 @@
       </div>
     </section>
 
-    <section class="section" id="experience">
+    <section class="section" id="experience" data-reveal style="--reveal-delay: 60ms;">
       <span class="section-tag">
         <span class="lang fr">02 · Expérience professionnelle</span>
         <span class="lang en">02 · Professional experience</span>
@@ -1125,7 +1446,7 @@
       </div>
     </section>
 
-    <section class="section" id="projets">
+    <section class="section" id="projets" data-reveal style="--reveal-delay: 100ms;">
       <span class="section-tag">
         <span class="lang fr">03 · Stages et projets académiques</span>
         <span class="lang en">03 · Internships and academic projects</span>
@@ -1310,7 +1631,7 @@
       </div>
     </section>
 
-    <section class="section" id="formation">
+    <section class="section" id="formation" data-reveal style="--reveal-delay: 140ms;">
       <span class="section-tag">
         <span class="lang fr">04 · Formation</span>
         <span class="lang en">04 · Education</span>
@@ -1371,7 +1692,7 @@
       </div>
     </section>
 
-    <section class="section" id="competences">
+    <section class="section" id="competences" data-reveal style="--reveal-delay: 180ms;">
       <span class="section-tag">
         <span class="lang fr">05 · Compétences</span>
         <span class="lang en">05 · Skills</span>
@@ -1429,7 +1750,7 @@
       </div>
     </section>
 
-    <section class="section" id="presentation">
+    <section class="section" id="presentation" data-reveal style="--reveal-delay: 220ms;">
       <span class="section-tag">
         <span class="lang fr">06 · Lettre de présentation</span>
         <span class="lang en">06 · Letter of introduction</span>
@@ -1527,7 +1848,7 @@
       </div>
     </section>
 
-    <section class="section" id="contact">
+    <section class="section" id="contact" data-reveal style="--reveal-delay: 260ms;">
       <span class="section-tag">
         <span class="lang fr">07 · Contact</span>
         <span class="lang en">07 · Contact</span>
@@ -1582,9 +1903,13 @@
   <script>
     (function () {
       var buttons = document.querySelectorAll("[data-set-lang]");
+      var zoomButtons = document.querySelectorAll("[data-zoom-action]");
+      var zoomValue = document.getElementById("zoom-value");
       var resumeLink = document.getElementById("resume-download");
       var letterLink = document.getElementById("letter-download");
       var savedLang = null;
+      var savedZoom = null;
+      var currentZoom = 100;
       var localizedFiles = {
         fr: {
           resume: {
@@ -1610,7 +1935,24 @@
         savedLang = null;
       }
 
+      try {
+        savedZoom = localStorage.getItem("wassim-site-zoom");
+      } catch (error) {
+        savedZoom = null;
+      }
+
       var initialLang = savedLang === "en" || savedLang === "fr" ? savedLang : "fr";
+      var initialZoom = Number(savedZoom);
+
+      function clampZoom(value) {
+        return Math.min(170, Math.max(70, Math.round(value / 10) * 10));
+      }
+
+      if (!Number.isFinite(initialZoom)) {
+        initialZoom = 100;
+      }
+
+      initialZoom = clampZoom(initialZoom);
 
       function setLanguage(lang) {
         document.body.setAttribute("data-current-lang", lang);
@@ -1637,13 +1979,81 @@
         }
       }
 
+      function applyZoom(zoomPercent) {
+        currentZoom = clampZoom(zoomPercent);
+        document.documentElement.style.setProperty("--site-zoom", String(currentZoom / 100));
+
+        if (zoomValue) {
+          zoomValue.textContent = currentZoom + "%";
+        }
+
+        zoomButtons.forEach(function (button) {
+          var action = button.getAttribute("data-zoom-action");
+          if (action === "decrease") {
+            button.disabled = currentZoom <= 70;
+          }
+
+          if (action === "increase") {
+            button.disabled = currentZoom >= 170;
+          }
+        });
+
+        try {
+          localStorage.setItem("wassim-site-zoom", String(currentZoom));
+        } catch (error) {
+          // Ignore storage issues for local file previews.
+        }
+      }
+
+      if ("IntersectionObserver" in window) {
+        var revealElements = document.querySelectorAll("[data-reveal]");
+        var revealObserver = new IntersectionObserver(function (entries, observer) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        }, {
+          threshold: 0.16,
+          rootMargin: "0px 0px -8% 0px"
+        });
+
+        revealElements.forEach(function (element) {
+          revealObserver.observe(element);
+        });
+      } else {
+        document.querySelectorAll("[data-reveal]").forEach(function (element) {
+          element.classList.add("is-visible");
+        });
+      }
+
       buttons.forEach(function (button) {
         button.addEventListener("click", function () {
           setLanguage(button.getAttribute("data-set-lang"));
         });
       });
 
+      zoomButtons.forEach(function (button) {
+        button.addEventListener("click", function () {
+          var action = button.getAttribute("data-zoom-action");
+
+          if (action === "decrease") {
+            applyZoom(currentZoom - 10);
+            return;
+          }
+
+          if (action === "increase") {
+            applyZoom(currentZoom + 10);
+            return;
+          }
+
+          applyZoom(100);
+        });
+      });
+
       setLanguage(initialLang);
+      applyZoom(initialZoom);
     })();
   </script>
 </body>
