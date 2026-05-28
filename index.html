@@ -4,7 +4,29 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Wassim Abdelkafi | Génie civil</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
+    :root {
+      --bg: #f5efe7;
+      --bg-soft: #fcf8f3;
+      --surface: rgba(255, 252, 248, 0.82);
+      --surface-strong: rgba(255, 255, 255, 0.94);
+      --ink: #1b1815;
+      --muted: #6b635d;
+      --deep: #17232d;
+      --deep-2: #243845;
+      --accent: #b47a48;
+      --accent-soft: #ead6c4;
+      --line: rgba(27, 24, 21, 0.08);
+      --shadow: 0 28px 70px rgba(59, 41, 22, 0.12);
+      --radius-xl: 36px;
+      --radius-lg: 24px;
+      --radius-md: 18px;
+      --container: 1280px;
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
@@ -13,464 +35,1616 @@
 
     html {
       scroll-behavior: smooth;
-      scroll-padding-top: 55px;
+      scroll-padding-top: 100px;
     }
 
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #eef2f7;
-      color: #1f2937;
-      line-height: 1.7;
+      font-family: "Outfit", sans-serif;
+      color: var(--ink);
+      line-height: 1.75;
+      background:
+        radial-gradient(circle at top left, rgba(180, 122, 72, 0.16), transparent 24%),
+        radial-gradient(circle at bottom right, rgba(23, 35, 45, 0.1), transparent 30%),
+        linear-gradient(135deg, #f8f2ea 0%, #efe3d5 52%, #edf0f2 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
     }
 
-    header {
-      background: linear-gradient(120deg, #0f172a, #1e3a8a);
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.18;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .container {
+      width: min(var(--container), calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 16px;
+      z-index: 40;
+      width: min(1180px, calc(100% - 32px));
+      margin: 16px auto 0;
+      padding: 12px 16px;
+      background: rgba(255, 252, 248, 0.65);
+      border: 1px solid rgba(255,255,255,0.4);
+      border-radius: 999px;
+      backdrop-filter: blur(18px);
+      box-shadow: 0 10px 30px rgba(28, 22, 16, 0.08);
+    }
+
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .topbar nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      flex: 1 1 auto;
+    }
+
+    .topbar a {
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--deep);
+      padding: 11px 16px;
+      border-radius: 999px;
+      transition: 0.25s ease;
+    }
+
+    .topbar a:hover {
+      background: var(--deep);
       color: white;
-      padding: 90px 30px;
-      text-align: center;
+      transform: translateY(-1px);
+    }
+
+    .lang-switch {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px;
+      background: rgba(23, 35, 45, 0.06);
+      border: 1px solid rgba(23, 35, 45, 0.08);
+      border-radius: 999px;
+      flex: 0 0 auto;
+    }
+
+    .lang-btn {
+      border: 0;
+      background: transparent;
+      color: var(--deep);
+      padding: 10px 14px;
+      border-radius: 999px;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: 0.25s ease;
+    }
+
+    .lang-btn.active {
+      background: var(--deep);
+      color: white;
+      box-shadow: 0 8px 20px rgba(23, 35, 45, 0.18);
+    }
+
+    [data-current-lang="fr"] .lang.en,
+    [data-current-lang="en"] .lang.fr {
+      display: none !important;
+    }
+
+    .hero {
+      padding: 34px 0 24px;
+    }
+
+    .hero-shell {
       position: relative;
       overflow: hidden;
+      border-radius: 42px;
+      background: linear-gradient(140deg, rgba(16, 23, 30, 0.98), rgba(30, 47, 60, 0.96));
+      color: white;
+      box-shadow: 0 40px 90px rgba(10, 16, 21, 0.28);
+      padding: 64px;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 34px;
+      isolation: isolate;
     }
 
-    header::before {
+    .hero-shell::before {
       content: "";
       position: absolute;
-      width: 500px;
-      height: 500px;
-      background: rgba(255,255,255,0.05);
+      width: 520px;
+      height: 520px;
+      top: -220px;
+      right: -140px;
       border-radius: 50%;
-      top: -200px;
-      right: -150px;
+      background: radial-gradient(circle, rgba(180, 122, 72, 0.3), transparent 68%);
+      z-index: -1;
     }
 
-    header h1 {
-      font-size: 52px;
-      margin-bottom: 15px;
-      position: relative;
-      z-index: 1;
+    .hero-shell::after {
+      content: "";
+      position: absolute;
+      left: -120px;
+      bottom: -120px;
+      width: 340px;
+      height: 340px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,0.08), transparent 70%);
+      z-index: -1;
     }
 
-    header p {
-      font-size: 20px;
-      max-width: 950px;
-      margin: auto;
-      position: relative;
-      z-index: 1;
-    }
-
-    nav {
-      background: white;
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 20px;
-      padding: 18px;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-    }
-
-    nav a {
-      color: #1e3a8a;
-      text-decoration: none;
-      font-weight: 600;
-      transition: 0.3s;
-    }
-
-    nav a:hover {
-      color: #2563eb;
-      transform: translateY(-2px);
-    }
-
-    section {
-      max-width: 1200px;
-      margin: 45px auto;
-      padding: 45px;
-      background: white;
-      border-radius: 24px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.07);
-      scroll-margin-top: 60px;
-    }
-
-    h2 {
-      color: #1e3a8a;
-      margin-bottom: 30px;
-      font-size: 34px;
-      border-left: 6px solid #2563eb;
-      padding-left: 18px;
-    }
-
-    h3 {
-      color: #111827;
-      margin-top: 40px;
-      margin-bottom: 15px;
-      font-size: 26px;
-    }
-
-    p {
-      margin-top: 14px;
-      font-size: 18px;
-    }
-
-    ul {
-      margin-top: 15px;
-      margin-left: 25px;
-    }
-
-    ul li {
-      margin-bottom: 14px;
-      font-size: 17px;
-    }
-
-    .hero-buttons {
-      margin-top: 35px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .btn {
+    .eyebrow {
       display: inline-block;
-      padding: 14px 24px;
-      border-radius: 14px;
-      background: #2563eb;
-      color: white;
-      text-decoration: none;
-      margin: 8px;
-      font-weight: bold;
-      transition: 0.3s;
-      box-shadow: 0 6px 18px rgba(37,99,235,0.3);
+      margin-bottom: 16px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
     }
 
-    .btn:hover {
-      transform: translateY(-3px);
+    .hero h1 {
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(58px, 7vw, 98px);
+      line-height: 0.9;
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
     }
 
-    .btn.secondary {
-      background: #111827;
-      box-shadow: 0 6px 18px rgba(17,24,39,0.25);
+    .hero .lead {
+      max-width: 720px;
+      font-size: 20px;
+      color: rgba(255,255,255,0.82);
     }
 
-    .skills {
+    .hero-meta {
       display: flex;
       flex-wrap: wrap;
       gap: 12px;
+      margin: 28px 0 34px;
+    }
+
+    .hero-pill {
+      padding: 11px 15px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.9);
+      font-size: 14px;
+      font-weight: 600;
+      backdrop-filter: blur(10px);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 54px;
+      padding: 14px 22px;
+      border-radius: 16px;
+      text-decoration: none;
+      font-weight: 700;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), #d39c6c);
+      color: white;
+      box-shadow: 0 16px 38px rgba(180, 122, 72, 0.28);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.08);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .btn-download {
+      background: linear-gradient(135deg, rgba(255, 249, 242, 0.98), rgba(243, 229, 214, 0.94));
+      color: var(--deep);
+      border: 1px solid rgba(215, 189, 166, 0.82);
+      box-shadow: 0 16px 34px rgba(13, 20, 27, 0.18);
+      font-weight: 800;
+    }
+
+    .btn-download:hover {
+      background: linear-gradient(135deg, #fffaf4, #f1ddca);
+      box-shadow: 0 20px 38px rgba(13, 20, 27, 0.22);
+    }
+
+    .portrait-panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 22px;
+    }
+
+    .portrait-frame {
+      position: relative;
+      width: min(100%, 430px);
+      aspect-ratio: 1 / 1;
+      margin-left: auto;
+      border-radius: 50%;
+      padding: 16px;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.98), rgba(233, 217, 204, 0.86));
+      box-shadow:
+        0 30px 70px rgba(0, 0, 0, 0.18),
+        inset 0 0 0 1px rgba(255,255,255,0.7);
+    }
+
+    .portrait-frame::before {
+      content: "";
+      position: absolute;
+      inset: 8px;
+      border-radius: 50%;
+      border: 1px solid rgba(180, 122, 72, 0.28);
+      pointer-events: none;
+    }
+
+    .portrait-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      display: block;
+      box-shadow: 0 12px 28px rgba(18, 23, 28, 0.18);
+    }
+
+    .portrait-card {
+      margin-left: auto;
+      width: min(100%, 430px);
+      background: rgba(255, 251, 247, 0.92);
+      color: var(--ink);
+      border-radius: 28px;
+      padding: 26px;
+      border: 1px solid rgba(255,255,255,0.35);
+      box-shadow: 0 18px 44px rgba(7, 11, 15, 0.16);
+    }
+
+    .portrait-card .label {
+      display: inline-block;
+      margin-bottom: 10px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .portrait-card h2 {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 34px;
+      line-height: 1;
+      margin-bottom: 16px;
+      color: var(--deep);
+    }
+
+    .portrait-card p {
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
       margin-top: 20px;
     }
 
-    .skills span {
-      background: linear-gradient(135deg, #dbeafe, #eff6ff);
-      color: #1e3a8a;
-      padding: 12px 18px;
-      border-radius: 40px;
+    .stat {
+      padding: 18px;
+      background: white;
+      border-radius: 20px;
+      border: 1px solid var(--line);
+    }
+
+    .stat strong {
+      display: block;
+      font-family: "Cormorant Garamond", serif;
+      font-size: 32px;
+      line-height: 1;
+      color: var(--deep);
+      margin-bottom: 6px;
+    }
+
+    .stat span {
+      display: block;
+      font-size: 13px;
       font-weight: 600;
-      font-size: 15px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      color: var(--muted);
     }
 
-    #presentation {
-      background: linear-gradient(180deg, #ffffff, #f8fbff);
+    main {
+      padding: 16px 0 50px;
     }
 
-    #presentation p {
-      margin-bottom: 34px;
-      line-height: 2.1;
-      text-align: justify;
+    .section {
+      position: relative;
+      overflow: hidden;
+      background: var(--surface);
+      border: 1px solid rgba(255,255,255,0.38);
+      backdrop-filter: blur(16px);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      padding: 36px;
+      margin-bottom: 24px;
+    }
+
+    .section::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 36px;
+      width: 110px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+    }
+
+    .section-tag {
+      display: inline-block;
+      margin-bottom: 10px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .section h2 {
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(36px, 5vw, 52px);
+      line-height: 0.95;
+      margin-bottom: 14px;
+      color: var(--ink);
+    }
+
+    .section-intro {
+      max-width: 920px;
       font-size: 18px;
+      color: var(--muted);
+      margin-bottom: 26px;
+    }
+
+    .profile-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 20px;
+    }
+
+    .glass-card {
+      background: var(--surface-strong);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+    }
+
+    .glass-card h3 {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 30px;
+      margin-bottom: 10px;
+      color: var(--deep);
+    }
+
+    .glass-card p {
+      color: var(--muted);
+    }
+
+    .clean-list {
+      list-style: none;
+      display: grid;
+      gap: 12px;
+    }
+
+    .clean-list li {
+      position: relative;
+      padding-left: 18px;
+      color: var(--muted);
+    }
+
+    .clean-list li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 11px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 5px rgba(180, 122, 72, 0.14);
+    }
+
+    .timeline {
+      display: grid;
+      gap: 18px;
+      margin-top: 20px;
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 22px;
+      padding: 24px;
+      background: var(--surface-strong);
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .timeline-item:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 18px 36px rgba(49, 35, 21, 0.08);
+    }
+
+    .timeline-meta {
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .timeline-badge {
+      display: inline-block;
+      margin-bottom: 14px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(180, 122, 72, 0.14);
+      color: #7c4c23;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .timeline-content h3 {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 30px;
+      line-height: 1.03;
+      color: var(--deep);
+      margin-bottom: 6px;
+    }
+
+    .timeline-role {
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--ink);
+    }
+
+    .timeline-content ul {
+      padding-left: 18px;
+      color: var(--muted);
+    }
+
+    .timeline-content li + li {
+      margin-top: 10px;
+    }
+
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 20px;
+    }
+
+    .project-card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,252,248,0.88));
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      padding: 24px;
+      box-shadow: 0 14px 30px rgba(43, 29, 15, 0.06);
+    }
+
+    .project-date {
+      display: inline-block;
+      margin-bottom: 12px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(180, 122, 72, 0.14);
+      color: #7c4c23;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .project-card h3 {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 28px;
+      line-height: 1.08;
+      margin-bottom: 8px;
+      color: var(--deep);
+    }
+
+    .project-card p {
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .project-card ul {
+      padding-left: 18px;
+      color: var(--muted);
+    }
+
+    .project-card li + li {
+      margin-top: 9px;
+    }
+
+    .edu-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .edu-card {
+      background: var(--surface-strong);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 24px;
+    }
+
+    .edu-card h3 {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 28px;
+      line-height: 1.08;
+      color: var(--deep);
+      margin-bottom: 10px;
+    }
+
+    .edu-card p {
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .skills-layout {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 20px;
+    }
+
+    .skill-box {
+      background: var(--surface-strong);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 22px;
+    }
+
+    .skill-box h3 {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 28px;
+      margin-bottom: 14px;
+      color: var(--deep);
+    }
+
+    .pill-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .pill {
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: white;
+      border: 1px solid var(--line);
+      color: var(--deep);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .letter {
+      column-count: 2;
+      column-gap: 30px;
+      margin-top: 20px;
+    }
+
+    .letter p {
+      color: var(--muted);
+      margin-bottom: 18px;
+      break-inside: avoid;
+      text-align: justify;
+    }
+
+    .letter p:first-child::first-letter {
+      float: left;
+      font-family: "Cormorant Garamond", serif;
+      font-size: 62px;
+      line-height: 0.9;
+      padding-right: 8px;
+      color: var(--accent);
+    }
+
+    .contact-shell {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+      margin-top: 20px;
+      max-width: 720px;
+    }
+
+    .contact-dark {
+      background: linear-gradient(145deg, #17242e, #223846);
+      color: white;
+      border-radius: 28px;
+      padding: 28px;
+      box-shadow: 0 22px 48px rgba(14, 22, 29, 0.22);
+    }
+
+    .contact-dark h3 {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 32px;
+      margin-bottom: 14px;
+    }
+
+    .contact-dark p,
+    .contact-dark a {
+      color: rgba(255,255,255,0.9);
+      text-decoration: none;
+    }
+
+    .contact-dark p + p {
+      margin-top: 10px;
     }
 
     footer {
-      background: #0f172a;
-      color: white;
       text-align: center;
-      padding: 35px;
-      margin-top: 50px;
-      font-size: 16px;
+      color: var(--muted);
+      font-size: 14px;
+      padding: 6px 0 30px;
     }
 
-    @media (max-width: 768px) {
-      html {
-        scroll-padding-top: 80px;
+    @media (max-width: 1080px) {
+      .hero-shell,
+      .profile-grid,
+      .skills-layout,
+      .project-grid,
+      .edu-grid,
+      .timeline-item {
+        grid-template-columns: 1fr;
       }
 
-      section {
-        scroll-margin-top: 90px;
+      .portrait-frame,
+      .portrait-card {
+        margin-left: 0;
       }
 
-      header h1 {
-        font-size: 36px;
+      .letter {
+        column-count: 1;
+      }
+    }
+
+    @media (max-width: 860px) {
+      .topbar {
+        width: min(100% - 16px, 100%);
+        border-radius: 28px;
       }
 
-      section {
-        padding: 30px;
+      .topbar-inner {
+        flex-direction: column;
+        align-items: stretch;
       }
 
-      nav {
-        gap: 12px;
+      .lang-switch {
+        align-self: center;
+      }
+
+      .topbar a {
+        width: 100%;
+        text-align: center;
+      }
+
+      .container {
+        width: min(100% - 16px, 100%);
+      }
+
+      .hero-shell,
+      .section {
+        padding: 24px 20px;
+        border-radius: 28px;
+      }
+
+      .section::before {
+        left: 20px;
+        width: 90px;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .stat-grid {
+        grid-template-columns: 1fr 1fr;
       }
     }
   </style>
 </head>
-<body>
-  <header>
-    <h1>Wassim Abdelkafi</h1>
-    <p>Diplômé en génie civil | Coordination technique | Suivi de chantier | Contrôle qualité | Gestion de projet | OIQ en cours d’étude</p>
-    <p style="margin-top:15px;font-size:16px;">Localisation : Sherbrooke, Québec, Canada</p>
-    <div class="hero-buttons">
-      <a class="btn" href="#contact">Me contacter</a>
-      <a class="btn secondary" href="CV_Wassim_Abdelkafi.pdf" target="_blank">Télécharger mon CV</a>
-      <a class="btn secondary" href="Lettre_Presentation_Wassim_Abdelkafi.pdf" target="_blank">Télécharger ma lettre de présentation</a>
+<body data-current-lang="fr">
+  <div class="topbar">
+    <div class="topbar-inner">
+      <nav>
+        <a href="#profil">
+          <span class="lang fr">Profil</span>
+          <span class="lang en">Profile</span>
+        </a>
+        <a href="#experience">
+          <span class="lang fr">Expérience</span>
+          <span class="lang en">Experience</span>
+        </a>
+        <a href="#projets">
+          <span class="lang fr">Projets</span>
+          <span class="lang en">Projects</span>
+        </a>
+        <a href="#formation">
+          <span class="lang fr">Formation</span>
+          <span class="lang en">Education</span>
+        </a>
+        <a href="#competences">
+          <span class="lang fr">Compétences</span>
+          <span class="lang en">Skills</span>
+        </a>
+        <a href="#presentation">
+          <span class="lang fr">Présentation</span>
+          <span class="lang en">Introduction</span>
+        </a>
+        <a href="#contact">
+          <span class="lang fr">Contact</span>
+          <span class="lang en">Contact</span>
+        </a>
+      </nav>
+
+      <div class="lang-switch" aria-label="Language switch">
+        <button class="lang-btn active" type="button" data-set-lang="fr" aria-pressed="true">Français</button>
+        <button class="lang-btn" type="button" data-set-lang="en" aria-pressed="false">English</button>
+      </div>
+    </div>
+  </div>
+
+  <header class="hero">
+    <div class="container">
+      <div class="hero-shell">
+        <div>
+          <span class="eyebrow">
+            <span class="lang fr">Portfolio professionnel</span>
+            <span class="lang en">Professional portfolio</span>
+          </span>
+
+          <h1>Wassim Abdelkafi</h1>
+
+          <p class="lead">
+            <span class="lang fr">Diplômé en génie civil spécialisé en coordination technique, suivi de chantier, inspection, contrôle qualité et gestion de projet.</span>
+            <span class="lang en">Civil engineering graduate specialized in technical coordination, site supervision, inspection, quality control and project management.</span>
+          </p>
+
+          <div class="hero-meta">
+            <span class="hero-pill">
+              <span class="lang fr">Sherbrooke, Québec, Canada</span>
+              <span class="lang en">Sherbrooke, Quebec, Canada</span>
+            </span>
+            <span class="hero-pill">
+              <span class="lang fr">Demande OIQ déposée le 16 mars 2026</span>
+              <span class="lang en">OIQ application submitted on March 16, 2026</span>
+            </span>
+            <span class="hero-pill">
+              <span class="lang fr">Coordination Canada · Tunisie · Mexique</span>
+              <span class="lang en">Coordination across Canada · Tunisia · Mexico</span>
+            </span>
+            <span class="hero-pill">
+              <span class="lang fr">Structures · Ouvrages d’art · Conception 3D</span>
+              <span class="lang en">Structures · Civil works · 3D design</span>
+            </span>
+          </div>
+
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#contact">
+              <span class="lang fr">Me contacter</span>
+              <span class="lang en">Contact me</span>
+            </a>
+            <a class="btn btn-secondary btn-download" id="resume-download" href="CV_Wassim_Abdelkafi_FR.pdf" target="_blank" rel="noopener">
+              <span class="lang fr">Télécharger mon CV</span>
+              <span class="lang en">Download my resume</span>
+            </a>
+            <a class="btn btn-secondary btn-download" id="letter-download" href="Lettre_Presentation_Wassim_Abdelkafi_FR.pdf" target="_blank" rel="noopener">
+              <span class="lang fr">Télécharger ma lettre de présentation</span>
+              <span class="lang en">Download my letter of introduction</span>
+            </a>
+          </div>
+        </div>
+
+        <aside class="portrait-panel">
+          <div class="portrait-frame">
+            <img src="Wassim image.png" alt="Portrait of Wassim Abdelkafi" />
+          </div>
+
+          <div class="portrait-card">
+            <span class="label">
+              <span class="lang fr">Positionnement</span>
+              <span class="lang en">Profile</span>
+            </span>
+            <h2>
+              <span class="lang fr">Un profil technique avec présence et crédibilité</span>
+              <span class="lang en">A technical profile with presence and credibility</span>
+            </h2>
+            <p>
+              <span class="lang fr">Mon parcours relie recherche appliquée, chantier, inspection, production et coordination d’équipes techniques dans des environnements exigeants.</span>
+              <span class="lang en">My background connects applied research, site work, inspection, production, and coordination of technical teams in demanding environments.</span>
+            </p>
+
+            <div class="stat-grid">
+              <div class="stat">
+                <strong>2024</strong>
+                <span>
+                  <span class="lang fr">Coordonnateur technique en ingénierie</span>
+                  <span class="lang en">Engineering technical coordinator</span>
+                </span>
+              </div>
+              <div class="stat">
+                <strong>03.2026</strong>
+                <span>
+                  <span class="lang fr">Demande OIQ en cours d’étude</span>
+                  <span class="lang en">OIQ application under review</span>
+                </span>
+              </div>
+              <div class="stat">
+                <strong>3 pays</strong>
+                <span>
+                  <span class="lang fr">Canada, Tunisie, Mexique</span>
+                  <span class="lang en">Canada, Tunisia, Mexico</span>
+                </span>
+              </div>
+              <div class="stat">
+                <strong>CAD</strong>
+                <span>
+                  <span class="lang fr">AutoCAD, SolidWorks, Tekla</span>
+                  <span class="lang en">AutoCAD, SolidWorks, Tekla</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
     </div>
   </header>
 
-  <nav>
-    <a href="#profil">Profil professionnel</a>
-    <a href="#experience">Expérience professionnelle</a>
-    <a href="#projets">Stages et projets académiques</a>
-    <a href="#formation">Formation</a>
-    <a href="#competences">Compétences</a>
-    <a href="#presentation">Lettre de présentation</a>
-    <a href="#contact">Contact</a>
-  </nav>
-
-  <section id="profil">
-    <h2>Profil professionnel</h2>
-    <p>
-      Diplômé en génie civil avec expérience en suivi de chantier, ouvrages d’art et coordination technique.
-      Ma demande d’admission à l’Ordre des ingénieurs du Québec (OIQ) a été déposée le 16 mars 2026 en vue d’obtenir officiellement le statut de CPI.
-      Je possède une bonne maîtrise d’AutoCAD, SolidWorks et des outils de conception technique. Je suis reconnu pour ma rigueur, mon autonomie et ma capacité à gérer les priorités en environnement de chantier.
-    </p>
-  </section>
-
-  <section id="experience">
-    <h2>Expérience professionnelle</h2>
-
-    <h3>Coordonnateur technique en ingénierie – De La Fontaine</h3>
-    <p><strong>Sherbrooke, Québec | Janvier 2024 – Présent</strong></p>
-    <ul>
-      <li>Coordination des équipes techniques, de conception et de production au Canada, en Tunisie et au Mexique.</li>
-      <li>Supervision et optimisation des activités de conception 3D, fabrication et traitement technique des commandes.</li>
-      <li>Validation de la conformité des produits selon les exigences techniques et les standards de qualité.</li>
-      <li>Résolution de problématiques techniques et opérationnelles dans un environnement manufacturier complexe.</li>
-    </ul>
-
-    <h3>Concepteur 3D – De La Fontaine</h3>
-    <p><strong>Sherbrooke, Québec | Juillet 2023 – Janvier 2024</strong></p>
-    <ul>
-      <li>Conception de modèles 3D de portes et cadres métalliques personnalisés avec SolidWorks.</li>
-      <li>Production de dessins techniques détaillés pour la fabrication.</li>
-      <li>Vérification de la conformité des conceptions selon les exigences de production et de qualité.</li>
-    </ul>
-
-    <h3>Inspecteur en structures de béton armé – AusculTECH Inc.</h3>
-    <p><strong>Sherbrooke, Québec | Janvier 2022 – Avril 2023</strong></p>
-    <ul>
-      <li>Inspections visuelles et techniques de structures en béton armé.</li>
-      <li>Essais de contrôle non destructif : radar, corrosion et résistivité.</li>
-      <li>Rédaction de rapports techniques et participation à l’évaluation de l’intégrité structurale.</li>
-    </ul>
-
-    <h3>Responsable des essais en laboratoire – Artelia</h3>
-    <p><strong>Sherbrooke, Québec | Juin 2021 – Août 2021</strong></p>
-    <ul>
-      <li>Essais sur matériaux de construction : compression, granulométrie et absorption.</li>
-      <li>Analyse des résultats et validation de la conformité selon les normes applicables.</li>
-    </ul>
-  </section>
-
-  <section id="projets">
-    <h2>Stages et projets académiques</h2>
-
-    <h3>Projet de maîtrise – Université de Sherbrooke</h3>
-    <p><strong>Sherbrooke, Québec | Maîtrise ès sciences appliquées en génie civil | Août 2021 – Mars 2024</strong></p>
-    <ul>
-      <li>Réalisation d’un projet de recherche appliquée portant sur les barres en polymères renforcés de fibres de basalte (BFRP) utilisées dans les structures en béton armé.</li>
-      <li>Étude approfondie des propriétés physiques et mécaniques des matériaux composites destinés aux infrastructures et ouvrages de génie civil.</li>
-      <li>Analyse des effets de l’humidité, de l’alcalinité et des conditions environnementales agressives sur la durabilité et la performance structurale des barres BFRP.</li>
-      <li>Réalisation d’essais expérimentaux en laboratoire afin d’évaluer la résistance mécanique et le comportement à long terme des matériaux composites.</li>
-      <li>Analyse et interprétation des résultats expérimentaux pour l’évaluation de solutions innovantes en infrastructures durables.</li>
-      <li>Développement de compétences avancées en recherche appliquée, analyse technique et résolution de problèmes complexes.</li>
-    </ul>
-
-<h3>Projet de développement en ingénierie – Technologies d’impression tridimensionnelle (3DP) appliquées à la mécanique des roches</h3>
-<p><strong>Université de Sherbrooke – Sherbrooke, Québec | Avril 2021 – Août 2021</strong></p>
-<ul>
-  <li>Réalisation d’une étude scientifique portant sur l’application des technologies d’impression 3D (3DP) en mécanique des roches.</li>
-  <li>Analyse comparative des principales techniques d’impression additive utilisées en génie civil et géotechnique, incluant FDM, SLA et 3DP.</li>
-  <li>Étude des propriétés mécaniques des matériaux imprimés en 3D afin d’évaluer leur capacité à reproduire le comportement des roches naturelles.</li>
-  <li>Analyse des paramètres influençant la résistance mécanique des échantillons imprimés : orientation des couches, saturation du liant, épaisseur des couches et traitement thermique.</li>
-  <li>Participation à l’analyse des essais de résistance à la compression uniaxiale (UCS) et de traction directe (DTS) appliqués aux matériaux imprimés en 3D.</li>
-  <li>Réalisation d’une revue de littérature scientifique sur les technologies d’impression 3D appliquées aux matériaux géotechniques.</li>
-  <li>Développement de compétences en recherche appliquée, analyse expérimentale, modélisation technique et évaluation de matériaux innovants en génie civil.</li>
-</ul>
-
-        <h3>Projet de développement en ingénierie – Corrélation d’images numériques appliquées à la mécanique des roches</h3>
-<p><strong>Université de Sherbrooke – Sherbrooke, Québec | Janvier 2021 – Avril 2021</strong></p>
-<ul>
-  <li>Réalisation d’une revue scientifique portant sur l’application de la corrélation d’images numériques (DIC) en mécanique des roches.</li>
-  <li>Étude des techniques d’analyse d’images et des méthodes de mesure des champs de déplacement et de déformation des matériaux rocheux.</li>
-  <li>Analyse du comportement mécanique des roches sous différentes conditions de chargement à l’aide de systèmes de corrélation d’images numériques 2D et 3D.</li>
-  <li>Participation à l’analyse des déformations, fissurations et déplacements des matériaux rocheux à partir d’images expérimentales haute résolution.</li>
-  <li>Étude des systèmes de caméras CCD, des paramètres de corrélation et des logiciels spécialisés utilisés pour l’acquisition et le traitement des données expérimentales.</li>
-  <li>Développement de compétences en recherche appliquée, analyse expérimentale, traitement d’images et interprétation de données techniques en génie civil et géotechnique.</li>
-</ul>
-
-    <h3>Projet de fin d’études – Société Chaabane et Cie</h3>
-    <p><strong>Tunis, Tunisie | Février 2018 – Juin 2018</strong></p>
-    <ul>
-      <li>Suivi technique des travaux de réalisation d’un échangeur routier reliant la GP10 à la Voie X.</li>
-      <li>Participation au contrôle des ouvrages d’art : pieux, semelles, piles et chevêtres.</li>
-      <li>Contrôle qualité des matériaux à l’aide d’essais de laboratoire et d’essais in situ.</li>
-      <li>Réalisation d’une étude de dimensionnement du corps de chaussée selon les résultats géotechniques et les données de trafic routier.</li>
-      <li>Participation au suivi de l’avancement des travaux et à l’application des normes techniques et de sécurité sur chantier.</li>
-    </ul>
-
-    <h3>Stage de perfectionnement – Société Chaabane et Cie</h3>
-    <p><strong>Médenine, Tunisie | Janvier 2017 – Février 2017</strong></p>
-    <ul>
-      <li>Participation au suivi technique des travaux de terrassement et d’ouvrages d’art sur chantier routier.</li>
-      <li>Observation des procédés d’exécution des infrastructures routières et des ouvrages d’art.</li>
-      <li>Participation au contrôle qualité des matériaux et au suivi des travaux selon les normes techniques.</li>
-      <li>Collaboration au suivi de l’avancement des travaux et à l’application des mesures de santé et sécurité.</li>
-    </ul>
-
-    <h3>Stage d’initiation – Adam Consulte</h3>
-    <p><strong>Sfax, Tunisie | Janvier 2016 – Février 2016</strong></p>
-    <ul>
-      <li>Participation au suivi des travaux de construction d’un immeuble résidentiel R+4 en béton armé.</li>
-      <li>Observation des travaux de coffrage, ferraillage, bétonnage et décoffrage.</li>
-      <li>Participation au suivi des planchers corps creux et des éléments structuraux.</li>
-      <li>Initiation à l’organisation et à la planification de chantier.</li>
-      <li>Participation au contrôle de l’exécution des travaux selon les plans et normes techniques.</li>
-    </ul>
-  </section>
-
-<section id="formation">
-  <h2>Formation</h2>
-
-  <ul>
-
-    <li>
-      <strong>Maîtrise ès sciences appliquées en génie civil</strong>
-      – Université de Sherbrooke
-      <br>
-      <span style="color:#4b5563;">
-        Août 2021 – Mars 2024
+  <main class="container">
+    <section class="section" id="profil">
+      <span class="section-tag">
+        <span class="lang fr">01 · Profil professionnel</span>
+        <span class="lang en">01 · Professional profile</span>
       </span>
-    </li>
+      <h2>
+        <span class="lang fr">Profil professionnel</span>
+        <span class="lang en">Professional profile</span>
+      </h2>
+      <p class="section-intro">
+        <span class="lang fr">Diplômé en génie civil avec une expérience concrète en suivi de chantier, ouvrages d’art, coordination technique et contrôle qualité. Ma demande d’admission à l’Ordre des ingénieurs du Québec a été déposée le 16 mars 2026 afin d’obtenir officiellement le statut de CPI.</span>
+        <span class="lang en">Civil engineering graduate with hands-on experience in site supervision, civil structures, technical coordination, and quality control. My application for admission to the Ordre des ingénieurs du Québec was submitted on March 16, 2026, in order to officially obtain CPI status.</span>
+      </p>
 
-    <br>
+      <div class="profile-grid">
+        <article class="glass-card">
+          <h3>
+            <span class="lang fr">Positionnement</span>
+            <span class="lang en">Positioning</span>
+          </h3>
+          <p>
+            <span class="lang fr">Je possède une bonne maîtrise d’AutoCAD, SolidWorks et des outils de conception technique. Mon expérience me permet d’évoluer entre analyse technique, résolution de problèmes, coordination opérationnelle et respect des standards de qualité.</span>
+            <span class="lang en">I have strong proficiency in AutoCAD, SolidWorks, and technical design tools. My experience allows me to work confidently across technical analysis, problem solving, operational coordination, and compliance with quality standards.</span>
+          </p>
+        </article>
 
-    <li>
-      <strong>DESS en génie civil</strong>
-      – Université de Sherbrooke
-      <br>
-      <span style="color:#4b5563;">
-        Août 2020 – Août 2021
+        <article class="glass-card">
+          <h3>
+            <span class="lang fr">Forces clés</span>
+            <span class="lang en">Key strengths</span>
+          </h3>
+          <ul class="clean-list">
+            <li>
+              <span class="lang fr">Rigueur technique et sens élevé de l’organisation</span>
+              <span class="lang en">Technical rigor and strong organizational skills</span>
+            </li>
+            <li>
+              <span class="lang fr">Capacité à gérer les priorités en environnement de chantier</span>
+              <span class="lang en">Ability to manage priorities in site environments</span>
+            </li>
+            <li>
+              <span class="lang fr">Aisance en coordination multidisciplinaire et multiculturelle</span>
+              <span class="lang en">Comfort with multidisciplinary and multicultural coordination</span>
+            </li>
+            <li>
+              <span class="lang fr">Autonomie, adaptabilité et fiabilité dans l’exécution</span>
+              <span class="lang en">Autonomy, adaptability, and reliability in execution</span>
+            </li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="experience">
+      <span class="section-tag">
+        <span class="lang fr">02 · Expérience professionnelle</span>
+        <span class="lang en">02 · Professional experience</span>
       </span>
-    </li>
+      <h2>
+        <span class="lang fr">Parcours professionnel</span>
+        <span class="lang en">Professional background</span>
+      </h2>
 
-    <br>
+      <div class="timeline">
+        <article class="timeline-item">
+          <div class="timeline-meta">
+            <span class="timeline-badge">
+              <span class="lang fr">Présent</span>
+              <span class="lang en">Present</span>
+            </span>
+            <span class="lang fr">Sherbrooke, Québec<br />Janvier 2024 – Présent</span>
+            <span class="lang en">Sherbrooke, Quebec<br />January 2024 – Present</span>
+          </div>
+          <div class="timeline-content">
+            <h3>
+              <span class="lang fr">Coordonnateur technique en ingénierie</span>
+              <span class="lang en">Engineering technical coordinator</span>
+            </h3>
+            <p class="timeline-role">De La Fontaine</p>
+            <ul>
+              <li>
+                <span class="lang fr">Coordination des équipes techniques, de conception et de production au Canada, en Tunisie et au Mexique.</span>
+                <span class="lang en">Coordinating technical, design, and production teams across Canada, Tunisia, and Mexico.</span>
+              </li>
+              <li>
+                <span class="lang fr">Supervision et optimisation des activités de conception 3D, fabrication et traitement technique des commandes.</span>
+                <span class="lang en">Supervising and optimizing 3D design, manufacturing, and technical order-processing activities.</span>
+              </li>
+              <li>
+                <span class="lang fr">Validation de la conformité des produits selon les exigences techniques et les standards de qualité.</span>
+                <span class="lang en">Validating product compliance with technical requirements and quality standards.</span>
+              </li>
+              <li>
+                <span class="lang fr">Résolution de problématiques techniques et opérationnelles dans un environnement manufacturier complexe.</span>
+                <span class="lang en">Resolving technical and operational issues in a complex manufacturing environment.</span>
+              </li>
+            </ul>
+          </div>
+        </article>
 
-    <li>
-      <strong>Baccalauréat en génie civil</strong>
-      – Institut International de Technologie
-      <br>
-      <span style="color:#4b5563;">
-        Septembre 2018 – Décembre 2021
+        <article class="timeline-item">
+          <div class="timeline-meta">
+            <span class="timeline-badge">2023</span>
+            <span class="lang fr">Sherbrooke, Québec<br />Juillet 2023 – Janvier 2024</span>
+            <span class="lang en">Sherbrooke, Quebec<br />July 2023 – January 2024</span>
+          </div>
+          <div class="timeline-content">
+            <h3>
+              <span class="lang fr">Concepteur 3D</span>
+              <span class="lang en">3D designer</span>
+            </h3>
+            <p class="timeline-role">De La Fontaine</p>
+            <ul>
+              <li>
+                <span class="lang fr">Conception de modèles 3D de portes et cadres métalliques personnalisés avec SolidWorks.</span>
+                <span class="lang en">Designed 3D models of custom metal doors and frames using SolidWorks.</span>
+              </li>
+              <li>
+                <span class="lang fr">Production de dessins techniques détaillés pour la fabrication.</span>
+                <span class="lang en">Produced detailed technical drawings for manufacturing.</span>
+              </li>
+              <li>
+                <span class="lang fr">Vérification de la conformité des conceptions selon les exigences de production et de qualité.</span>
+                <span class="lang en">Verified design compliance with production and quality requirements.</span>
+              </li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="timeline-item">
+          <div class="timeline-meta">
+            <span class="timeline-badge">2022</span>
+            <span class="lang fr">Sherbrooke, Québec<br />Janvier 2022 – Avril 2023</span>
+            <span class="lang en">Sherbrooke, Quebec<br />January 2022 – April 2023</span>
+          </div>
+          <div class="timeline-content">
+            <h3>
+              <span class="lang fr">Inspecteur en structures de béton armé</span>
+              <span class="lang en">Reinforced concrete structures inspector</span>
+            </h3>
+            <p class="timeline-role">AusculTECH Inc.</p>
+            <ul>
+              <li>
+                <span class="lang fr">Inspections visuelles et techniques de structures en béton armé.</span>
+                <span class="lang en">Performed visual and technical inspections of reinforced concrete structures.</span>
+              </li>
+              <li>
+                <span class="lang fr">Essais de contrôle non destructif : radar, corrosion et résistivité.</span>
+                <span class="lang en">Conducted non-destructive testing including radar, corrosion, and resistivity assessment.</span>
+              </li>
+              <li>
+                <span class="lang fr">Rédaction de rapports techniques et participation à l’évaluation de l’intégrité structurale.</span>
+                <span class="lang en">Prepared technical reports and contributed to structural integrity assessments.</span>
+              </li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="timeline-item">
+          <div class="timeline-meta">
+            <span class="timeline-badge">2021</span>
+            <span class="lang fr">Sherbrooke, Québec<br />Juin 2021 – Août 2021</span>
+            <span class="lang en">Sherbrooke, Quebec<br />June 2021 – August 2021</span>
+          </div>
+          <div class="timeline-content">
+            <h3>
+              <span class="lang fr">Responsable des essais en laboratoire</span>
+              <span class="lang en">Laboratory testing lead</span>
+            </h3>
+            <p class="timeline-role">Artelia</p>
+            <ul>
+              <li>
+                <span class="lang fr">Essais sur matériaux de construction : compression, granulométrie et absorption.</span>
+                <span class="lang en">Tested construction materials, including compression, gradation, and absorption.</span>
+              </li>
+              <li>
+                <span class="lang fr">Analyse des résultats et validation de la conformité selon les normes applicables.</span>
+                <span class="lang en">Analyzed results and validated compliance with applicable standards.</span>
+              </li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="projets">
+      <span class="section-tag">
+        <span class="lang fr">03 · Stages et projets académiques</span>
+        <span class="lang en">03 · Internships and academic projects</span>
       </span>
-    </li>
+      <h2>
+        <span class="lang fr">Projets académiques et stages</span>
+        <span class="lang en">Academic projects and internships</span>
+      </h2>
 
-    <br>
+      <div class="project-grid">
+        <article class="project-card">
+          <span class="project-date">
+            <span class="lang fr">Août 2021 – Mars 2024</span>
+            <span class="lang en">August 2021 – March 2024</span>
+          </span>
+          <h3>
+            <span class="lang fr">Projet de maîtrise – Université de Sherbrooke</span>
+            <span class="lang en">Master's research project – Université de Sherbrooke</span>
+          </h3>
+          <p>
+            <span class="lang fr">Maîtrise ès sciences appliquées en génie civil</span>
+            <span class="lang en">Master of Applied Science in Civil Engineering</span>
+          </p>
+          <ul>
+            <li>
+              <span class="lang fr">Projet de recherche appliquée sur les barres en polymères renforcés de fibres de basalte utilisées dans les structures en béton armé.</span>
+              <span class="lang en">Applied research project on basalt fiber-reinforced polymer bars used in reinforced concrete structures.</span>
+            </li>
+            <li>
+              <span class="lang fr">Étude approfondie des propriétés physiques et mécaniques des matériaux composites destinés aux infrastructures.</span>
+              <span class="lang en">Conducted an in-depth study of the physical and mechanical properties of composite materials for infrastructure applications.</span>
+            </li>
+            <li>
+              <span class="lang fr">Analyse des effets de l’humidité, de l’alcalinité et des conditions environnementales agressives sur la durabilité.</span>
+              <span class="lang en">Analyzed the effects of humidity, alkalinity, and aggressive environmental conditions on durability.</span>
+            </li>
+            <li>
+              <span class="lang fr">Essais expérimentaux pour évaluer la résistance mécanique et le comportement à long terme.</span>
+              <span class="lang en">Performed experimental testing to evaluate mechanical strength and long-term behavior.</span>
+            </li>
+          </ul>
+        </article>
 
-    <li>
-      <strong>Licence appliquée en génie civil</strong>
-      – Institut Supérieur des Études Technologiques
-      <br>
-      <span style="color:#4b5563;">
-        Septembre 2015 – Juin 2018
+        <article class="project-card">
+          <span class="project-date">
+            <span class="lang fr">Avril 2021 – Août 2021</span>
+            <span class="lang en">April 2021 – August 2021</span>
+          </span>
+          <h3>
+            <span class="lang fr">Impression 3D appliquée à la mécanique des roches</span>
+            <span class="lang en">3D printing applied to rock mechanics</span>
+          </h3>
+          <p>Université de Sherbrooke</p>
+          <ul>
+            <li>
+              <span class="lang fr">Analyse comparative des principales techniques d’impression additive utilisées en génie civil et géotechnique, incluant FDM, SLA et 3DP.</span>
+              <span class="lang en">Compared major additive manufacturing techniques used in civil and geotechnical engineering, including FDM, SLA, and 3DP.</span>
+            </li>
+            <li>
+              <span class="lang fr">Étude des propriétés mécaniques des matériaux imprimés en 3D afin d’évaluer leur capacité à reproduire le comportement des roches naturelles.</span>
+              <span class="lang en">Studied the mechanical properties of 3D-printed materials to evaluate their ability to reproduce the behavior of natural rock.</span>
+            </li>
+            <li>
+              <span class="lang fr">Analyse des paramètres influençant la résistance mécanique des échantillons imprimés.</span>
+              <span class="lang en">Analyzed the parameters affecting the mechanical strength of printed specimens.</span>
+            </li>
+          </ul>
+        </article>
+
+        <article class="project-card">
+          <span class="project-date">
+            <span class="lang fr">Janvier 2021 – Avril 2021</span>
+            <span class="lang en">January 2021 – April 2021</span>
+          </span>
+          <h3>
+            <span class="lang fr">Corrélation d’images numériques appliquée à la mécanique des roches</span>
+            <span class="lang en">Digital image correlation applied to rock mechanics</span>
+          </h3>
+          <p>Université de Sherbrooke</p>
+          <ul>
+            <li>
+              <span class="lang fr">Réalisation d’une revue scientifique sur l’application de la corrélation d’images numériques en mécanique des roches.</span>
+              <span class="lang en">Completed a scientific review on the application of digital image correlation in rock mechanics.</span>
+            </li>
+            <li>
+              <span class="lang fr">Étude des techniques d’analyse d’images et des méthodes de mesure des champs de déplacement et de déformation.</span>
+              <span class="lang en">Studied image analysis techniques and methods for measuring displacement and strain fields.</span>
+            </li>
+            <li>
+              <span class="lang fr">Analyse du comportement mécanique des roches à l’aide de systèmes 2D et 3D.</span>
+              <span class="lang en">Analyzed rock mechanical behavior using 2D and 3D systems.</span>
+            </li>
+          </ul>
+        </article>
+
+        <article class="project-card">
+          <span class="project-date">
+            <span class="lang fr">Février 2018 – Juin 2018</span>
+            <span class="lang en">February 2018 – June 2018</span>
+          </span>
+          <h3>
+            <span class="lang fr">Projet de fin d’études – Société Chaabane et Cie</span>
+            <span class="lang en">Final year project – Société Chaabane et Cie</span>
+          </h3>
+          <p>
+            <span class="lang fr">Tunis, Tunisie</span>
+            <span class="lang en">Tunis, Tunisia</span>
+          </p>
+          <ul>
+            <li>
+              <span class="lang fr">Suivi technique des travaux de réalisation d’un échangeur routier reliant la GP10 à la Voie X.</span>
+              <span class="lang en">Provided technical follow-up for the construction of a road interchange connecting GP10 to Voie X.</span>
+            </li>
+            <li>
+              <span class="lang fr">Participation au contrôle des ouvrages d’art : pieux, semelles, piles et chevêtres.</span>
+              <span class="lang en">Participated in quality control of civil structures including piles, footings, piers, and cap beams.</span>
+            </li>
+            <li>
+              <span class="lang fr">Contrôle qualité des matériaux à l’aide d’essais de laboratoire et d’essais in situ.</span>
+              <span class="lang en">Performed material quality control using laboratory and in-situ tests.</span>
+            </li>
+          </ul>
+        </article>
+
+        <article class="project-card">
+          <span class="project-date">
+            <span class="lang fr">Janvier 2017 – Février 2017</span>
+            <span class="lang en">January 2017 – February 2017</span>
+          </span>
+          <h3>
+            <span class="lang fr">Stage de perfectionnement – Société Chaabane et Cie</span>
+            <span class="lang en">Advanced internship – Société Chaabane et Cie</span>
+          </h3>
+          <p>
+            <span class="lang fr">Médenine, Tunisie</span>
+            <span class="lang en">Médenine, Tunisia</span>
+          </p>
+          <ul>
+            <li>
+              <span class="lang fr">Participation au suivi technique des travaux de terrassement et d’ouvrages d’art sur chantier routier.</span>
+              <span class="lang en">Contributed to technical follow-up for earthworks and civil structures on a road construction site.</span>
+            </li>
+            <li>
+              <span class="lang fr">Observation des procédés d’exécution des infrastructures routières et des ouvrages d’art.</span>
+              <span class="lang en">Observed execution methods for road infrastructure and civil works.</span>
+            </li>
+            <li>
+              <span class="lang fr">Participation au contrôle qualité des matériaux et au suivi des travaux selon les normes techniques.</span>
+              <span class="lang en">Participated in material quality control and progress monitoring in accordance with technical standards.</span>
+            </li>
+          </ul>
+        </article>
+
+        <article class="project-card">
+          <span class="project-date">
+            <span class="lang fr">Janvier 2016 – Février 2016</span>
+            <span class="lang en">January 2016 – February 2016</span>
+          </span>
+          <h3>
+            <span class="lang fr">Stage d’initiation – Adam Consulte</span>
+            <span class="lang en">Introductory internship – Adam Consulte</span>
+          </h3>
+          <p>
+            <span class="lang fr">Sfax, Tunisie</span>
+            <span class="lang en">Sfax, Tunisia</span>
+          </p>
+          <ul>
+            <li>
+              <span class="lang fr">Participation au suivi des travaux de construction d’un immeuble résidentiel R+4 en béton armé.</span>
+              <span class="lang en">Participated in the follow-up of construction work for a reinforced concrete residential building.</span>
+            </li>
+            <li>
+              <span class="lang fr">Observation des travaux de coffrage, ferraillage, bétonnage et décoffrage.</span>
+              <span class="lang en">Observed formwork, rebar placement, concreting, and stripping operations.</span>
+            </li>
+            <li>
+              <span class="lang fr">Initiation à l’organisation et à la planification de chantier.</span>
+              <span class="lang en">Gained initial exposure to site organization and planning.</span>
+            </li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="formation">
+      <span class="section-tag">
+        <span class="lang fr">04 · Formation</span>
+        <span class="lang en">04 · Education</span>
       </span>
-    </li>
+      <h2>
+        <span class="lang fr">Parcours académique</span>
+        <span class="lang en">Academic background</span>
+      </h2>
 
-  </ul>
-</section>
+      <div class="edu-grid">
+        <article class="edu-card">
+          <h3>
+            <span class="lang fr">Maîtrise ès sciences appliquées en génie civil</span>
+            <span class="lang en">Master of Applied Science in Civil Engineering</span>
+          </h3>
+          <p>Université de Sherbrooke</p>
+          <p>
+            <span class="lang fr">Août 2021 – Mars 2024</span>
+            <span class="lang en">August 2021 – March 2024</span>
+          </p>
+        </article>
 
-  <section id="competences">
-    <h2>Compétences</h2>
-    <div class="skills">
-      <span>Génie civil</span><span>Coordination technique</span><span>Gestion de projet</span><span>Suivi de chantier</span>
-      <span>Contrôle qualité</span><span>Inspection de structures</span><span>Ouvrages d’art</span><span>Béton armé</span>
-      <span>AutoCAD</span><span>SolidWorks</span><span>Tekla Structures</span><span>Robot Structural Analysis</span>
-      <span>MS Project</span><span>Microsoft Office</span><span>Microsoft Dynamics AX</span><span>Lecture de plans et devis</span>
-    </div>
-  </section>
+        <article class="edu-card">
+          <h3>
+            <span class="lang fr">Baccalauréat en génie civil</span>
+            <span class="lang en">Bachelor's degree in Civil Engineering</span>
+          </h3>
+          <p>Institut International de Technologie</p>
+          <p>
+            <span class="lang fr">Septembre 2018 – Décembre 2021</span>
+            <span class="lang en">September 2018 – December 2021</span>
+          </p>
+        </article>
 
-  <section id="presentation">
-    <h2>Lettre de présentation</h2>
+        <article class="edu-card">
+          <h3>
+            <span class="lang fr">DESS en génie civil</span>
+            <span class="lang en">Graduate diploma in Civil Engineering</span>
+          </h3>
+          <p>Université de Sherbrooke</p>
+          <p>
+            <span class="lang fr">Août 2020 – Août 2021</span>
+            <span class="lang en">August 2020 – August 2021</span>
+          </p>
+        </article>
 
-    <p>
-      Bonjour,
-    </p>
+        <article class="edu-card">
+          <h3>
+            <span class="lang fr">Licence appliquée en génie civil</span>
+            <span class="lang en">Applied degree in Civil Engineering</span>
+          </h3>
+          <p>Institut Supérieur des Études Technologiques</p>
+          <p>
+            <span class="lang fr">Septembre 2015 – Juin 2018</span>
+            <span class="lang en">September 2015 – June 2018</span>
+          </p>
+        </article>
+      </div>
+    </section>
 
-    <p>
-      Je m’appelle Wassim Abdelkafi et je suis diplômé en génie civil au Canada et en Tunisie. Mon parcours académique et professionnel m’a permis de développer une solide expertise technique en génie civil, en coordination de projets, en suivi de chantier ainsi qu’en contrôle qualité.
-    </p>
+    <section class="section" id="competences">
+      <span class="section-tag">
+        <span class="lang fr">05 · Compétences</span>
+        <span class="lang en">05 · Skills</span>
+      </span>
+      <h2>
+        <span class="lang fr">Un socle technique complet</span>
+        <span class="lang en">A complete technical foundation</span>
+      </h2>
 
-    <p>
-      Mon cheminement dans le domaine du génie civil a débuté en Tunisie avec une formation technique en génie civil à l’Institut Supérieur des Études Technologiques de Sfax, où j’ai acquis des connaissances pratiques liées au béton armé, aux structures, aux travaux de chantier et aux infrastructures routières. J’ai ensuite poursuivi mes études à l’Institut International de Technologie afin d’obtenir un baccalauréat en génie civil, ce qui m’a permis d’approfondir mes compétences techniques et analytiques.
-    </p>
+      <div class="skills-layout">
+        <article class="skill-box">
+          <h3>
+            <span class="lang fr">Expertise métier</span>
+            <span class="lang en">Core expertise</span>
+          </h3>
+          <div class="pill-wrap">
+            <span class="pill"><span class="lang fr">Génie civil</span><span class="lang en">Civil engineering</span></span>
+            <span class="pill"><span class="lang fr">Suivi de chantier</span><span class="lang en">Site supervision</span></span>
+            <span class="pill"><span class="lang fr">Contrôle qualité</span><span class="lang en">Quality control</span></span>
+            <span class="pill"><span class="lang fr">Inspection de structures</span><span class="lang en">Structural inspection</span></span>
+            <span class="pill"><span class="lang fr">Ouvrages d’art</span><span class="lang en">Civil structures</span></span>
+            <span class="pill"><span class="lang fr">Béton armé</span><span class="lang en">Reinforced concrete</span></span>
+          </div>
+        </article>
 
-    <p>
-      Durant mon parcours universitaire, j’ai effectué plusieurs stages en suivi de chantier et en infrastructures routières. J’ai notamment participé au suivi des travaux d’un échangeur routier reliant la GP10 à la Voie X en Tunisie, un projet qui m’a permis d’être impliqué dans le contrôle des ouvrages d’art, le suivi technique des travaux, le contrôle qualité des matériaux ainsi que le dimensionnement du corps de chaussée à partir d’analyses géotechniques et de données de trafic routier.
-    </p>
+        <article class="skill-box">
+          <h3>
+            <span class="lang fr">Coordination</span>
+            <span class="lang en">Coordination</span>
+          </h3>
+          <div class="pill-wrap">
+            <span class="pill"><span class="lang fr">Coordination technique</span><span class="lang en">Technical coordination</span></span>
+            <span class="pill"><span class="lang fr">Gestion de projet</span><span class="lang en">Project management</span></span>
+            <span class="pill"><span class="lang fr">Gestion des priorités</span><span class="lang en">Priority management</span></span>
+            <span class="pill"><span class="lang fr">Lecture de plans et devis</span><span class="lang en">Blueprint and specification review</span></span>
+            <span class="pill"><span class="lang fr">Collaboration multidisciplinaire</span><span class="lang en">Multidisciplinary collaboration</span></span>
+          </div>
+        </article>
 
-    <p>
-      Mon stage d’initiation dans le domaine du bâtiment m’a également permis de participer au suivi des travaux de construction d’un immeuble résidentiel en béton armé et de mieux comprendre les différentes étapes de réalisation d’un chantier, incluant le coffrage, le ferraillage, le bétonnage et le contrôle des travaux selon les plans et devis.
-    </p>
+        <article class="skill-box">
+          <h3>
+            <span class="lang fr">Outils</span>
+            <span class="lang en">Tools</span>
+          </h3>
+          <div class="pill-wrap">
+            <span class="pill">AutoCAD</span>
+            <span class="pill">SolidWorks</span>
+            <span class="pill">Tekla Structures</span>
+            <span class="pill">Robot Structural Analysis</span>
+            <span class="pill">MS Project</span>
+            <span class="pill">Microsoft Office</span>
+            <span class="pill">Microsoft Dynamics AX</span>
+          </div>
+        </article>
+      </div>
+    </section>
 
-    <p>
-      Après mon arrivée au Canada, j’ai poursuivi mes études à l’Université de Sherbrooke où j’ai obtenu un DESS ainsi qu’une maîtrise en génie civil. Mon projet de maîtrise portait sur la caractérisation des propriétés physiques et mécaniques des barres en polymères renforcés de fibres de basalte (BFRP) utilisées dans les structures en béton armé. Ce projet m’a permis de développer des compétences avancées en recherche appliquée, en analyse technique et en évaluation de solutions innovantes pour les infrastructures durables.
-    </p>
+    <section class="section" id="presentation">
+      <span class="section-tag">
+        <span class="lang fr">06 · Lettre de présentation</span>
+        <span class="lang en">06 · Letter of introduction</span>
+      </span>
+      <h2>
+        <span class="lang fr">Présentation</span>
+        <span class="lang en">Profile statement</span>
+      </h2>
 
-    <p>
-      Professionnellement, j’ai travaillé chez Artelia dans le domaine des essais sur matériaux de construction, où j’ai participé à des essais de compression, granulométrie et absorption afin de valider la conformité des matériaux selon les normes applicables.
-    </p>
+      <div class="letter">
+        <p>
+          <span class="lang fr">Je m’appelle Wassim Abdelkafi et je suis diplômé en génie civil au Canada et en Tunisie. Mon parcours académique et professionnel m’a permis de développer une solide expertise technique en génie civil, en coordination de projets, en suivi de chantier ainsi qu’en contrôle qualité.</span>
+          <span class="lang en">My name is Wassim Abdelkafi, and I am a civil engineering graduate trained in both Canada and Tunisia. My academic and professional background has enabled me to develop strong technical expertise in civil engineering, project coordination, site supervision, and quality control.</span>
+        </p>
 
-    <p>
-      J’ai également travaillé chez AusculTECH comme inspecteur en structures de béton armé, où j’ai réalisé des inspections visuelles et techniques ainsi que des essais de contrôle non destructif incluant radar, corrosion et résistivité. Cette expérience m’a permis de participer à l’évaluation de l’intégrité structurale de plusieurs ouvrages et de développer une excellente compréhension des problématiques liées à la durabilité des structures.
-    </p>
+        <p>
+          <span class="lang fr">Mon cheminement dans le domaine du génie civil a débuté en Tunisie avec une formation technique en génie civil à l’Institut Supérieur des Études Technologiques de Sfax, où j’ai acquis des connaissances pratiques liées au béton armé, aux structures, aux travaux de chantier et aux infrastructures routières. J’ai ensuite poursuivi mes études à l’Institut International de Technologie afin d’obtenir un baccalauréat en génie civil, ce qui m’a permis d’approfondir mes compétences techniques et analytiques.</span>
+          <span class="lang en">My journey in civil engineering began in Tunisia with technical training in civil engineering at the Institut Supérieur des Études Technologiques de Sfax, where I developed practical knowledge related to reinforced concrete, structures, site work, and road infrastructure. I then continued my studies at the Institut International de Technologie to earn a bachelor's degree in civil engineering, which allowed me to further strengthen my technical and analytical skills.</span>
+        </p>
 
-    <p>
-      Actuellement, j’occupe le poste de coordonnateur technique en ingénierie chez De La Fontaine à Sherbrooke. Dans ce rôle, je supervise et optimise les activités de conception 3D, de fabrication et de traitement technique des commandes pour des projets spécialisés. Je coordonne également des équipes multidisciplinaires situées au Canada, en Tunisie et au Mexique afin d’assurer le respect des échéanciers, des exigences techniques et des standards de qualité.
-    </p>
+        <p>
+          <span class="lang fr">Durant mon parcours universitaire, j’ai réalisé plusieurs stages techniques qui m’ont permis de développer une excellente compréhension des réalités de chantier et des infrastructures civiles.</span>
+          <span class="lang en">During my university studies, I completed several technical internships that enabled me to develop an excellent understanding of site realities and civil infrastructure.</span>
+        </p>
 
-    <p>
-      Grâce à mon parcours varié, j’ai développé de solides compétences en coordination technique, gestion des priorités, résolution de problèmes, suivi de chantier et collaboration multidisciplinaire. Je maîtrise notamment AutoCAD, SolidWorks, Tekla Structures, Robot Structural Analysis, MS Project ainsi que plusieurs outils techniques utilisés dans le domaine du génie civil et de la gestion de projets.
-    </p>
+        <p>
+          <span class="lang fr">Mon stage d’initiation réalisé chez Adam Consulte dans le domaine du bâtiment m’a permis de participer au suivi des travaux de construction d’un immeuble résidentiel en béton armé. J’y ai observé les différentes étapes de réalisation d’un chantier, notamment le coffrage, le ferraillage, le bétonnage, le décoffrage ainsi que le suivi de l’exécution des travaux selon les plans et devis.</span>
+          <span class="lang en">My introductory internship at Adam Consulte in the building sector allowed me to participate in the follow-up of the construction of a reinforced concrete residential building. There, I observed the different stages of site execution, including formwork, rebar placement, concreting, stripping, and monitoring of the work in accordance with plans and specifications.</span>
+        </p>
 
-    <p>
-      Reconnu pour ma rigueur, mon autonomie et ma capacité d’adaptation, je suis motivé à poursuivre mon développement professionnel dans les domaines du génie civil, de la gestion de projets, du suivi de chantier et du contrôle qualité.
-    </p>
+        <p>
+          <span class="lang fr">Par la suite, mon stage de perfectionnement réalisé chez Société Chaabane et Cie dans le domaine des infrastructures routières m’a permis de participer au suivi technique des travaux de terrassement et des ouvrages d’art. Cette expérience m’a permis de mieux comprendre les méthodes d’exécution des travaux routiers, le contrôle qualité des matériaux ainsi que l’application des normes techniques et des exigences de sécurité sur chantier.</span>
+          <span class="lang en">Subsequently, my advanced internship at Société Chaabane et Cie in the field of road infrastructure allowed me to contribute to the technical follow-up of earthworks and civil structures. This experience gave me a better understanding of road construction methods, material quality control, and the application of technical standards and site safety requirements.</span>
+        </p>
 
-    <p>
-      Ma demande d’admission à l’Ordre des ingénieurs du Québec (OIQ) afin d’obtenir officiellement le statut de CPI a été déposée le 16 mars 2026 et est actuellement en cours d’étude.
-    </p>
+        <p>
+          <span class="lang fr">Dans le cadre de mon projet de fin d’études réalisé chez Société Chaabane et Cie en Tunisie, j’ai participé au suivi des travaux d’un échangeur routier reliant la GP10 à la Voie X. Ce projet m’a permis d’être impliqué dans le contrôle des ouvrages d’art, le suivi technique des travaux, le contrôle qualité des matériaux ainsi que le dimensionnement du corps de chaussée à partir d’analyses géotechniques et de données de trafic routier. Cette expérience a grandement contribué au développement de mes compétences en suivi de chantier, infrastructures routières et coordination technique.</span>
+          <span class="lang en">As part of my final-year project carried out at Société Chaabane et Cie in Tunisia, I participated in the follow-up of the construction of a road interchange connecting GP10 to Voie X. This project enabled me to be involved in the inspection of civil structures, technical site follow-up, material quality control, and pavement structure design based on geotechnical analyses and traffic data. This experience greatly contributed to the development of my skills in site supervision, road infrastructure, and technical coordination.</span>
+        </p>
 
-    <p>
-      Merci pour votre visite et au plaisir d’échanger avec vous.
-    </p>
-  </section>
+        <p>
+          <span class="lang fr">Après mon arrivée au Canada, j’ai poursuivi mes études à l’Université de Sherbrooke où j’ai obtenu un DESS ainsi qu’une maîtrise en génie civil. Durant mon parcours universitaire à Sherbrooke, j’ai également participé à deux projets de développement en ingénierie portant sur la mécanique des roches.</span>
+          <span class="lang en">After arriving in Canada, I continued my studies at Université de Sherbrooke, where I completed both a graduate diploma and a master's degree in civil engineering. During my academic path at Sherbrooke, I also took part in two engineering development projects related to rock mechanics.</span>
+        </p>
 
-  <section id="contact">
-    <h2>Contact</h2>
-    <p><strong>Courriel :</strong> <a href="mailto:Wassim.abdelkafi19@gmail.com">Wassim.abdelkafi19@gmail.com</a></p>
-    <p><strong>Téléphone :</strong> <a href="tel:+18198234462">+1 (819) 823-4462</a></p>
-    <p><strong>LinkedIn :</strong> <a href="https://www.linkedin.com/in/wassimabdelkafi/" target="_blank">linkedin.com/in/wassimabdelkafi</a></p>
-    <p><strong>Localisation :</strong> Sherbrooke, Québec, Canada</p>
-  </section>
+        <p>
+          <span class="lang fr">Le premier projet portait sur la corrélation d’images numériques appliquée à la mécanique des roches. Ce projet m’a permis d’étudier les techniques d’analyse d’images utilisées pour mesurer les déplacements, déformations et fissurations des matériaux rocheux à l’aide de systèmes de corrélation d’images numériques 2D et 3D. J’y ai développé des compétences en analyse expérimentale, traitement d’images et interprétation de données techniques.</span>
+          <span class="lang en">The first project focused on digital image correlation applied to rock mechanics. This project allowed me to study image analysis techniques used to measure displacement, deformation, and cracking in rock materials using 2D and 3D digital image correlation systems. Through it, I developed skills in experimental analysis, image processing, and technical data interpretation.</span>
+        </p>
+
+        <p>
+          <span class="lang fr">Le second projet portait sur les technologies d’impression tridimensionnelle (3DP) appliquées à la mécanique des roches. Ce projet consistait à étudier l’utilisation des technologies d’impression 3D pour reproduire et analyser le comportement mécanique des matériaux rocheux. J’ai notamment participé à l’analyse comparative des différentes technologies d’impression additive ainsi qu’à l’étude des propriétés mécaniques des matériaux imprimés en 3D.</span>
+          <span class="lang en">The second project focused on three-dimensional printing (3DP) technologies applied to rock mechanics. This project consisted of studying the use of 3D printing technologies to reproduce and analyze the mechanical behavior of rock materials. I notably contributed to the comparative analysis of different additive manufacturing technologies as well as to the study of the mechanical properties of 3D-printed materials.</span>
+        </p>
+
+        <p>
+          <span class="lang fr">Mon projet de maîtrise portait quant à lui sur la caractérisation des propriétés physiques et mécaniques des barres en polymères renforcés de fibres de basalte (BFRP) utilisées dans les structures en béton armé. Ce projet m’a permis de développer des compétences avancées en recherche appliquée, en analyse technique et en évaluation de solutions innovantes pour les infrastructures durables.</span>
+          <span class="lang en">My master's project focused on the characterization of the physical and mechanical properties of basalt fiber-reinforced polymer (BFRP) bars used in reinforced concrete structures. This project enabled me to develop advanced skills in applied research, technical analysis, and the evaluation of innovative solutions for sustainable infrastructure.</span>
+        </p>
+
+        <p>
+          <span class="lang fr">Professionnellement, j’ai travaillé chez Artelia dans le domaine des essais sur matériaux de construction, où j’ai participé à des essais de compression, granulométrie et absorption afin de valider la conformité des matériaux selon les normes applicables.</span>
+          <span class="lang en">Professionally, I worked at Artelia in the field of construction material testing, where I took part in compression, gradation, and absorption tests to validate material compliance with applicable standards.</span>
+        </p>
+
+        <p>
+          <span class="lang fr">J’ai également travaillé chez AusculTECH comme inspecteur en structures de béton armé, où j’ai réalisé des inspections visuelles et techniques ainsi que des essais de contrôle non destructif incluant radar, corrosion et résistivité. Cette expérience m’a permis de participer à l’évaluation de l’intégrité structurale de plusieurs ouvrages et de développer une excellente compréhension des problématiques liées à la durabilité des structures.</span>
+          <span class="lang en">I also worked at AusculTECH as an inspector of reinforced concrete structures, where I carried out visual and technical inspections as well as non-destructive testing including radar, corrosion, and resistivity. This experience allowed me to contribute to the evaluation of the structural integrity of several assets and to develop an excellent understanding of issues related to structural durability.</span>
+        </p>
+
+        <p>
+          <span class="lang fr">Actuellement, j’occupe le poste de coordonnateur technique en ingénierie chez De La Fontaine à Sherbrooke. Dans ce rôle, je supervise et optimise les activités de conception 3D, de fabrication et de traitement technique des commandes pour des projets spécialisés. Je coordonne également des équipes multidisciplinaires situées au Canada, en Tunisie et au Mexique afin d’assurer le respect des échéanciers, des exigences techniques et des standards de qualité.</span>
+          <span class="lang en">I currently hold the position of Engineering Technical Coordinator at De La Fontaine in Sherbrooke. In this role, I supervise and optimize 3D design, manufacturing, and technical order-processing activities for specialized projects. I also coordinate multidisciplinary teams located in Canada, Tunisia, and Mexico in order to ensure compliance with schedules, technical requirements, and quality standards.</span>
+        </p>
+
+        <p>
+          <span class="lang fr">Grâce à mon parcours varié, j’ai développé de solides compétences en coordination technique, gestion des priorités, résolution de problèmes, suivi de chantier et collaboration multidisciplinaire. Je maîtrise notamment AutoCAD, SolidWorks, Tekla Structures, Robot Structural Analysis, MS Project ainsi que plusieurs outils techniques utilisés dans le domaine du génie civil et de la gestion de projets.</span>
+          <span class="lang en">Thanks to this diverse background, I have developed strong skills in technical coordination, priority management, problem solving, site supervision, and multidisciplinary collaboration. I am proficient in AutoCAD, SolidWorks, Tekla Structures, Robot Structural Analysis, MS Project, as well as several technical tools used in civil engineering and project management.</span>
+        </p>
+
+        <p>
+          <span class="lang fr">Reconnu pour ma rigueur, mon autonomie et ma capacité d’adaptation, je suis motivé à poursuivre mon développement professionnel dans les domaines du génie civil, de la gestion de projets, du suivi de chantier et du contrôle qualité.</span>
+          <span class="lang en">Recognized for my rigor, autonomy, and adaptability, I am motivated to continue my professional development in civil engineering, project management, site supervision, and quality control.</span>
+        </p>
+
+        <p>
+          <span class="lang fr">Ma demande d’admission à l’Ordre des ingénieurs du Québec (OIQ) afin d’obtenir officiellement le statut de CPI a été déposée le 16 mars 2026 et est actuellement en cours d’étude.</span>
+          <span class="lang en">My application for admission to the Ordre des ingénieurs du Québec (OIQ), in order to officially obtain CPI status, was submitted on March 16, 2026 and is currently under review.</span>
+        </p>
+
+        <p>
+          <span class="lang fr">Merci pour votre visite et au plaisir d’échanger avec vous.</span>
+          <span class="lang en">Thank you for your visit, and I look forward to speaking with you.</span>
+        </p>
+      </div>
+    </section>
+
+    <section class="section" id="contact">
+      <span class="section-tag">
+        <span class="lang fr">07 · Contact</span>
+        <span class="lang en">07 · Contact</span>
+      </span>
+      <h2>
+        <span class="lang fr">Coordonnées</span>
+        <span class="lang en">Contact details</span>
+      </h2>
+
+      <div class="contact-shell">
+        <div class="contact-dark">
+          <h3>
+            <span class="lang fr">Coordonnées</span>
+            <span class="lang en">Contact information</span>
+          </h3>
+          <p>
+            <strong>
+              <span class="lang fr">Courriel :</span>
+              <span class="lang en">Email:</span>
+            </strong>
+            <a href="mailto:Wassim.abdelkafi19@gmail.com">Wassim.abdelkafi19@gmail.com</a>
+          </p>
+          <p>
+            <strong>
+              <span class="lang fr">Téléphone :</span>
+              <span class="lang en">Phone:</span>
+            </strong>
+            <a href="tel:+18198234462">+1 (819) 823-4462</a>
+          </p>
+          <p>
+            <strong>LinkedIn :</strong>
+            <a href="https://www.linkedin.com/in/wassimabdelkafi/" target="_blank" rel="noopener">linkedin.com/in/wassimabdelkafi</a>
+          </p>
+          <p>
+            <strong>
+              <span class="lang fr">Localisation :</span>
+              <span class="lang en">Location:</span>
+            </strong>
+            <span class="lang fr">Sherbrooke, Québec, Canada</span>
+            <span class="lang en">Sherbrooke, Quebec, Canada</span>
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
 
   <footer>
-    <p>© 2026 Wassim Abdelkafi – Génie civil</p>
+    <span class="lang fr">© 2026 Wassim Abdelkafi · Génie civil</span>
+    <span class="lang en">© 2026 Wassim Abdelkafi · Civil Engineering</span>
   </footer>
+
+  <script>
+    (function () {
+      var buttons = document.querySelectorAll("[data-set-lang]");
+      var resumeLink = document.getElementById("resume-download");
+      var letterLink = document.getElementById("letter-download");
+      var savedLang = null;
+      var localizedFiles = {
+        fr: {
+          resume: {
+            href: "CV_Wassim_Abdelkafi_FR.pdf"
+          },
+          letter: {
+            href: "Lettre_Presentation_Wassim_Abdelkafi_FR.pdf"
+          }
+        },
+        en: {
+          resume: {
+            href: "CV_Wassim_Abdelkafi_EN.pdf"
+          },
+          letter: {
+            href: "Lettre_Presentation_Wassim_Abdelkafi_EN.pdf"
+          }
+        }
+      };
+
+      try {
+        savedLang = localStorage.getItem("wassim-site-lang");
+      } catch (error) {
+        savedLang = null;
+      }
+
+      var initialLang = savedLang === "en" || savedLang === "fr" ? savedLang : "fr";
+
+      function setLanguage(lang) {
+        document.body.setAttribute("data-current-lang", lang);
+        document.documentElement.setAttribute("lang", lang);
+
+        buttons.forEach(function (button) {
+          var isActive = button.getAttribute("data-set-lang") === lang;
+          button.classList.toggle("active", isActive);
+          button.setAttribute("aria-pressed", isActive ? "true" : "false");
+        });
+
+        if (resumeLink && localizedFiles[lang]) {
+          resumeLink.setAttribute("href", localizedFiles[lang].resume.href);
+        }
+
+        if (letterLink && localizedFiles[lang]) {
+          letterLink.setAttribute("href", localizedFiles[lang].letter.href);
+        }
+
+        try {
+          localStorage.setItem("wassim-site-lang", lang);
+        } catch (error) {
+          // Ignore storage issues for local file previews.
+        }
+      }
+
+      buttons.forEach(function (button) {
+        button.addEventListener("click", function () {
+          setLanguage(button.getAttribute("data-set-lang"));
+        });
+      });
+
+      setLanguage(initialLang);
+    })();
+  </script>
 </body>
 </html>
