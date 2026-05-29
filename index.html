@@ -2253,11 +2253,11 @@
             <span class="lang en">Leave me a message</span>
           </h3>
 
-          <iframe id="contact-form-delivery-frame" name="contact-form-delivery-frame" hidden style="display: none;"></iframe>
-          <form class="contact-form" id="contact-form" action="https://formsubmit.co/Wassim.abdelkafi19@gmail.com" method="POST" target="contact-form-delivery-frame">
+          <form class="contact-form" id="contact-form" action="https://formsubmit.co/Wassim.abdelkafi19@gmail.com" method="POST">
             <input type="hidden" name="_subject" value="Message depuis votre site web" />
             <input type="hidden" name="_template" value="table" />
             <input type="hidden" name="_captcha" value="false" />
+            <input type="hidden" name="_next" value="https://wassimabdelkafi.com/contact-success.html" />
             <div class="field">
               <label for="visitor-country">
                 <span class="lang fr">Pays</span>
@@ -2763,49 +2763,6 @@
         contactFormStatus.classList.remove("is-success", "is-error");
       }
 
-      async function sendContactForm(formData, deliveryEmail) {
-        return new Promise(function (resolve, reject) {
-          if (!deliveryEmail) {
-            reject(new Error("Missing delivery email"));
-            return;
-          }
-
-          var iframeName = "contact-form-delivery-frame";
-          var iframe = document.getElementById(iframeName);
-          var relayForm = document.createElement("form");
-
-          if (!iframe) {
-            iframe = document.createElement("iframe");
-            iframe.id = iframeName;
-            iframe.name = iframeName;
-            iframe.hidden = true;
-            iframe.style.display = "none";
-            document.body.appendChild(iframe);
-          }
-
-          relayForm.method = "POST";
-          relayForm.action = "https://formsubmit.co/" + deliveryEmail;
-          relayForm.target = iframeName;
-          relayForm.style.display = "none";
-
-          formData.forEach(function (value, key) {
-            var input = document.createElement("input");
-            input.type = "hidden";
-            input.name = key;
-            input.value = value;
-            relayForm.appendChild(input);
-          });
-
-          document.body.appendChild(relayForm);
-          relayForm.submit();
-
-          setTimeout(function () {
-            relayForm.remove();
-            resolve();
-          }, 1200);
-        });
-      }
-
       function syncPhoneCountry(countryIso) {
         if (!phoneInput || !countryIso) {
           return;
@@ -3029,100 +2986,6 @@
         visitorPhone.addEventListener("input", function () {
           visitorPhone.setCustomValidity("");
           clearFormStatus();
-        });
-      }
-
-      if (contactForm) {
-        contactForm.addEventListener("submit", async function (event) {
-          event.preventDefault();
-          clearFormStatus();
-
-          if (!contactForm.checkValidity()) {
-            contactForm.reportValidity();
-            return;
-          }
-
-          var currentLang = document.body.getAttribute("data-current-lang") || "fr";
-          var selectedCountryIso = getSelectedCountryIso();
-          var selectedCountryLabel = getSelectedCountryLabel();
-          var selectedPurposeLabel = getSelectedPurposeLabel();
-          var phoneNumber = visitorPhone.value.trim();
-
-          if (phoneInput && phoneInput.promise && typeof phoneInput.promise.then === "function") {
-            try {
-              await phoneInput.promise;
-            } catch (error) {
-              phoneInput = null;
-            }
-          }
-
-          if (!selectedCountryIso && visitorCountry) {
-            visitorCountry.setCustomValidity(currentLang === "en" ? "Please select a country." : "Veuillez sélectionner un pays.");
-            visitorCountry.reportValidity();
-            return;
-          }
-
-          if (phoneInput && typeof phoneInput.isValidNumber === "function") {
-            if (!phoneInput.isValidNumber()) {
-              visitorPhone.setCustomValidity(currentLang === "en" ? "Please enter a valid phone number for the selected country." : "Veuillez entrer un numéro de téléphone valide pour le pays sélectionné.");
-              visitorPhone.reportValidity();
-              return;
-            }
-
-            if (typeof phoneInput.getNumber === "function") {
-              phoneNumber = phoneInput.getNumber();
-            }
-          }
-
-          if (!validatePostalCode()) {
-            visitorPostalCode.reportValidity();
-            return;
-          }
-
-          var subject = currentLang === "en"
-            ? "Message from your portfolio website"
-            : "Message depuis votre site web";
-          var formData = new FormData();
-
-          formData.append("email", visitorEmail.value.trim());
-          formData.append("_replyto", visitorEmail.value.trim());
-          formData.append("phone", phoneNumber);
-          formData.append("country", selectedCountryLabel);
-          formData.append("postal_code", visitorPostalCode.value.trim());
-          formData.append("contact_purpose", selectedPurposeLabel);
-          formData.append("message", visitorMessage.value.trim());
-          formData.append("_subject", subject);
-          formData.append("_template", "table");
-          formData.append("_captcha", "false");
-
-          if (contactSubmitButton) {
-            contactSubmitButton.disabled = true;
-          }
-
-          try {
-            await sendContactForm(formData, contactEmail);
-
-            contactForm.reset();
-
-            if (visitorCountry) {
-              visitorCountry.value = "ca";
-            }
-
-            syncPhoneCountry("ca");
-            updatePostalPlaceholder();
-            populatePurposeSelect(currentLang);
-            setFormStatus("success", currentLang === "en"
-              ? "Your message has been sent successfully. You will receive a response within a maximum of 72 hours."
-              : "Votre message a été envoyé avec succès. Vous recevrez une réponse dans un délai maximum de 72 h.");
-          } catch (error) {
-            setFormStatus("error", currentLang === "en"
-              ? "The message could not be sent right now. Please try again or email me directly."
-              : "Le message ne peut pas être envoyé pour le moment. Veuillez réessayer ou m’écrire directement par courriel.");
-          } finally {
-            if (contactSubmitButton) {
-              contactSubmitButton.disabled = false;
-            }
-          }
         });
       }
 
