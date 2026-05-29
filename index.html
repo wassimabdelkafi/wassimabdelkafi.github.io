@@ -121,6 +121,125 @@
       background-size: 24px 24px;
     }
 
+    .welcome-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 120;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background:
+        radial-gradient(circle at 20% 15%, rgba(180, 122, 72, 0.28), transparent 28%),
+        rgba(16, 23, 30, 0.58);
+      backdrop-filter: blur(16px);
+      transition: opacity 0.28s ease, visibility 0.28s ease;
+    }
+
+    .welcome-overlay.is-hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .welcome-card {
+      position: relative;
+      width: min(620px, 100%);
+      padding: 42px;
+      border: 1px solid rgba(255,255,255,0.46);
+      border-radius: 34px;
+      background:
+        linear-gradient(145deg, rgba(255, 252, 248, 0.96), rgba(239, 227, 213, 0.94));
+      color: var(--deep);
+      box-shadow: 0 32px 90px rgba(10, 16, 21, 0.32);
+      animation: fadeScaleIn 0.65s ease both;
+    }
+
+    .welcome-card::before {
+      content: "";
+      position: absolute;
+      inset: 14px;
+      border: 1px solid rgba(180, 122, 72, 0.18);
+      border-radius: 24px;
+      pointer-events: none;
+    }
+
+    .welcome-kicker {
+      display: inline-block;
+      margin-bottom: 14px;
+      font-size: calc(13px * var(--text-scale));
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .welcome-card h2 {
+      position: relative;
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(40px, 5vw, 62px);
+      line-height: 0.95;
+      margin-bottom: 18px;
+      letter-spacing: -0.03em;
+    }
+
+    .welcome-card p {
+      position: relative;
+      max-width: 520px;
+      font-size: calc(18px * var(--text-scale));
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .welcome-actions {
+      position: relative;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .welcome-btn {
+      border: 0;
+      min-height: 52px;
+      padding: 14px 24px;
+      border-radius: 999px;
+      background: var(--deep);
+      color: white;
+      font: inherit;
+      font-size: calc(15px * var(--text-scale));
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 16px 34px rgba(23, 35, 45, 0.22);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .welcome-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 20px 42px rgba(23, 35, 45, 0.26);
+    }
+
+    .welcome-close {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      width: 40px;
+      height: 40px;
+      border: 0;
+      border-radius: 50%;
+      background: rgba(23, 35, 45, 0.08);
+      color: var(--deep);
+      font: inherit;
+      font-size: 22px;
+      line-height: 1;
+      cursor: pointer;
+      transition: background 0.25s ease, transform 0.25s ease;
+    }
+
+    .welcome-close:hover {
+      background: rgba(23, 35, 45, 0.14);
+      transform: rotate(8deg);
+    }
+
     a {
       color: inherit;
     }
@@ -142,6 +261,7 @@
       border-radius: 999px;
       backdrop-filter: blur(18px);
       box-shadow: 0 10px 30px rgba(28, 22, 16, 0.08);
+      transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
     }
 
     .topbar-inner {
@@ -161,7 +281,7 @@
 
     .topbar a {
       text-decoration: none;
-      font-size: calc(13px * var(--text-scale));
+      font-size: calc(14px * var(--text-scale));
       font-weight: 700;
       color: var(--deep);
       padding: 10px 11px;
@@ -174,6 +294,36 @@
       background: var(--deep);
       color: white;
       transform: translateY(-1px);
+    }
+
+    .topbar.is-scrolled {
+      background: rgba(23, 35, 45, 0.94);
+      border-color: rgba(255,255,255,0.16);
+      box-shadow: 0 18px 55px rgba(10, 16, 21, 0.24);
+    }
+
+    .topbar.is-scrolled a,
+    .topbar.is-scrolled .lang-btn,
+    .topbar.is-scrolled .text-size-btn {
+      color: rgba(255,255,255,0.9);
+    }
+
+    .topbar.is-scrolled a:hover,
+    .topbar.is-scrolled .text-size-btn:hover {
+      background: rgba(255,255,255,0.12);
+      color: white;
+    }
+
+    .topbar.is-scrolled .lang-switch,
+    .topbar.is-scrolled .text-size-switch {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(255,255,255,0.14);
+    }
+
+    .topbar.is-scrolled .lang-btn.active,
+    .topbar.is-scrolled .zoom-value {
+      background: rgba(255, 252, 248, 0.94);
+      color: var(--deep);
     }
 
     .lang-switch {
@@ -194,7 +344,7 @@
       padding: 9px 12px;
       border-radius: 999px;
       font: inherit;
-      font-size: calc(13px * var(--text-scale));
+      font-size: calc(14px * var(--text-scale));
       font-weight: 800;
       cursor: pointer;
       transition: 0.25s ease;
@@ -231,7 +381,7 @@
       padding: 9px 11px;
       border-radius: 999px;
       font: inherit;
-      font-size: calc(13px * var(--text-scale));
+      font-size: calc(14px * var(--text-scale));
       font-weight: 800;
       cursor: pointer;
       transition: 0.25s ease;
@@ -253,7 +403,7 @@
       border-radius: 999px;
       background: rgba(23, 35, 45, 0.92);
       color: white;
-      font-size: calc(13px * var(--text-scale));
+      font-size: calc(14px * var(--text-scale));
       font-weight: 800;
       text-align: center;
       box-shadow: 0 8px 20px rgba(23, 35, 45, 0.18);
@@ -312,7 +462,7 @@
     .eyebrow {
       display: inline-block;
       margin-bottom: 16px;
-      font-size: calc(12px * var(--text-scale));
+      font-size: calc(13px * var(--text-scale));
       font-weight: 700;
       letter-spacing: 0.24em;
       text-transform: uppercase;
@@ -321,7 +471,7 @@
 
     .hero h1 {
       font-family: "Cormorant Garamond", serif;
-      font-size: clamp(58px, 7vw, 98px);
+      font-size: clamp(62px, 7.3vw, 104px);
       line-height: 0.9;
       letter-spacing: -0.03em;
       margin-bottom: 20px;
@@ -329,7 +479,7 @@
 
     .hero .lead {
       max-width: 720px;
-      font-size: calc(20px * var(--text-scale));
+      font-size: calc(21px * var(--text-scale));
       color: rgba(255,255,255,0.82);
     }
 
@@ -346,7 +496,7 @@
       background: rgba(255,255,255,0.08);
       border: 1px solid rgba(255,255,255,0.1);
       color: rgba(255,255,255,0.9);
-      font-size: calc(14px * var(--text-scale));
+      font-size: calc(15px * var(--text-scale));
       font-weight: 600;
       backdrop-filter: blur(10px);
       animation: softDrift 7s ease-in-out infinite;
@@ -382,7 +532,7 @@
       padding: 14px 18px;
       border-radius: 16px;
       text-decoration: none;
-      font-size: calc(15px * var(--text-scale));
+      font-size: calc(16px * var(--text-scale));
       font-weight: 700;
       text-align: center;
       transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
@@ -1274,6 +1424,28 @@
         line-height: 1.62;
       }
 
+      .welcome-overlay {
+        padding: 16px;
+      }
+
+      .welcome-card {
+        padding: 32px 22px 26px;
+        border-radius: 26px;
+      }
+
+      .welcome-card h2 {
+        font-size: calc(34px * var(--text-scale));
+      }
+
+      .welcome-card p {
+        font-size: calc(16px * var(--text-scale));
+      }
+
+      .welcome-actions,
+      .welcome-btn {
+        width: 100%;
+      }
+
       .topbar {
         position: static;
         margin-top: 12px;
@@ -1452,6 +1624,30 @@
   </style>
 </head>
 <body id="top" data-current-lang="fr">
+  <div class="welcome-overlay" id="welcome-message" role="dialog" aria-modal="true" aria-labelledby="welcome-title" aria-hidden="false">
+    <div class="welcome-card">
+      <button class="welcome-close" type="button" data-welcome-close aria-label="Fermer le message de bienvenue">×</button>
+      <span class="welcome-kicker">
+        <span class="lang fr">Bienvenue</span>
+        <span class="lang en">Welcome</span>
+      </span>
+      <h2 id="welcome-title">
+        <span class="lang fr">Heureux de vous accueillir sur mon portfolio.</span>
+        <span class="lang en">Glad to welcome you to my portfolio.</span>
+      </h2>
+      <p>
+        <span class="lang fr">Vous y trouverez mon parcours en génie civil, mes expériences, mes projets, mes compétences et les documents à télécharger.</span>
+        <span class="lang en">Here you will find my civil engineering background, experience, projects, skills and downloadable documents.</span>
+      </p>
+      <div class="welcome-actions">
+        <button class="welcome-btn" type="button" data-welcome-close>
+          <span class="lang fr">Découvrir le portfolio</span>
+          <span class="lang en">Explore the portfolio</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <div class="topbar">
     <div class="topbar-inner">
       <nav>
@@ -2087,8 +2283,8 @@
             <span class="lang en">English</span>
           </h3>
           <p>
-            <span class="lang fr">Compétence professionnelle</span>
-            <span class="lang en">Professional working proficiency</span>
+            <span class="lang fr">Intermédiaire</span>
+            <span class="lang en">Intermediate</span>
           </p>
         </article>
 
@@ -2253,11 +2449,33 @@
             <span class="lang en">Leave me a message</span>
           </h3>
 
-          <form class="contact-form" id="contact-form" action="https://formsubmit.co/Wassim.abdelkafi19@gmail.com" method="POST">
-            <input type="hidden" name="_subject" value="Message depuis votre site web" />
-            <input type="hidden" name="_template" value="table" />
-            <input type="hidden" name="_captcha" value="false" />
-            <input type="hidden" name="_next" value="https://wassimabdelkafi.com/contact-success.html" />
+          <form class="contact-form" id="contact-form" action="mailto:wassim.abdelkafi19@gmail.com" method="GET">
+            <div class="form-row">
+              <div class="field">
+                <label for="visitor-first-name">
+                  <span class="lang fr">Prénom</span>
+                  <span class="lang en">First name</span>
+                </label>
+                <input id="visitor-first-name" name="first_name" type="text" autocomplete="given-name" placeholder="Prénom" required />
+              </div>
+
+              <div class="field">
+                <label for="visitor-last-name">
+                  <span class="lang fr">Nom</span>
+                  <span class="lang en">Last name</span>
+                </label>
+                <input id="visitor-last-name" name="last_name" type="text" autocomplete="family-name" placeholder="Nom" required />
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="visitor-company">
+                <span class="lang fr">Entreprise</span>
+                <span class="lang en">Company</span>
+              </label>
+              <input id="visitor-company" name="company" type="text" autocomplete="organization" placeholder="Entreprise (facultatif)" />
+            </div>
+
             <div class="field">
               <label for="visitor-country">
                 <span class="lang fr">Pays</span>
@@ -2308,11 +2526,11 @@
             </div>
 
             <div class="field">
-              <label for="visitor-postal-code">
-                <span class="lang fr">Code postal</span>
-                <span class="lang en">Postal code</span>
+              <label for="visitor-city">
+                <span class="lang fr">Ville</span>
+                <span class="lang en">City</span>
               </label>
-              <input id="visitor-postal-code" name="postal_code" type="text" autocomplete="postal-code" required />
+              <input id="visitor-city" name="city" type="text" autocomplete="address-level2" placeholder="Ville" required />
             </div>
 
             <div class="field">
@@ -2362,23 +2580,28 @@
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.3.5/build/js/intlTelInput.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/postal-codes-js@2.5.2/postal-codes.js"></script>
   <script>
     (function () {
       var buttons = document.querySelectorAll("[data-set-lang]");
       var zoomButtons = document.querySelectorAll("[data-zoom-action]");
       var zoomValue = document.getElementById("zoom-value");
+      var topbar = document.querySelector(".topbar");
+      var heroSection = document.querySelector(".hero");
+      var welcomeMessage = document.getElementById("welcome-message");
+      var welcomeCloseButtons = document.querySelectorAll("[data-welcome-close]");
       var resumeLink = document.getElementById("resume-download");
       var letterLink = document.getElementById("letter-download");
       var contactForm = document.getElementById("contact-form");
+      var visitorFirstName = document.getElementById("visitor-first-name");
+      var visitorLastName = document.getElementById("visitor-last-name");
+      var visitorCompany = document.getElementById("visitor-company");
       var visitorCountry = document.getElementById("visitor-country");
       var visitorEmail = document.getElementById("visitor-email");
       var visitorPhone = document.getElementById("visitor-phone");
-      var visitorPostalCode = document.getElementById("visitor-postal-code");
+      var visitorCity = document.getElementById("visitor-city");
       var visitorPurpose = document.getElementById("visitor-purpose");
       var visitorMessage = document.getElementById("visitor-message");
       var contactFormStatus = document.getElementById("contact-form-status");
-      var contactSubmitButton = contactForm ? contactForm.querySelector(".form-submit") : null;
       var metaDescription = document.getElementById("meta-description");
       var metaKeywords = document.getElementById("meta-keywords");
       var metaOgLocale = document.getElementById("meta-og-locale");
@@ -2387,9 +2610,8 @@
       var metaTwitterTitle = document.getElementById("meta-twitter-title");
       var metaTwitterDescription = document.getElementById("meta-twitter-description");
       var savedLang = null;
-      var savedZoom = null;
       var currentZoom = 100;
-      var contactEmail = "Wassim.abdelkafi19@gmail.com";
+      var contactEmail = "wassim.abdelkafi19@gmail.com";
       var phoneInput = null;
       var seoContent = {
         fr: {
@@ -2454,52 +2676,6 @@
         { value: "networking", fr: "Réseautage professionnel", en: "Professional networking" },
         { value: "other", fr: "Autre demande", en: "Other request" }
       ];
-      var postalExamples = {
-        ca: "J1J 1J1",
-        us: "10001",
-        fr: "75001",
-        tn: "1000",
-        mx: "01000",
-        gb: "SW1A 1AA",
-        de: "10115",
-        it: "00118",
-        es: "28001",
-        nl: "1012 AB",
-        be: "1000",
-        ch: "8001",
-        au: "2000",
-        nz: "6011",
-        br: "01001-000",
-        jp: "100-0001",
-        cn: "100000",
-        in: "110001",
-        ma: "10000",
-        dz: "16000",
-        tr: "33150"
-      };
-      var postalRules = {
-        ca: { maxLength: 7, pattern: /^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTVWXYZ] \d[ABCEGHJ-NPRSTVWXYZ]\d$/i, format: formatCanadianPostalCode },
-        us: { maxLength: 10, pattern: /^\d{5}(-\d{4})?$/ },
-        fr: { maxLength: 5, pattern: /^\d{5}$/ },
-        tn: { maxLength: 4, pattern: /^\d{4}$/ },
-        mx: { maxLength: 5, pattern: /^\d{5}$/ },
-        gb: { maxLength: 8, pattern: /^[A-Z]{1,2}\d[A-Z\d]? \d[A-Z]{2}$/i, format: formatUppercasePostalCode },
-        de: { maxLength: 5, pattern: /^\d{5}$/ },
-        it: { maxLength: 5, pattern: /^\d{5}$/ },
-        es: { maxLength: 5, pattern: /^\d{5}$/ },
-        nl: { maxLength: 7, pattern: /^\d{4} [A-Z]{2}$/i, format: formatDutchPostalCode },
-        be: { maxLength: 4, pattern: /^\d{4}$/ },
-        ch: { maxLength: 4, pattern: /^\d{4}$/ },
-        au: { maxLength: 4, pattern: /^\d{4}$/ },
-        nz: { maxLength: 4, pattern: /^\d{4}$/ },
-        br: { maxLength: 9, pattern: /^\d{5}-\d{3}$/ },
-        jp: { maxLength: 8, pattern: /^\d{3}-\d{4}$/ },
-        cn: { maxLength: 6, pattern: /^\d{6}$/ },
-        in: { maxLength: 6, pattern: /^\d{6}$/ },
-        ma: { maxLength: 5, pattern: /^\d{5}$/ },
-        dz: { maxLength: 5, pattern: /^\d{5}$/ },
-        tr: { maxLength: 5, pattern: /^\d{5}$/ }
-      };
 
       function getActiveLanguage() {
         return document.body.getAttribute("data-current-lang") || initialLang || "fr";
@@ -2617,140 +2793,25 @@
         return visitorCountry.options[visitorCountry.selectedIndex].textContent;
       }
 
-      function getPostalValidator() {
-        if (window.postalCodes && typeof window.postalCodes.validate === "function") {
-          return window.postalCodes;
+      function updateContactPlaceholders() {
+        var isEnglish = getActiveLanguage() === "en";
+
+        if (visitorFirstName) {
+          visitorFirstName.placeholder = isEnglish ? "First name" : "Prénom";
         }
 
-        if (window.PostalCodes && typeof window.PostalCodes.validate === "function") {
-          return window.PostalCodes;
+        if (visitorLastName) {
+          visitorLastName.placeholder = isEnglish ? "Last name" : "Nom";
         }
 
-        if (window.postalCodesJS && typeof window.postalCodesJS.validate === "function") {
-          return window.postalCodesJS;
+        if (visitorCompany) {
+          visitorCompany.placeholder = isEnglish ? "Company (optional)" : "Entreprise (facultatif)";
         }
 
-        return null;
-      }
-
-      function formatUppercasePostalCode(value) {
-        return value.toUpperCase().replace(/\s+/g, " ").trimStart();
-      }
-
-      function formatCanadianPostalCode(value) {
-        var compactValue = value.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 6);
-
-        if (compactValue.length > 3) {
-          return compactValue.slice(0, 3) + " " + compactValue.slice(3);
+        if (visitorCity) {
+          visitorCity.placeholder = isEnglish ? "City" : "Ville";
+          visitorCity.setCustomValidity("");
         }
-
-        return compactValue;
-      }
-
-      function formatDutchPostalCode(value) {
-        var compactValue = value.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 6);
-
-        if (compactValue.length > 4) {
-          return compactValue.slice(0, 4) + " " + compactValue.slice(4);
-        }
-
-        return compactValue;
-      }
-
-      function formatPostalCodeValue(value) {
-        var countryIso = getSelectedCountryIso();
-        var rule = postalRules[countryIso];
-        var formattedValue = formatUppercasePostalCode(value);
-
-        if (rule && typeof rule.format === "function") {
-          formattedValue = rule.format(value);
-        }
-
-        if (rule && rule.maxLength) {
-          formattedValue = formattedValue.slice(0, rule.maxLength);
-        }
-
-        return formattedValue;
-      }
-
-      function getPostalValidationMessage(lang, countryIso) {
-        var example = postalExamples[countryIso];
-
-        return example
-          ? (lang === "en" ? "Please enter the exact postal code format. Example: " : "Veuillez respecter le format exact du code postal. Exemple : ") + example
-          : (lang === "en" ? "Please enter a valid postal code for the selected country." : "Veuillez entrer un code postal valide pour le pays sélectionné.");
-      }
-
-      function updatePostalPlaceholder() {
-        if (!visitorPostalCode) {
-          return;
-        }
-
-        var lang = getActiveLanguage();
-        var countryIso = getSelectedCountryIso();
-        var example = postalExamples[countryIso];
-        var rule = postalRules[countryIso];
-
-        visitorPostalCode.maxLength = rule && rule.maxLength ? rule.maxLength : 16;
-
-        visitorPostalCode.placeholder = example
-          ? (lang === "en" ? "Example: " : "Exemple : ") + example
-          : (lang === "en" ? "Postal code" : "Code postal");
-        visitorPostalCode.value = formatPostalCodeValue(visitorPostalCode.value);
-        visitorPostalCode.setCustomValidity("");
-      }
-
-      function validatePostalCode() {
-        if (!visitorPostalCode) {
-          return true;
-        }
-
-        var lang = getActiveLanguage();
-        var countryIso = getSelectedCountryIso();
-        var postalValue = formatPostalCodeValue(visitorPostalCode.value).trim();
-        var rule = postalRules[countryIso];
-        var validator = getPostalValidator();
-
-        visitorPostalCode.value = postalValue;
-        visitorPostalCode.setCustomValidity("");
-
-        if (!postalValue) {
-          visitorPostalCode.setCustomValidity(lang === "en" ? "Please enter your postal code." : "Veuillez entrer votre code postal.");
-          return false;
-        }
-
-        if (rule && rule.pattern && !rule.pattern.test(postalValue)) {
-          visitorPostalCode.setCustomValidity(getPostalValidationMessage(lang, countryIso));
-          return false;
-        }
-
-        if (rule && rule.pattern) {
-          return true;
-        }
-
-        if (!countryIso || !validator) {
-          return true;
-        }
-
-        var validationResult = validator.validate(countryIso.toUpperCase(), postalValue);
-
-        if (validationResult === true) {
-          return true;
-        }
-
-        visitorPostalCode.setCustomValidity(getPostalValidationMessage(lang, countryIso));
-        return false;
-      }
-
-      function setFormStatus(type, message) {
-        if (!contactFormStatus) {
-          return;
-        }
-
-        contactFormStatus.hidden = false;
-        contactFormStatus.classList.remove("is-success", "is-error");
-        contactFormStatus.classList.add(type === "success" ? "is-success" : "is-error");
-        contactFormStatus.textContent = message;
       }
 
       function clearFormStatus() {
@@ -2797,7 +2858,7 @@
             visitorCountry.value = selectedCountry.iso2;
           }
 
-          updatePostalPlaceholder();
+          updateContactPlaceholders();
           clearFormStatus();
         });
       }
@@ -2808,21 +2869,11 @@
         savedLang = null;
       }
 
-      try {
-        savedZoom = localStorage.getItem("wassim-site-zoom");
-      } catch (error) {
-        savedZoom = null;
-      }
-
       var initialLang = savedLang === "en" || savedLang === "fr" ? savedLang : "fr";
-      var initialZoom = Number(savedZoom);
+      var initialZoom = 100;
 
       function clampZoom(value) {
         return Math.min(170, Math.max(70, Math.round(value / 10) * 10));
-      }
-
-      if (!Number.isFinite(initialZoom)) {
-        initialZoom = 100;
       }
 
       initialZoom = clampZoom(initialZoom);
@@ -2876,7 +2927,7 @@
 
         populateCountrySelect(lang);
         populatePurposeSelect(lang);
-        updatePostalPlaceholder();
+        updateContactPlaceholders();
 
         try {
           localStorage.setItem("wassim-site-lang", lang);
@@ -2904,11 +2955,23 @@
           }
         });
 
-        try {
-          localStorage.setItem("wassim-site-zoom", String(currentZoom));
-        } catch (error) {
-          // Ignore storage issues for local file previews.
+      }
+
+      function updateTopbarState() {
+        if (!topbar || !heroSection) {
+          return;
         }
+
+        topbar.classList.toggle("is-scrolled", heroSection.getBoundingClientRect().bottom <= 120);
+      }
+
+      function closeWelcomeMessage() {
+        if (!welcomeMessage) {
+          return;
+        }
+
+        welcomeMessage.classList.add("is-hidden");
+        welcomeMessage.setAttribute("aria-hidden", "true");
       }
 
       if ("IntersectionObserver" in window) {
@@ -2958,19 +3021,84 @@
         });
       });
 
+      welcomeCloseButtons.forEach(function (button) {
+        button.addEventListener("click", closeWelcomeMessage);
+      });
+
+      if (welcomeMessage) {
+        welcomeMessage.addEventListener("click", function (event) {
+          if (event.target === welcomeMessage) {
+            closeWelcomeMessage();
+          }
+        });
+      }
+
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+          closeWelcomeMessage();
+        }
+      });
+
+      if (contactForm) {
+        contactForm.addEventListener("submit", function (event) {
+          event.preventDefault();
+          clearFormStatus();
+
+          if (!contactForm.checkValidity()) {
+            contactForm.reportValidity();
+            return;
+          }
+
+          var phoneNumber = visitorPhone ? visitorPhone.value.trim() : "";
+
+          if (phoneInput && typeof phoneInput.getNumber === "function") {
+            phoneNumber = phoneInput.getNumber() || phoneNumber;
+          }
+
+          var subject = "Contact depuis le portfolio de Wassim Abdelkafi";
+          var body = [
+            "Nom : " + (visitorLastName ? visitorLastName.value.trim() : ""),
+            "Prénom : " + (visitorFirstName ? visitorFirstName.value.trim() : ""),
+            "Entreprise : " + (visitorCompany ? visitorCompany.value.trim() : ""),
+            "Courriel : " + (visitorEmail ? visitorEmail.value.trim() : ""),
+            "Téléphone : " + phoneNumber,
+            "Pays : " + getSelectedCountryLabel(),
+            "Ville : " + (visitorCity ? visitorCity.value.trim() : ""),
+            "Objectif : " + getSelectedPurposeLabel(),
+            "Message :",
+            visitorMessage ? visitorMessage.value.trim() : ""
+          ].join("\n");
+
+          window.location.href = "mailto:" + contactEmail
+            + "?subject=" + encodeURIComponent(subject)
+            + "&body=" + encodeURIComponent(body);
+        });
+      }
+
       if (visitorCountry) {
         visitorCountry.addEventListener("change", function () {
           visitorCountry.setCustomValidity("");
           syncPhoneCountry(visitorCountry.value);
-          updatePostalPlaceholder();
+          updateContactPlaceholders();
           clearFormStatus();
         });
       }
 
-      if (visitorPostalCode) {
-        visitorPostalCode.addEventListener("input", function () {
-          visitorPostalCode.value = formatPostalCodeValue(visitorPostalCode.value);
-          visitorPostalCode.setCustomValidity("");
+      if (visitorFirstName) {
+        visitorFirstName.addEventListener("input", clearFormStatus);
+      }
+
+      if (visitorLastName) {
+        visitorLastName.addEventListener("input", clearFormStatus);
+      }
+
+      if (visitorCompany) {
+        visitorCompany.addEventListener("input", clearFormStatus);
+      }
+
+      if (visitorCity) {
+        visitorCity.addEventListener("input", function () {
+          visitorCity.setCustomValidity("");
           clearFormStatus();
         });
       }
@@ -2989,9 +3117,21 @@
         });
       }
 
+      if (visitorEmail) {
+        visitorEmail.addEventListener("input", clearFormStatus);
+      }
+
+      if (visitorMessage) {
+        visitorMessage.addEventListener("input", clearFormStatus);
+      }
+
+      window.addEventListener("scroll", updateTopbarState, { passive: true });
+      window.addEventListener("resize", updateTopbarState);
+
       initPhoneInput();
       setLanguage(initialLang);
       applyZoom(initialZoom);
+      updateTopbarState();
     })();
   </script>
 </body>
