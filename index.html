@@ -2359,7 +2359,7 @@
       var savedLang = null;
       var savedZoom = null;
       var currentZoom = 100;
-      var contactEmail = "contact@wassimabdelkafi.com";
+      var contactEmail = "Wassim.abdelkafi19@gmail.com";
       var phoneInput = null;
       var seoContent = {
         fr: {
@@ -2717,6 +2717,49 @@
         contactFormStatus.classList.remove("is-success", "is-error");
       }
 
+      async function sendContactForm(formData, deliveryEmail) {
+        return new Promise(function (resolve, reject) {
+          if (!deliveryEmail) {
+            reject(new Error("Missing delivery email"));
+            return;
+          }
+
+          var iframeName = "contact-form-delivery-frame";
+          var iframe = document.getElementById(iframeName);
+          var relayForm = document.createElement("form");
+
+          if (!iframe) {
+            iframe = document.createElement("iframe");
+            iframe.id = iframeName;
+            iframe.name = iframeName;
+            iframe.hidden = true;
+            iframe.style.display = "none";
+            document.body.appendChild(iframe);
+          }
+
+          relayForm.method = "POST";
+          relayForm.action = "https://formsubmit.co/" + encodeURIComponent(deliveryEmail);
+          relayForm.target = iframeName;
+          relayForm.style.display = "none";
+
+          formData.forEach(function (value, key) {
+            var input = document.createElement("input");
+            input.type = "hidden";
+            input.name = key;
+            input.value = value;
+            relayForm.appendChild(input);
+          });
+
+          document.body.appendChild(relayForm);
+          relayForm.submit();
+
+          setTimeout(function () {
+            relayForm.remove();
+            resolve();
+          }, 1200);
+        });
+      }
+
       function syncPhoneCountry(countryIso) {
         if (!phoneInput || !countryIso) {
           return;
@@ -3011,46 +3054,8 @@
           }
 
           try {
-            var response = await fetch("https://formsubmit.co/ajax/" + encodeURIComponent(contactEmail), {
-              method: "POST",
-              headers: {
-                Accept: "application/json"
-              },
-              body: formData
-            });
-
-            if (!response.ok) {
-              throw new Error("Form submission failed");
-            }
+            await sendContactForm(formData, contactEmail);
 
             contactForm.reset();
 
-            if (visitorCountry) {
-              visitorCountry.value = "ca";
-            }
-
-            syncPhoneCountry("ca");
-            updatePostalPlaceholder();
-            populatePurposeSelect(currentLang);
-            setFormStatus("success", currentLang === "en"
-              ? "Your message has been sent successfully. You will receive a response within a maximum of 72 hours."
-              : "Votre message a été envoyé avec succès. Vous recevrez une réponse dans un délai maximum de 72 h.");
-          } catch (error) {
-            setFormStatus("error", currentLang === "en"
-              ? "The message could not be sent right now. Please try again or email me directly."
-              : "Le message ne peut pas être envoyé pour le moment. Veuillez réessayer ou m’écrire directement par courriel.");
-          } finally {
-            if (contactSubmitButton) {
-              contactSubmitButton.disabled = false;
-            }
-          }
-        });
-      }
-
-      initPhoneInput();
-      setLanguage(initialLang);
-      applyZoom(initialZoom);
-    })();
-  </script>
-</body>
-</html>
+            if 
