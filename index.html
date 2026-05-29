@@ -2253,7 +2253,11 @@
             <span class="lang en">Leave me a message</span>
           </h3>
 
-          <form class="contact-form" id="contact-form">
+          <iframe id="contact-form-delivery-frame" name="contact-form-delivery-frame" hidden style="display: none;"></iframe>
+          <form class="contact-form" id="contact-form" action="https://formsubmit.co/Wassim.abdelkafi19%40gmail.com" method="POST" target="contact-form-delivery-frame">
+            <input type="hidden" name="_subject" value="Message depuis votre site web" />
+            <input type="hidden" name="_template" value="table" />
+            <input type="hidden" name="_captcha" value="false" />
             <div class="field">
               <label for="visitor-country">
                 <span class="lang fr">Pays</span>
@@ -2261,6 +2265,27 @@
               </label>
               <select id="visitor-country" name="country" autocomplete="country-name" required>
                 <option value="">Sélectionner un pays / Select a country</option>
+                <option value="ca">Canada (+1)</option>
+                <option value="us">United States (+1)</option>
+                <option value="fr">France (+33)</option>
+                <option value="tn">Tunisia (+216)</option>
+                <option value="mx">Mexico (+52)</option>
+                <option value="ma">Morocco (+212)</option>
+                <option value="dz">Algeria (+213)</option>
+                <option value="be">Belgium (+32)</option>
+                <option value="ch">Switzerland (+41)</option>
+                <option value="gb">United Kingdom (+44)</option>
+                <option value="de">Germany (+49)</option>
+                <option value="it">Italy (+39)</option>
+                <option value="es">Spain (+34)</option>
+                <option value="nl">Netherlands (+31)</option>
+                <option value="au">Australia (+61)</option>
+                <option value="br">Brazil (+55)</option>
+                <option value="cn">China (+86)</option>
+                <option value="in">India (+91)</option>
+                <option value="jp">Japan (+81)</option>
+                <option value="sa">Saudi Arabia (+966)</option>
+                <option value="ae">United Arab Emirates (+971)</option>
               </select>
             </div>
 
@@ -2297,6 +2322,11 @@
               </label>
               <select id="visitor-purpose" name="contact_purpose" required>
                 <option value="">Sélectionner un objectif / Select a purpose</option>
+                <option value="job-opportunity">Opportunité d’emploi / Job opportunity</option>
+                <option value="project-collaboration">Projet ou collaboration / Project or collaboration</option>
+                <option value="technical-discussion">Discussion technique / Technical discussion</option>
+                <option value="networking">Réseautage professionnel / Professional networking</option>
+                <option value="other">Autre demande / Other request</option>
               </select>
             </div>
 
@@ -2399,7 +2429,23 @@
         { iso2: "us", name: "United States", dialCode: "1" },
         { iso2: "fr", name: "France", dialCode: "33" },
         { iso2: "tn", name: "Tunisia", dialCode: "216" },
-        { iso2: "mx", name: "Mexico", dialCode: "52" }
+        { iso2: "mx", name: "Mexico", dialCode: "52" },
+        { iso2: "ma", name: "Morocco", dialCode: "212" },
+        { iso2: "dz", name: "Algeria", dialCode: "213" },
+        { iso2: "be", name: "Belgium", dialCode: "32" },
+        { iso2: "ch", name: "Switzerland", dialCode: "41" },
+        { iso2: "gb", name: "United Kingdom", dialCode: "44" },
+        { iso2: "de", name: "Germany", dialCode: "49" },
+        { iso2: "it", name: "Italy", dialCode: "39" },
+        { iso2: "es", name: "Spain", dialCode: "34" },
+        { iso2: "nl", name: "Netherlands", dialCode: "31" },
+        { iso2: "au", name: "Australia", dialCode: "61" },
+        { iso2: "br", name: "Brazil", dialCode: "55" },
+        { iso2: "cn", name: "China", dialCode: "86" },
+        { iso2: "in", name: "India", dialCode: "91" },
+        { iso2: "jp", name: "Japan", dialCode: "81" },
+        { iso2: "sa", name: "Saudi Arabia", dialCode: "966" },
+        { iso2: "ae", name: "United Arab Emirates", dialCode: "971" }
       ];
       var purposeOptions = [
         { value: "job-opportunity", fr: "Opportunité d’emploi", en: "Job opportunity" },
@@ -3058,4 +3104,32 @@
 
             contactForm.reset();
 
-            if 
+            if (visitorCountry) {
+              visitorCountry.value = "ca";
+            }
+
+            syncPhoneCountry("ca");
+            updatePostalPlaceholder();
+            populatePurposeSelect(currentLang);
+            setFormStatus("success", currentLang === "en"
+              ? "Your message has been sent successfully. You will receive a response within a maximum of 72 hours."
+              : "Votre message a été envoyé avec succès. Vous recevrez une réponse dans un délai maximum de 72 h.");
+          } catch (error) {
+            setFormStatus("error", currentLang === "en"
+              ? "The message could not be sent right now. Please try again or email me directly."
+              : "Le message ne peut pas être envoyé pour le moment. Veuillez réessayer ou m’écrire directement par courriel.");
+          } finally {
+            if (contactSubmitButton) {
+              contactSubmitButton.disabled = false;
+            }
+          }
+        });
+      }
+
+      initPhoneInput();
+      setLanguage(initialLang);
+      applyZoom(initialZoom);
+    })();
+  </script>
+</body>
+</html>
