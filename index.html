@@ -4,17 +4,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Wassim Abdelkafi | Génie civil | Portfolio professionnel</title>
-  <meta id="meta-description" name="description" content="Portfolio professionnel de Wassim Abdelkafi, diplômé en génie civil à Sherbrooke, spécialisé en coordination technique, suivi de chantier, inspection et contrôle qualité." />
-  <meta id="meta-keywords" name="keywords" content="Wassim Abdelkafi, génie civil, civil engineering, coordination technique, technical coordination, suivi de chantier, site supervision, inspection, contrôle qualité, quality control, Sherbrooke, Québec, OIQ, CPI, AutoCAD, SolidWorks" />
+  <meta id="meta-description" name="description" content="Portfolio professionnel de Wassim Abdelkafi, ingénieur civil spécialisé en gestion de projet, suivi de chantier, coordination technique et contrôle qualité au Québec." />
+  <meta id="meta-keywords" name="keywords" content="Wassim Abdelkafi, ingénieur civil, CPI, chargé de projet, génie civil, Sherbrooke, Québec, coordination technique, suivi de chantier, contrôle qualité" />
   <meta name="author" content="Wassim Abdelkafi" />
   <meta name="robots" content="index, follow" />
   <meta name="theme-color" content="#17232d" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Wassim Abdelkafi" />
   <meta id="meta-og-locale" property="og:locale" content="fr_CA" />
-  <meta id="meta-og-title" property="og:title" content="Wassim Abdelkafi | Génie civil | Portfolio professionnel" />
-  <meta id="meta-og-description" property="og:description" content="Portfolio professionnel de Wassim Abdelkafi, diplômé en génie civil à Sherbrooke, spécialisé en coordination technique, suivi de chantier, inspection et contrôle qualité." />
-  <meta property="og:image" content="Wassim image.png" />
+  <meta id="meta-og-title" property="og:title" content="Wassim Abdelkafi | Ingénieur civil | Portfolio professionnel" />
+  <meta id="meta-og-description" property="og:description" content="Portfolio professionnel de Wassim Abdelkafi, diplômé en génie civil spécialisé en coordination technique, suivi de chantier, contrôle qualité et gestion de projet." />
+  <meta property="og:url" content="https://wassimabdelkafi.com/" />
+  <meta property="og:image" content="https://wassimabdelkafi.com/banniere-genie-civil.png" />
   <meta name="twitter:card" content="summary" />
   <meta id="meta-twitter-title" name="twitter:title" content="Wassim Abdelkafi | Génie civil | Portfolio professionnel" />
   <meta id="meta-twitter-description" name="twitter:description" content="Portfolio professionnel de Wassim Abdelkafi, diplômé en génie civil à Sherbrooke, spécialisé en coordination technique, suivi de chantier, inspection et contrôle qualité." />
@@ -26,6 +27,7 @@
     gtag("js", new Date());
     gtag("config", "G-2CCN6KKBJV");
   </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@18.3.5/build/css/intlTelInput.css" />
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -952,6 +954,7 @@
     }
 
     .field input,
+    .field select,
     .field textarea {
       width: 100%;
       border: 1px solid rgba(23, 35, 45, 0.14);
@@ -965,16 +968,30 @@
       transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
     }
 
+    .field select {
+      appearance: none;
+      cursor: pointer;
+    }
+
     .field textarea {
       min-height: 150px;
       resize: vertical;
     }
 
     .field input:focus,
+    .field select:focus,
     .field textarea:focus {
       background: white;
       border-color: #2d66a8;
       box-shadow: 0 0 0 4px rgba(45, 102, 168, 0.12);
+    }
+
+    .iti {
+      width: 100%;
+    }
+
+    .iti input {
+      width: 100%;
     }
 
     .form-submit {
@@ -996,6 +1013,34 @@
       transform: translateY(-2px);
       background: linear-gradient(135deg, #346fb4, #2f629f);
       box-shadow: 0 20px 38px rgba(33, 72, 117, 0.24);
+    }
+
+    .form-submit:disabled {
+      cursor: wait;
+      opacity: 0.68;
+      transform: none;
+    }
+
+    .form-status {
+      border-radius: 14px;
+      font-size: calc(14px * var(--text-scale));
+      font-weight: 700;
+      margin: 0;
+      padding: 12px 14px;
+    }
+
+    .form-status[hidden] {
+      display: none;
+    }
+
+    .form-status.is-success {
+      background: rgba(26, 127, 55, 0.12);
+      color: #176b33;
+    }
+
+    .form-status.is-error {
+      background: rgba(184, 48, 48, 0.12);
+      color: #8f2f2f;
     }
 
     .back-top-section {
@@ -2209,6 +2254,16 @@
           </h3>
 
           <form class="contact-form" id="contact-form">
+            <div class="field">
+              <label for="visitor-country">
+                <span class="lang fr">Pays</span>
+                <span class="lang en">Country</span>
+              </label>
+              <select id="visitor-country" name="country" autocomplete="country-name" required>
+                <option value="">Sélectionner un pays / Select a country</option>
+              </select>
+            </div>
+
             <div class="form-row">
               <div class="field">
                 <label for="visitor-email">
@@ -2223,7 +2278,7 @@
                   <span class="lang fr">Numéro de téléphone</span>
                   <span class="lang en">Phone number</span>
                 </label>
-                <input id="visitor-phone" name="phone" type="tel" autocomplete="tel" required />
+                <input id="visitor-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required />
               </div>
             </div>
 
@@ -2232,7 +2287,17 @@
                 <span class="lang fr">Code postal</span>
                 <span class="lang en">Postal code</span>
               </label>
-              <input id="visitor-postal-code" name="postalCode" type="text" autocomplete="postal-code" required />
+              <input id="visitor-postal-code" name="postal_code" type="text" autocomplete="postal-code" required />
+            </div>
+
+            <div class="field">
+              <label for="visitor-purpose">
+                <span class="lang fr">Objectif de votre message</span>
+                <span class="lang en">Purpose of your message</span>
+              </label>
+              <select id="visitor-purpose" name="contact_purpose" required>
+                <option value="">Sélectionner un objectif / Select a purpose</option>
+              </select>
             </div>
 
             <div class="field">
@@ -2247,6 +2312,7 @@
               <span class="lang fr">Envoyer le message</span>
               <span class="lang en">Send message</span>
             </button>
+            <p class="form-status" id="contact-form-status" hidden></p>
           </form>
         </div>
       </div>
@@ -2265,6 +2331,8 @@
     <span class="lang en">© 2026 Wassim Abdelkafi · Civil Engineering</span>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.3.5/build/js/intlTelInput.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/postal-codes-js@2.5.2/postal-codes.js"></script>
   <script>
     (function () {
       var buttons = document.querySelectorAll("[data-set-lang]");
@@ -2273,10 +2341,14 @@
       var resumeLink = document.getElementById("resume-download");
       var letterLink = document.getElementById("letter-download");
       var contactForm = document.getElementById("contact-form");
+      var visitorCountry = document.getElementById("visitor-country");
       var visitorEmail = document.getElementById("visitor-email");
       var visitorPhone = document.getElementById("visitor-phone");
       var visitorPostalCode = document.getElementById("visitor-postal-code");
+      var visitorPurpose = document.getElementById("visitor-purpose");
       var visitorMessage = document.getElementById("visitor-message");
+      var contactFormStatus = document.getElementById("contact-form-status");
+      var contactSubmitButton = contactForm ? contactForm.querySelector(".form-submit") : null;
       var metaDescription = document.getElementById("meta-description");
       var metaKeywords = document.getElementById("meta-keywords");
       var metaOgLocale = document.getElementById("meta-og-locale");
@@ -2288,11 +2360,13 @@
       var savedZoom = null;
       var currentZoom = 100;
       var contactEmail = "Wassim.abdelkafi19@gmail.com";
+      var phoneInput = null;
       var seoContent = {
         fr: {
-          title: "Wassim Abdelkafi | Génie civil | Portfolio professionnel",
-          description: "Portfolio professionnel de Wassim Abdelkafi, diplômé en génie civil à Sherbrooke, spécialisé en coordination technique, suivi de chantier, inspection et contrôle qualité.",
-          keywords: "Wassim Abdelkafi, génie civil, civil engineering, coordination technique, technical coordination, suivi de chantier, site supervision, inspection, contrôle qualité, quality control, Sherbrooke, Québec, OIQ, CPI, AutoCAD, SolidWorks",
+          title: "Wassim Abdelkafi | Ingénieur civil | Portfolio professionnel",
+          description: "Portfolio professionnel de Wassim Abdelkafi, ingénieur civil spécialisé en gestion de projet, suivi de chantier, coordination technique et contrôle qualité au Québec.",
+          ogDescription: "Portfolio professionnel de Wassim Abdelkafi, diplômé en génie civil spécialisé en coordination technique, suivi de chantier, contrôle qualité et gestion de projet.",
+          keywords: "Wassim Abdelkafi, ingénieur civil, CPI, chargé de projet, génie civil, Sherbrooke, Québec, coordination technique, suivi de chantier, contrôle qualité",
           locale: "fr_CA"
         },
         en: {
@@ -2320,6 +2394,367 @@
           }
         }
       };
+      var fallbackCountries = [
+        { iso2: "ca", name: "Canada", dialCode: "1" },
+        { iso2: "us", name: "United States", dialCode: "1" },
+        { iso2: "fr", name: "France", dialCode: "33" },
+        { iso2: "tn", name: "Tunisia", dialCode: "216" },
+        { iso2: "mx", name: "Mexico", dialCode: "52" }
+      ];
+      var purposeOptions = [
+        { value: "job-opportunity", fr: "Opportunité d’emploi", en: "Job opportunity" },
+        { value: "project-collaboration", fr: "Projet ou collaboration", en: "Project or collaboration" },
+        { value: "technical-discussion", fr: "Discussion technique", en: "Technical discussion" },
+        { value: "networking", fr: "Réseautage professionnel", en: "Professional networking" },
+        { value: "other", fr: "Autre demande", en: "Other request" }
+      ];
+      var postalExamples = {
+        ca: "J1N 1E4",
+        us: "10001",
+        fr: "75001",
+        tn: "1000",
+        mx: "01000",
+        gb: "SW1A 1AA",
+        de: "10115",
+        it: "00118",
+        es: "28001",
+        nl: "1012 AB",
+        be: "1000",
+        ch: "8001",
+        au: "2000",
+        nz: "6011",
+        br: "01001-000",
+        jp: "100-0001",
+        cn: "100000",
+        in: "110001",
+        ma: "10000",
+        dz: "16000",
+        tr: "33150"
+      };
+      var postalRules = {
+        ca: { maxLength: 7, pattern: /^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTVWXYZ] \d[ABCEGHJ-NPRSTVWXYZ]\d$/i, format: formatCanadianPostalCode },
+        us: { maxLength: 10, pattern: /^\d{5}(-\d{4})?$/ },
+        fr: { maxLength: 5, pattern: /^\d{5}$/ },
+        tn: { maxLength: 4, pattern: /^\d{4}$/ },
+        mx: { maxLength: 5, pattern: /^\d{5}$/ },
+        gb: { maxLength: 8, pattern: /^[A-Z]{1,2}\d[A-Z\d]? \d[A-Z]{2}$/i, format: formatUppercasePostalCode },
+        de: { maxLength: 5, pattern: /^\d{5}$/ },
+        it: { maxLength: 5, pattern: /^\d{5}$/ },
+        es: { maxLength: 5, pattern: /^\d{5}$/ },
+        nl: { maxLength: 7, pattern: /^\d{4} [A-Z]{2}$/i, format: formatDutchPostalCode },
+        be: { maxLength: 4, pattern: /^\d{4}$/ },
+        ch: { maxLength: 4, pattern: /^\d{4}$/ },
+        au: { maxLength: 4, pattern: /^\d{4}$/ },
+        nz: { maxLength: 4, pattern: /^\d{4}$/ },
+        br: { maxLength: 9, pattern: /^\d{5}-\d{3}$/ },
+        jp: { maxLength: 8, pattern: /^\d{3}-\d{4}$/ },
+        cn: { maxLength: 6, pattern: /^\d{6}$/ },
+        in: { maxLength: 6, pattern: /^\d{6}$/ },
+        ma: { maxLength: 5, pattern: /^\d{5}$/ },
+        dz: { maxLength: 5, pattern: /^\d{5}$/ },
+        tr: { maxLength: 5, pattern: /^\d{5}$/ }
+      };
+
+      function getActiveLanguage() {
+        return document.body.getAttribute("data-current-lang") || initialLang || "fr";
+      }
+
+      function getCountryDataList() {
+        if (window.intlTelInputGlobals && typeof window.intlTelInputGlobals.getCountryData === "function") {
+          return window.intlTelInputGlobals.getCountryData();
+        }
+
+        return fallbackCountries;
+      }
+
+      function getLocalizedCountryName(country, lang) {
+        try {
+          if (window.Intl && Intl.DisplayNames && country.iso2) {
+            var displayNames = new Intl.DisplayNames([lang === "en" ? "en" : "fr"], { type: "region" });
+            return displayNames.of(String(country.iso2).toUpperCase()) || country.name;
+          }
+        } catch (error) {
+          return country.name;
+        }
+
+        return country.name;
+      }
+
+      function populateCountrySelect(lang) {
+        if (!visitorCountry) {
+          return;
+        }
+
+        var selectedCountry = visitorCountry.value || "ca";
+        var countries = getCountryDataList().filter(function (country) {
+          return country.iso2 && country.dialCode;
+        }).map(function (country) {
+          return {
+            iso2: country.iso2,
+            dialCode: country.dialCode,
+            name: getLocalizedCountryName(country, lang)
+          };
+        }).sort(function (first, second) {
+          return first.name.localeCompare(second.name, lang === "en" ? "en" : "fr");
+        });
+
+        visitorCountry.innerHTML = "";
+
+        var placeholder = document.createElement("option");
+        placeholder.value = "";
+        placeholder.textContent = lang === "en" ? "Select a country" : "Sélectionner un pays";
+        visitorCountry.appendChild(placeholder);
+
+        countries.forEach(function (country) {
+          var option = document.createElement("option");
+          option.value = country.iso2;
+          option.textContent = country.name + " (+" + country.dialCode + ")";
+          visitorCountry.appendChild(option);
+        });
+
+        visitorCountry.value = countries.some(function (country) {
+          return country.iso2 === selectedCountry;
+        }) ? selectedCountry : "ca";
+      }
+
+      function populatePurposeSelect(lang) {
+        if (!visitorPurpose) {
+          return;
+        }
+
+        var selectedPurpose = visitorPurpose.value;
+        visitorPurpose.innerHTML = "";
+
+        var placeholder = document.createElement("option");
+        placeholder.value = "";
+        placeholder.textContent = lang === "en" ? "Select a purpose" : "Sélectionner un objectif";
+        visitorPurpose.appendChild(placeholder);
+
+        purposeOptions.forEach(function (purpose) {
+          var option = document.createElement("option");
+          option.value = purpose.value;
+          option.textContent = lang === "en" ? purpose.en : purpose.fr;
+          visitorPurpose.appendChild(option);
+        });
+
+        visitorPurpose.value = purposeOptions.some(function (purpose) {
+          return purpose.value === selectedPurpose;
+        }) ? selectedPurpose : "";
+      }
+
+      function getSelectedPurposeLabel() {
+        if (!visitorPurpose || visitorPurpose.selectedIndex < 0) {
+          return "";
+        }
+
+        return visitorPurpose.options[visitorPurpose.selectedIndex].textContent;
+      }
+
+      function getSelectedCountryIso() {
+        if (visitorCountry && visitorCountry.value) {
+          return visitorCountry.value;
+        }
+
+        if (phoneInput && typeof phoneInput.getSelectedCountryData === "function") {
+          var selectedPhoneCountry = phoneInput.getSelectedCountryData();
+          return selectedPhoneCountry && selectedPhoneCountry.iso2 ? selectedPhoneCountry.iso2 : "";
+        }
+
+        return "";
+      }
+
+      function getSelectedCountryLabel() {
+        if (!visitorCountry || visitorCountry.selectedIndex < 0) {
+          return "";
+        }
+
+        return visitorCountry.options[visitorCountry.selectedIndex].textContent;
+      }
+
+      function getPostalValidator() {
+        if (window.postalCodes && typeof window.postalCodes.validate === "function") {
+          return window.postalCodes;
+        }
+
+        if (window.PostalCodes && typeof window.PostalCodes.validate === "function") {
+          return window.PostalCodes;
+        }
+
+        if (window.postalCodesJS && typeof window.postalCodesJS.validate === "function") {
+          return window.postalCodesJS;
+        }
+
+        return null;
+      }
+
+      function formatUppercasePostalCode(value) {
+        return value.toUpperCase().replace(/\s+/g, " ").trimStart();
+      }
+
+      function formatCanadianPostalCode(value) {
+        var compactValue = value.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 6);
+
+        if (compactValue.length > 3) {
+          return compactValue.slice(0, 3) + " " + compactValue.slice(3);
+        }
+
+        return compactValue;
+      }
+
+      function formatDutchPostalCode(value) {
+        var compactValue = value.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 6);
+
+        if (compactValue.length > 4) {
+          return compactValue.slice(0, 4) + " " + compactValue.slice(4);
+        }
+
+        return compactValue;
+      }
+
+      function formatPostalCodeValue(value) {
+        var countryIso = getSelectedCountryIso();
+        var rule = postalRules[countryIso];
+        var formattedValue = formatUppercasePostalCode(value);
+
+        if (rule && typeof rule.format === "function") {
+          formattedValue = rule.format(value);
+        }
+
+        if (rule && rule.maxLength) {
+          formattedValue = formattedValue.slice(0, rule.maxLength);
+        }
+
+        return formattedValue;
+      }
+
+      function getPostalValidationMessage(lang, countryIso) {
+        var example = postalExamples[countryIso];
+
+        return example
+          ? (lang === "en" ? "Please enter the exact postal code format. Example: " : "Veuillez respecter le format exact du code postal. Exemple : ") + example
+          : (lang === "en" ? "Please enter a valid postal code for the selected country." : "Veuillez entrer un code postal valide pour le pays sélectionné.");
+      }
+
+      function updatePostalPlaceholder() {
+        if (!visitorPostalCode) {
+          return;
+        }
+
+        var lang = getActiveLanguage();
+        var countryIso = getSelectedCountryIso();
+        var example = postalExamples[countryIso];
+        var rule = postalRules[countryIso];
+
+        visitorPostalCode.maxLength = rule && rule.maxLength ? rule.maxLength : 16;
+
+        visitorPostalCode.placeholder = example
+          ? (lang === "en" ? "Example: " : "Exemple : ") + example
+          : (lang === "en" ? "Postal code" : "Code postal");
+        visitorPostalCode.value = formatPostalCodeValue(visitorPostalCode.value);
+        visitorPostalCode.setCustomValidity("");
+      }
+
+      function validatePostalCode() {
+        if (!visitorPostalCode) {
+          return true;
+        }
+
+        var lang = getActiveLanguage();
+        var countryIso = getSelectedCountryIso();
+        var postalValue = formatPostalCodeValue(visitorPostalCode.value).trim();
+        var rule = postalRules[countryIso];
+        var validator = getPostalValidator();
+
+        visitorPostalCode.value = postalValue;
+        visitorPostalCode.setCustomValidity("");
+
+        if (!postalValue) {
+          visitorPostalCode.setCustomValidity(lang === "en" ? "Please enter your postal code." : "Veuillez entrer votre code postal.");
+          return false;
+        }
+
+        if (rule && rule.pattern && !rule.pattern.test(postalValue)) {
+          visitorPostalCode.setCustomValidity(getPostalValidationMessage(lang, countryIso));
+          return false;
+        }
+
+        if (rule && rule.pattern) {
+          return true;
+        }
+
+        if (!countryIso || !validator) {
+          return true;
+        }
+
+        var validationResult = validator.validate(countryIso.toUpperCase(), postalValue);
+
+        if (validationResult === true) {
+          return true;
+        }
+
+        visitorPostalCode.setCustomValidity(getPostalValidationMessage(lang, countryIso));
+        return false;
+      }
+
+      function setFormStatus(type, message) {
+        if (!contactFormStatus) {
+          return;
+        }
+
+        contactFormStatus.hidden = false;
+        contactFormStatus.classList.remove("is-success", "is-error");
+        contactFormStatus.classList.add(type === "success" ? "is-success" : "is-error");
+        contactFormStatus.textContent = message;
+      }
+
+      function clearFormStatus() {
+        if (!contactFormStatus) {
+          return;
+        }
+
+        contactFormStatus.hidden = true;
+        contactFormStatus.textContent = "";
+        contactFormStatus.classList.remove("is-success", "is-error");
+      }
+
+      function syncPhoneCountry(countryIso) {
+        if (!phoneInput || !countryIso) {
+          return;
+        }
+
+        if (typeof phoneInput.setCountry === "function") {
+          phoneInput.setCountry(countryIso);
+        }
+      }
+
+      function initPhoneInput() {
+        if (!visitorPhone || typeof window.intlTelInput !== "function") {
+          return;
+        }
+
+        phoneInput = window.intlTelInput(visitorPhone, {
+          initialCountry: "ca",
+          nationalMode: true,
+          preferredCountries: ["ca", "us", "fr", "tn", "mx"],
+          separateDialCode: true,
+          utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.3.5/build/js/utils.js"
+        });
+
+        visitorPhone.addEventListener("countrychange", function () {
+          if (!phoneInput || typeof phoneInput.getSelectedCountryData !== "function") {
+            return;
+          }
+
+          var selectedCountry = phoneInput.getSelectedCountryData();
+
+          if (visitorCountry && selectedCountry && selectedCountry.iso2) {
+            visitorCountry.value = selectedCountry.iso2;
+          }
+
+          updatePostalPlaceholder();
+          clearFormStatus();
+        });
+      }
 
       try {
         savedLang = localStorage.getItem("wassim-site-lang");
@@ -2382,7 +2817,7 @@
         }
 
         if (metaOgDescription) {
-          metaOgDescription.setAttribute("content", seoContent[lang].description);
+          metaOgDescription.setAttribute("content", seoContent[lang].ogDescription || seoContent[lang].description);
         }
 
         if (metaTwitterTitle) {
@@ -2392,6 +2827,10 @@
         if (metaTwitterDescription) {
           metaTwitterDescription.setAttribute("content", seoContent[lang].description);
         }
+
+        populateCountrySelect(lang);
+        populatePurposeSelect(lang);
+        updatePostalPlaceholder();
 
         try {
           localStorage.setItem("wassim-site-lang", lang);
@@ -2473,9 +2912,41 @@
         });
       });
 
+      if (visitorCountry) {
+        visitorCountry.addEventListener("change", function () {
+          visitorCountry.setCustomValidity("");
+          syncPhoneCountry(visitorCountry.value);
+          updatePostalPlaceholder();
+          clearFormStatus();
+        });
+      }
+
+      if (visitorPostalCode) {
+        visitorPostalCode.addEventListener("input", function () {
+          visitorPostalCode.value = formatPostalCodeValue(visitorPostalCode.value);
+          visitorPostalCode.setCustomValidity("");
+          clearFormStatus();
+        });
+      }
+
+      if (visitorPurpose) {
+        visitorPurpose.addEventListener("change", function () {
+          visitorPurpose.setCustomValidity("");
+          clearFormStatus();
+        });
+      }
+
+      if (visitorPhone) {
+        visitorPhone.addEventListener("input", function () {
+          visitorPhone.setCustomValidity("");
+          clearFormStatus();
+        });
+      }
+
       if (contactForm) {
-        contactForm.addEventListener("submit", function (event) {
+        contactForm.addEventListener("submit", async function (event) {
           event.preventDefault();
+          clearFormStatus();
 
           if (!contactForm.checkValidity()) {
             contactForm.reportValidity();
@@ -2483,43 +2954,100 @@
           }
 
           var currentLang = document.body.getAttribute("data-current-lang") || "fr";
+          var selectedCountryIso = getSelectedCountryIso();
+          var selectedCountryLabel = getSelectedCountryLabel();
+          var selectedPurposeLabel = getSelectedPurposeLabel();
+          var phoneNumber = visitorPhone.value.trim();
+
+          if (phoneInput && phoneInput.promise && typeof phoneInput.promise.then === "function") {
+            try {
+              await phoneInput.promise;
+            } catch (error) {
+              phoneInput = null;
+            }
+          }
+
+          if (!selectedCountryIso && visitorCountry) {
+            visitorCountry.setCustomValidity(currentLang === "en" ? "Please select a country." : "Veuillez sélectionner un pays.");
+            visitorCountry.reportValidity();
+            return;
+          }
+
+          if (phoneInput && typeof phoneInput.isValidNumber === "function") {
+            if (!phoneInput.isValidNumber()) {
+              visitorPhone.setCustomValidity(currentLang === "en" ? "Please enter a valid phone number for the selected country." : "Veuillez entrer un numéro de téléphone valide pour le pays sélectionné.");
+              visitorPhone.reportValidity();
+              return;
+            }
+
+            if (typeof phoneInput.getNumber === "function") {
+              phoneNumber = phoneInput.getNumber();
+            }
+          }
+
+          if (!validatePostalCode()) {
+            visitorPostalCode.reportValidity();
+            return;
+          }
+
           var subject = currentLang === "en"
             ? "Message from your portfolio website"
             : "Message depuis votre site web";
-          var bodyLines = currentLang === "en"
-            ? [
-                "Hello Wassim,",
-                "",
-                "A visitor sent you a message from your portfolio website.",
-                "",
-                "Email: " + visitorEmail.value,
-                "Phone: " + visitorPhone.value,
-                "Postal code: " + visitorPostalCode.value,
-                "",
-                "Message:",
-                visitorMessage.value
-              ]
-            : [
-                "Bonjour Wassim,",
-                "",
-                "Un visiteur vous a envoyé un message depuis votre site web.",
-                "",
-                "Courriel : " + visitorEmail.value,
-                "Téléphone : " + visitorPhone.value,
-                "Code postal : " + visitorPostalCode.value,
-                "",
-                "Message :",
-                visitorMessage.value
-              ];
-          var gmailUrl = "https://mail.google.com/mail/?view=cm&fs=1"
-            + "&to=" + encodeURIComponent(contactEmail)
-            + "&su=" + encodeURIComponent(subject)
-            + "&body=" + encodeURIComponent(bodyLines.join("\n"));
+          var formData = new FormData();
 
-          window.open(gmailUrl, "_blank", "noopener");
+          formData.append("email", visitorEmail.value.trim());
+          formData.append("_replyto", visitorEmail.value.trim());
+          formData.append("phone", phoneNumber);
+          formData.append("country", selectedCountryLabel);
+          formData.append("postal_code", visitorPostalCode.value.trim());
+          formData.append("contact_purpose", selectedPurposeLabel);
+          formData.append("message", visitorMessage.value.trim());
+          formData.append("_subject", subject);
+          formData.append("_template", "table");
+          formData.append("_captcha", "false");
+
+          if (contactSubmitButton) {
+            contactSubmitButton.disabled = true;
+          }
+
+          try {
+            var response = await fetch("https://formsubmit.co/ajax/" + encodeURIComponent(contactEmail), {
+              method: "POST",
+              headers: {
+                Accept: "application/json"
+              },
+              body: formData
+            });
+
+            if (!response.ok) {
+              throw new Error("Form submission failed");
+            }
+
+            contactForm.reset();
+
+            if (visitorCountry) {
+              visitorCountry.value = "ca";
+            }
+
+            syncPhoneCountry("ca");
+            updatePostalPlaceholder();
+            populatePurposeSelect(currentLang);
+            setFormStatus("success", currentLang === "en"
+              ? "Your message has been sent successfully. You will receive a response within a maximum of 72 hours."
+              : "Votre message a été envoyé avec succès. Vous recevrez une réponse dans un délai maximum de 72 h.");
+          } catch (error) {
+            setFormStatus("error", currentLang === "en"
+              ? "The message could not be sent right now. Please try again or email me directly."
+              : "Le message ne peut pas être envoyé pour le moment. Veuillez réessayer ou m’écrire directement par courriel.");
+          } finally {
+            if (contactSubmitButton) {
+              contactSubmitButton.disabled = false;
+            }
+          }
         });
       }
 
+      initPhoneInput();
       setLanguage(initialLang);
       applyZoom(initialZoom);
     })();
