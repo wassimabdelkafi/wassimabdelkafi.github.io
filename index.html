@@ -15,6 +15,18 @@
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
+    var savedCookieConsent = null;
+    try {
+      savedCookieConsent = localStorage.getItem("cookieConsent");
+    } catch (error) {
+      savedCookieConsent = null;
+    }
+    gtag("consent", "default", {
+      analytics_storage: savedCookieConsent === "accepted" ? "granted" : "denied",
+      ad_storage: "denied",
+      ad_user_data: "denied",
+      ad_personalization: "denied"
+    });
     gtag("js", new Date());
     gtag("config", "G-2CCN6KKBJV");
   </script>
@@ -73,6 +85,195 @@
         linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
         linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px);
       background-size: 28px 28px;
+    }
+
+    .welcome-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 160;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: rgba(16, 25, 34, 0.58);
+      backdrop-filter: blur(14px);
+      transition: opacity 0.25s ease, visibility 0.25s ease;
+    }
+
+    .welcome-overlay.is-hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .welcome-card {
+      position: relative;
+      width: min(620px, 100%);
+      padding: 42px;
+      border: 1px solid rgba(255,255,255,0.46);
+      border-radius: 34px;
+      background: linear-gradient(145deg, rgba(255,250,243,0.98), rgba(239,226,211,0.96));
+      color: var(--deep);
+      box-shadow: 0 34px 90px rgba(16, 25, 34, 0.34);
+      animation: revealWelcome 0.55s ease both;
+    }
+
+    .welcome-card h2 {
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(42px, 5vw, 64px);
+      line-height: 0.95;
+      margin-bottom: 18px;
+      letter-spacing: -0.03em;
+    }
+
+    .welcome-card p {
+      max-width: 520px;
+      color: var(--muted);
+      font-size: calc(18px * var(--scale));
+      line-height: 1.75;
+    }
+
+    .welcome-heading-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .welcome-kicker {
+      display: inline-block;
+      color: var(--copper);
+      font-size: calc(13px * var(--scale));
+      font-weight: 850;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .welcome-language {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px;
+      border: 1px solid rgba(16, 25, 34, 0.1);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.5);
+    }
+
+    .welcome-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .welcome-btn,
+    .welcome-close {
+      border: 0;
+      cursor: pointer;
+    }
+
+    .welcome-btn {
+      min-height: 52px;
+      padding: 14px 24px;
+      border-radius: 999px;
+      background: var(--deep);
+      color: white;
+      font-weight: 850;
+      box-shadow: 0 16px 34px rgba(16, 25, 34, 0.22);
+      transition: transform 0.24s ease, box-shadow 0.24s ease;
+    }
+
+    .welcome-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 20px 42px rgba(16, 25, 34, 0.28);
+    }
+
+    .welcome-close {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(16, 25, 34, 0.08);
+      color: var(--deep);
+      font-size: 24px;
+      line-height: 1;
+      transition: background 0.24s ease, transform 0.24s ease;
+    }
+
+    .welcome-close:hover {
+      background: rgba(16, 25, 34, 0.14);
+      transform: rotate(8deg);
+    }
+
+    .cookie-consent {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      z-index: 120;
+      width: min(560px, calc(100% - 48px));
+      padding: 20px;
+      border: 1px solid rgba(255,255,255,0.5);
+      border-radius: 28px;
+      background: rgba(255, 250, 243, 0.94);
+      box-shadow: 0 24px 70px rgba(16, 25, 34, 0.22);
+      backdrop-filter: blur(18px);
+      transition: opacity 0.24s ease, transform 0.24s ease, visibility 0.24s ease;
+    }
+
+    .cookie-consent.is-hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: translateY(18px);
+    }
+
+    .cookie-consent strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--deep);
+      font-size: calc(18px * var(--scale));
+      font-weight: 850;
+    }
+
+    .cookie-consent p {
+      color: var(--muted);
+      font-size: calc(15px * var(--scale));
+      line-height: 1.55;
+    }
+
+    .cookie-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .cookie-btn {
+      min-height: 46px;
+      padding: 12px 18px;
+      border: 0;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: calc(14px * var(--scale));
+      font-weight: 850;
+      transition: transform 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
+    }
+
+    .cookie-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .cookie-btn.accept {
+      background: var(--deep);
+      color: white;
+      box-shadow: 0 14px 28px rgba(16, 25, 34, 0.18);
+    }
+
+    .cookie-btn.decline {
+      background: rgba(16, 25, 34, 0.08);
+      color: var(--deep);
     }
 
     a {
@@ -266,15 +467,14 @@
     .hero-shell {
       position: relative;
       overflow: hidden;
-      min-height: 690px;
+      min-height: auto;
       display: grid;
-      grid-template-columns: minmax(0, 1fr) 390px;
-      gap: 34px;
-      padding: 64px;
+      grid-template-columns: minmax(0, 1fr) 370px;
+      gap: 24px;
+      align-items: center;
+      padding: 56px 44px 56px 64px;
       border-radius: 44px;
-      background:
-        linear-gradient(135deg, rgba(16, 25, 34, 0.98), rgba(35, 52, 63, 0.95)),
-        url("banniere-genie-civil.png") center/cover;
+      background: linear-gradient(135deg, rgba(16, 25, 34, 0.98), rgba(35, 52, 63, 0.95));
       color: white;
       box-shadow: var(--shadow);
       isolation: isolate;
@@ -342,7 +542,7 @@
 
     .hero-actions {
       display: flex;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       gap: 12px;
       margin-top: 34px;
     }
@@ -351,17 +551,49 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      gap: 10px;
       min-height: 56px;
       padding: 15px 22px;
       border-radius: 999px;
       font-size: calc(15px * var(--scale));
       font-weight: 850;
       text-align: center;
+      white-space: nowrap;
       transition: transform 0.24s ease, box-shadow 0.24s ease, background 0.24s ease;
     }
 
     .btn:hover {
       transform: translateY(-2px);
+    }
+
+    .hero-actions .btn {
+      gap: 8px;
+      padding: 14px 18px;
+      font-size: calc(14px * var(--scale));
+    }
+
+    .hero-actions .btn-icon,
+    .hero-actions .btn-icon svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .btn-icon {
+      display: inline-grid;
+      place-items: center;
+      width: 24px;
+      height: 24px;
+      flex: 0 0 auto;
+    }
+
+    .btn-icon svg {
+      width: 24px;
+      height: 24px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
     }
 
     .btn-primary {
@@ -384,12 +616,13 @@
 
     .hero-side {
       display: grid;
-      align-content: start;
+      align-content: center;
+      justify-self: end;
+      width: min(100%, 390px);
       gap: 18px;
     }
 
-    .portrait-card,
-    .guide-card {
+    .portrait-card {
       border: 1px solid rgba(255,255,255,0.16);
       border-radius: 30px;
       background: rgba(255,255,255,0.08);
@@ -408,52 +641,6 @@
       object-fit: cover;
       border-radius: 24px;
       border: 6px solid rgba(255,255,255,0.84);
-    }
-
-    .guide-card {
-      padding: 24px;
-    }
-
-    .guide-card h2 {
-      font-family: "Cormorant Garamond", serif;
-      font-size: calc(34px * var(--scale));
-      line-height: 1;
-      margin-bottom: 14px;
-    }
-
-    .guide-list {
-      display: grid;
-      gap: 10px;
-      list-style: none;
-    }
-
-    .guide-list a {
-      display: grid;
-      grid-template-columns: 32px 1fr;
-      gap: 10px;
-      align-items: center;
-      padding: 12px;
-      border-radius: 18px;
-      background: rgba(255,255,255,0.09);
-      color: rgba(255,255,255,0.9);
-      font-weight: 700;
-      transition: 0.22s ease;
-    }
-
-    .guide-list a:hover {
-      background: rgba(255,255,255,0.16);
-      transform: translateX(4px);
-    }
-
-    .guide-list b {
-      display: grid;
-      place-items: center;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.92);
-      color: var(--deep);
-      font-size: calc(13px * var(--scale));
     }
 
     .section {
@@ -779,6 +966,64 @@
       list-style: none;
     }
 
+    .contact-list li {
+      display: grid;
+      grid-template-columns: 44px minmax(0, 1fr);
+      gap: 12px;
+      align-items: start;
+      padding: 14px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.54);
+      border: 1px solid rgba(22, 35, 49, 0.08);
+    }
+
+    .contact-icon {
+      display: grid;
+      place-items: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 16px;
+      background: rgba(35, 103, 166, 0.1);
+      color: var(--blue);
+      box-shadow: inset 0 0 0 1px rgba(35, 103, 166, 0.1);
+      transition: transform 0.22s ease, background 0.22s ease, box-shadow 0.22s ease;
+    }
+
+    a.contact-icon:hover,
+    a.contact-icon:focus-visible {
+      transform: translateY(-2px);
+      background: rgba(35, 103, 166, 0.16);
+      box-shadow: inset 0 0 0 1px rgba(35, 103, 166, 0.18), 0 10px 22px rgba(35, 103, 166, 0.16);
+    }
+
+    .contact-icon svg {
+      width: 22px;
+      height: 22px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .contact-icon.linkedin {
+      background: rgba(10, 102, 194, 0.12);
+      color: #0a66c2;
+      font-size: 18px;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+    }
+
+    .contact-content {
+      display: grid;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .contact-content strong {
+      color: var(--deep);
+    }
+
     .contact-list a {
       color: var(--blue);
       font-weight: 800;
@@ -876,6 +1121,18 @@
       transform: none;
     }
 
+    @keyframes revealWelcome {
+      from {
+        opacity: 0;
+        transform: translateY(16px) scale(0.98);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
     @media (max-width: 1080px) {
       .topbar-inner,
       .hero-shell,
@@ -893,10 +1150,15 @@
 
       .hero-shell {
         min-height: auto;
+        padding: 48px;
       }
 
       .hero-side {
         grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr);
+      }
+
+      .hero-actions {
+        flex-wrap: wrap;
       }
 
       .visitor-grid,
@@ -948,6 +1210,22 @@
         font-size: calc(18px * var(--scale));
       }
 
+      .cookie-consent {
+        right: 9px;
+        bottom: 9px;
+        width: calc(100% - 18px);
+        padding: 18px;
+        border-radius: 24px;
+      }
+
+      .cookie-actions {
+        display: grid;
+      }
+
+      .cookie-btn {
+        width: 100%;
+      }
+
       .hero-side,
       .visitor-grid,
       .project-grid,
@@ -994,6 +1272,56 @@
   </style>
 </head>
 <body id="top" data-lang="fr">
+  <div class="welcome-overlay" id="welcome-message" role="dialog" aria-modal="true" aria-labelledby="welcome-title" aria-hidden="false">
+    <div class="welcome-card">
+      <div class="welcome-heading-row">
+        <span class="welcome-kicker">
+          <span class="fr">Bienvenue</span>
+          <span class="en">Welcome</span>
+        </span>
+        <div class="welcome-language" aria-label="Sélection de langue">
+          <button class="tool-btn active" type="button" data-lang-btn="fr" aria-pressed="true">Français</button>
+          <button class="tool-btn" type="button" data-lang-btn="en" aria-pressed="false">English</button>
+        </div>
+      </div>
+      <h2 id="welcome-title">
+        <span class="fr">Heureux de vous accueillir sur mon portfolio.</span>
+        <span class="en">Glad to welcome you to my portfolio.</span>
+      </h2>
+      <p>
+        <span class="fr">Vous y trouverez mon parcours en génie civil, mes expériences, mes projets, mes compétences et les documents à télécharger.</span>
+        <span class="en">Here you will find my civil engineering background, experience, projects, skills and downloadable documents.</span>
+      </p>
+      <div class="welcome-actions">
+        <button class="welcome-btn" type="button" data-welcome-close>
+          <span class="fr">Découvrir le portfolio</span>
+          <span class="en">Explore the portfolio</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="cookie-consent is-hidden" id="cookie-consent" role="dialog" aria-live="polite" aria-label="Consentement aux cookies" aria-hidden="true">
+    <strong>
+      <span class="fr">Consentement aux cookies</span>
+      <span class="en">Cookie consent</span>
+    </strong>
+    <p>
+      <span class="fr">Ce site utilise des cookies de mesure d’audience afin d’améliorer l’expérience de navigation. Vous pouvez accepter ou refuser ces statistiques.</span>
+      <span class="en">This site uses analytics cookies to improve the browsing experience. You can accept or decline these statistics.</span>
+    </p>
+    <div class="cookie-actions">
+      <button class="cookie-btn accept" type="button" data-cookie-consent="accepted">
+        <span class="fr">Accepter</span>
+        <span class="en">Accept</span>
+      </button>
+      <button class="cookie-btn decline" type="button" data-cookie-consent="declined">
+        <span class="fr">Refuser</span>
+        <span class="en">Decline</span>
+      </button>
+    </div>
+  </div>
+
   <div class="scroll-progress" aria-hidden="true"><span id="scroll-progress"></span></div>
 
   <div class="container topbar" id="topbar">
@@ -1040,43 +1368,45 @@
           <h1>Wassim Abdelkafi</h1>
 
           <p class="lead">
-            <span class="fr">Diplômé en génie civil spécialisé en coordination technique, suivi de chantier, inspection, contrôle qualité et gestion de projet.</span>
-            <span class="en">Civil engineering graduate specialized in technical coordination, site supervision, inspection, quality control and project management.</span>
+            <span class="fr">Ingénieur civil (CPI) et coordonnateur technique combinant expertise en gestion de projets, coordination technique, contrôle qualité et amélioration continue.</span>
+            <span class="en">Civil Engineer (CPI) and technical coordinator combining expertise in project management, technical coordination, quality control and continuous improvement.</span>
           </p>
 
           <div class="hero-actions">
             <a class="btn btn-primary" href="#guide">
-              <span class="fr">Commencer la visite guidée</span>
-              <span class="en">Start the guided visit</span>
+              <span class="fr">Découvrir mon parcours</span>
+              <span class="en">Discover my background</span>
             </a>
             <a class="btn btn-light" id="hero-cv" href="CV_Wassim_Abdelkafi_FR.pdf" target="_blank" rel="noopener">
-              <span class="fr">Télécharger mon CV</span>
-              <span class="en">Download my resume</span>
+              <span class="btn-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M7 3h7l4 4v14H7z"></path>
+                  <path d="M14 3v5h5"></path>
+                  <path d="M9 13h6"></path>
+                  <path d="M9 17h4"></path>
+                </svg>
+              </span>
+              <span class="fr">Curriculum Vitæ (CV)</span>
+              <span class="en">Curriculum Vitae (CV)</span>
             </a>
             <a class="btn btn-light" id="hero-letter" href="Lettre_Presentation_Wassim_Abdelkafi_FR.pdf" target="_blank" rel="noopener">
-              <span class="fr">Télécharger ma lettre</span>
-              <span class="en">Download my introduction letter</span>
+              <span class="btn-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M6 3h12v18H6z"></path>
+                  <path d="M9 8h6"></path>
+                  <path d="M9 12h6"></path>
+                  <path d="M9 16h4"></path>
+                </svg>
+              </span>
+              <span class="fr">Lettre de présentation de CV</span>
+              <span class="en">CV introduction letter</span>
             </a>
-            <a class="btn btn-ghost" href="https://www.linkedin.com/in/wassimabdelkafi/" target="_blank" rel="noopener">LinkedIn</a>
           </div>
         </div>
 
         <aside class="hero-side" aria-label="Résumé rapide">
           <div class="portrait-card">
             <img class="portrait" src="Wassim image.png" alt="Portrait professionnel de Wassim Abdelkafi" />
-          </div>
-
-          <div class="guide-card">
-            <h2>
-              <span class="fr">Votre parcours en 4 étapes</span>
-              <span class="en">Your 4-step path</span>
-            </h2>
-            <ul class="guide-list">
-              <li><a href="#profil"><b>1</b><span class="fr">Comprendre le profil</span><span class="en">Understand the profile</span></a></li>
-              <li><a href="#experience"><b>2</b><span class="fr">Vérifier l'expérience récente</span><span class="en">Review recent experience</span></a></li>
-              <li><a href="#competences"><b>3</b><span class="fr">Valider les compétences</span><span class="en">Validate the skills</span></a></li>
-              <li><a href="#contact"><b>4</b><span class="fr">Entrer en contact</span><span class="en">Get in touch</span></a></li>
-            </ul>
           </div>
         </aside>
       </div>
@@ -1089,7 +1419,7 @@
         <div class="section-head">
           <div>
             <span class="tag">
-              <span class="fr">Guide</span>
+              <span class="fr">Orientation visiteur</span>
               <span class="en">Visitor orientation</span>
             </span>
             <h2>
@@ -1469,14 +1799,52 @@
 
         <div class="contact-grid">
           <aside class="contact-card">
-            <h3><span class="fr">Coordonnées</span><span class="en">Contact details</span></h3>
-            <ul class="contact-list">
-              <li><strong><span class="fr">Courriel</span><span class="en">Email</span> :</strong><br><a href="mailto:contact@wassimabdelkafi.com">contact@wassimabdelkafi.com</a></li>
-              <li><strong><span class="fr">Téléphone</span><span class="en">Phone</span> :</strong><br><a href="tel:+18198234462">+1 (819) 823-4462</a></li>
-              <li><strong>LinkedIn :</strong><br><a href="https://www.linkedin.com/in/wassimabdelkafi/" target="_blank" rel="noopener">linkedin.com/in/wassimabdelkafi</a></li>
-              <li><strong><span class="fr">Localisation</span><span class="en">Location</span> :</strong><br>Sherbrooke, Québec, Canada</li>
-            </ul>
-          </aside>
+          <h3><span class="fr">Coordonnées</span><span class="en">Contact details</span></h3>
+          <ul class="contact-list">
+            <li>
+              <a class="contact-icon" href="mailto:contact@wassimabdelkafi.com" aria-label="Envoyer un courriel">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M4 6h16v12H4z"></path>
+                  <path d="m4 7 8 6 8-6"></path>
+                </svg>
+              </a>
+              <span class="contact-content">
+                <strong><span class="fr">Courriel</span><span class="en">Email</span> :</strong>
+                <a href="mailto:contact@wassimabdelkafi.com">contact@wassimabdelkafi.com</a>
+              </span>
+            </li>
+            <li>
+              <a class="contact-icon" href="tel:+18198234462" aria-label="Appeler Wassim Abdelkafi">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.7.6 2.5a2 2 0 0 1-.5 2.1L8 9.5a16 16 0 0 0 6.5 6.5l1.2-1.2a2 2 0 0 1 2.1-.5c.8.3 1.6.5 2.5.6A2 2 0 0 1 22 16.9z"></path>
+                </svg>
+              </a>
+              <span class="contact-content">
+                <strong><span class="fr">Téléphone</span><span class="en">Phone</span> :</strong>
+                <a href="tel:+18198234462">+1 (819) 823-4462</a>
+              </span>
+            </li>
+            <li>
+              <a class="contact-icon linkedin" href="https://www.linkedin.com/in/wassimabdelkafi/" target="_blank" rel="noopener" aria-label="Ouvrir le profil LinkedIn">in</a>
+              <span class="contact-content">
+                <strong>LinkedIn :</strong>
+                <a href="https://www.linkedin.com/in/wassimabdelkafi/" target="_blank" rel="noopener">linkedin.com/in/wassimabdelkafi</a>
+              </span>
+            </li>
+            <li>
+              <a class="contact-icon" href="https://www.google.com/maps/search/?api=1&query=Sherbrooke%2C%20Qu%C3%A9bec%2C%20Canada" target="_blank" rel="noopener" aria-label="Ouvrir la localisation">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0z"></path>
+                  <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+              </a>
+              <span class="contact-content">
+                <strong><span class="fr">Localisation</span><span class="en">Location</span> :</strong>
+                <span>Sherbrooke, Québec, Canada</span>
+              </span>
+            </li>
+          </ul>
+        </aside>
 
           <form class="contact-form" id="contact-form">
             <div class="form-row">
@@ -1573,7 +1941,12 @@
       var cvDownload = document.getElementById("cv-download");
       var letterDownload = document.getElementById("letter-download");
       var contactForm = document.getElementById("contact-form");
+      var welcomeMessage = document.getElementById("welcome-message");
+      var welcomeCloseButtons = document.querySelectorAll("[data-welcome-close]");
+      var cookieConsent = document.getElementById("cookie-consent");
+      var cookieConsentButtons = document.querySelectorAll("[data-cookie-consent]");
       var currentZoom = 100;
+      var baseZoomMultiplier = 1.2;
       var currentLang = "fr";
       var contactEmail = "contact@wassimabdelkafi.com";
       var files = {
@@ -1613,7 +1986,7 @@
 
       function applyZoom(nextZoom) {
         currentZoom = Math.min(170, Math.max(70, Math.round(nextZoom / 10) * 10));
-        document.documentElement.style.setProperty("--site-zoom", String(currentZoom / 100));
+        document.documentElement.style.setProperty("--site-zoom", String(currentZoom / 100 * baseZoomMultiplier));
 
         if (zoomReadout) {
           zoomReadout.textContent = currentZoom + "%";
@@ -1623,6 +1996,59 @@
           var action = button.getAttribute("data-zoom");
           button.disabled = action === "down" && currentZoom <= 70 || action === "up" && currentZoom >= 170;
         });
+      }
+
+      function getCookieConsentChoice() {
+        try {
+          return localStorage.getItem("cookieConsent");
+        } catch (error) {
+          return null;
+        }
+      }
+
+      function saveCookieConsentChoice(choice) {
+        try {
+          localStorage.setItem("cookieConsent", choice);
+        } catch (error) {
+          return;
+        }
+      }
+
+      function updateAnalyticsConsent(choice) {
+        if (typeof gtag !== "function") {
+          return;
+        }
+
+        gtag("consent", "update", {
+          analytics_storage: choice === "accepted" ? "granted" : "denied",
+          ad_storage: "denied",
+          ad_user_data: "denied",
+          ad_personalization: "denied"
+        });
+      }
+
+      function setCookieConsent(choice) {
+        saveCookieConsentChoice(choice);
+        updateAnalyticsConsent(choice);
+
+        if (cookieConsent) {
+          cookieConsent.classList.add("is-hidden");
+          cookieConsent.setAttribute("aria-hidden", "true");
+        }
+      }
+
+      function initCookieConsent() {
+        var savedChoice = getCookieConsentChoice();
+
+        if (savedChoice) {
+          updateAnalyticsConsent(savedChoice);
+          return;
+        }
+
+        if (cookieConsent) {
+          cookieConsent.classList.remove("is-hidden");
+          cookieConsent.setAttribute("aria-hidden", "false");
+        }
       }
 
       function updateChrome() {
@@ -1637,6 +2063,15 @@
         if (topbar) {
           topbar.classList.toggle("is-scrolled", scrollTop > 80);
         }
+      }
+
+      function closeWelcomeMessage() {
+        if (!welcomeMessage) {
+          return;
+        }
+
+        welcomeMessage.classList.add("is-hidden");
+        welcomeMessage.setAttribute("aria-hidden", "true");
       }
 
       langButtons.forEach(function (button) {
@@ -1661,6 +2096,30 @@
 
           applyZoom(100);
         });
+      });
+
+      cookieConsentButtons.forEach(function (button) {
+        button.addEventListener("click", function () {
+          setCookieConsent(button.getAttribute("data-cookie-consent"));
+        });
+      });
+
+      welcomeCloseButtons.forEach(function (button) {
+        button.addEventListener("click", closeWelcomeMessage);
+      });
+
+      if (welcomeMessage) {
+        welcomeMessage.addEventListener("click", function (event) {
+          if (event.target === welcomeMessage) {
+            closeWelcomeMessage();
+          }
+        });
+      }
+
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+          closeWelcomeMessage();
+        }
       });
 
       if ("IntersectionObserver" in window) {
@@ -1723,6 +2182,7 @@
 
       setLanguage("fr");
       applyZoom(100);
+      initCookieConsent();
       updateChrome();
     })();
   </script>
