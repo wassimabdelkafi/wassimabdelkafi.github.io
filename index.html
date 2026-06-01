@@ -1154,7 +1154,9 @@
       }
 
       .hero-side {
-        grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr);
+        grid-template-columns: 1fr;
+        justify-self: center;
+        width: min(100%, 420px);
       }
 
       .hero-actions {
@@ -1173,23 +1175,68 @@
         scroll-padding-top: 24px;
       }
 
+      body {
+        width: calc(100% / var(--site-zoom));
+      }
+
       .container {
-        width: min(100% - 18px, 100%);
+        width: min(100% - 22px, 100%);
       }
 
       .topbar {
         position: static;
         border-radius: 26px;
+        margin-top: 10px;
+        padding: 10px;
+      }
+
+      .topbar-inner {
+        gap: 10px;
       }
 
       .brand-mark {
         justify-content: center;
+        padding: 6px 10px;
+        width: 100%;
       }
 
-      .toolbar,
+      .brand-mark span:first-child {
+        width: 32px;
+        height: 32px;
+        font-size: 19px;
+      }
+
+      .topbar nav {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 5px;
+        overflow-x: visible;
+        padding: 0 2px 4px;
+      }
+
+      .topbar nav a {
+        padding: 6px 8px;
+        font-size: calc(12px * var(--scale));
+      }
+
+      .toolbar {
+        display: grid;
+        width: 100%;
+        gap: 8px;
+      }
+
       .segmented {
         width: 100%;
         justify-content: center;
+      }
+
+      .tool-btn,
+      .zoom-readout {
+        min-width: 0;
+        flex: 1;
+        padding: 8px 10px;
+        font-size: calc(12px * var(--scale));
       }
 
       .hero {
@@ -1202,12 +1249,48 @@
         border-radius: 30px;
       }
 
+      .hero-shell {
+        text-align: center;
+      }
+
+      .eyebrow {
+        justify-content: center;
+        width: 100%;
+        letter-spacing: 0.16em;
+      }
+
+      .eyebrow::before {
+        display: none;
+      }
+
       .hero h1 {
         font-size: calc(52px * var(--scale));
+        margin-right: auto;
+        margin-left: auto;
       }
 
       .lead {
+        margin-right: auto;
+        margin-left: auto;
         font-size: calc(18px * var(--scale));
+      }
+
+      .hero-side {
+        justify-self: center;
+        width: min(100%, 320px);
+        margin: 4px auto 0;
+      }
+
+      .portrait-card {
+        max-width: 320px;
+        margin: 0 auto;
+        padding: 12px;
+        border-radius: 26px;
+      }
+
+      .portrait {
+        border-width: 5px;
+        border-radius: 22px;
       }
 
       .cookie-consent {
