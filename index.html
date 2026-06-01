@@ -107,7 +107,7 @@
 
     .welcome-card {
       position: relative;
-      width: min(620px, 100%);
+      width: min(620px, calc(100vw - 32px));
       padding: 42px;
       border: 1px solid rgba(255,255,255,0.46);
       border-radius: 34px;
@@ -1175,12 +1175,30 @@
         scroll-padding-top: 24px;
       }
 
-      body {
-        width: calc(100% / var(--site-zoom));
-      }
-
       .container {
         width: min(100% - 22px, 100%);
+      }
+
+      .welcome-overlay {
+        padding: 12px;
+      }
+
+      .welcome-card {
+        width: min(100%, calc(100vw - 24px));
+        padding: 34px 28px;
+        border-radius: 30px;
+      }
+
+      .welcome-heading-row {
+        gap: 10px;
+      }
+
+      .welcome-card h2 {
+        font-size: clamp(42px, 12vw, 54px);
+      }
+
+      .welcome-card p {
+        font-size: calc(17px * var(--scale));
       }
 
       .topbar {
@@ -1264,9 +1282,11 @@
       }
 
       .hero h1 {
+        max-width: 100%;
         font-size: calc(52px * var(--scale));
         margin-right: auto;
         margin-left: auto;
+        overflow-wrap: break-word;
       }
 
       .lead {
@@ -1332,6 +1352,59 @@
       .btn,
       .back-top a {
         width: 100%;
+      }
+
+      .btn {
+        white-space: normal;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .container {
+        width: min(100% - 18px, 100%);
+      }
+
+      .topbar {
+        border-radius: 24px;
+      }
+
+      .brand-mark {
+        gap: 8px;
+      }
+
+      .brand-mark strong {
+        font-size: calc(15px * var(--scale));
+      }
+
+      .topbar nav a {
+        padding: 6px 7px;
+        font-size: calc(11px * var(--scale));
+      }
+
+      .hero-shell,
+      .section-shell {
+        padding: 22px 14px;
+      }
+
+      .hero h1 {
+        font-size: clamp(46px, 16vw, 58px);
+      }
+
+      .lead {
+        font-size: calc(17px * var(--scale));
+      }
+
+      .hero-actions .btn {
+        padding-right: 14px;
+        padding-left: 14px;
+      }
+
+      .hero-side {
+        width: min(100%, 300px);
+      }
+
+      .portrait-card {
+        max-width: 300px;
       }
     }
 
@@ -2029,7 +2102,6 @@
       var cookieConsent = document.getElementById("cookie-consent");
       var cookieConsentButtons = document.querySelectorAll("[data-cookie-consent]");
       var currentZoom = 100;
-      var baseZoomMultiplier = 1.2;
       var currentLang = "fr";
       var contactEmail = "contact@wassimabdelkafi.com";
       var files = {
@@ -2069,6 +2141,7 @@
 
       function applyZoom(nextZoom) {
         currentZoom = Math.min(170, Math.max(70, Math.round(nextZoom / 10) * 10));
+        var baseZoomMultiplier = window.matchMedia("(max-width: 760px)").matches ? 1 : 1.2;
         document.documentElement.style.setProperty("--site-zoom", String(currentZoom / 100 * baseZoomMultiplier));
 
         if (zoomReadout) {
@@ -2261,7 +2334,10 @@
       }
 
       window.addEventListener("scroll", updateChrome, { passive: true });
-      window.addEventListener("resize", updateChrome);
+      window.addEventListener("resize", function () {
+        applyZoom(currentZoom);
+        updateChrome();
+      });
 
       setLanguage("fr");
       applyZoom(100);
