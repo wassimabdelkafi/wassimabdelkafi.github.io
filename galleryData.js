@@ -1,6 +1,6 @@
 window.masterGalleryData = [
   {
-    src: "assets/master-gallery/mech-traction-01.jpg",
+    src: "mech-traction-01.jpg",
     figure: "Figure 4.1",
     titleFr: "Préparation des barres de fibre de verre et de basalte",
     titleEn: "Preparation of glass and basalt fiber bars",
@@ -13,7 +13,7 @@ window.masterGalleryData = [
     source: "Mémoire de maîtrise, chapitre 4 - Programme expérimental"
   },
   {
-    src: "assets/master-gallery/mech-traction-02.jpg",
+    src: "mech-traction-02.jpg",
     figure: "Figure 4.2",
     titleFr: "Mise en place de l'extensomètre de 200 mm",
     titleEn: "Installation of the 200 mm extensometer",
@@ -26,7 +26,7 @@ window.masterGalleryData = [
     source: "Mémoire de maîtrise, chapitre 4 - Programme expérimental"
   },
   {
-    src: "assets/master-gallery/mech-arrachement-01.jpg",
+    src: "mech-arrachement-01.jpg",
     figure: "Figure 4.3",
     titleFr: "Préparation des spécimens en fibre de basalte et de verre",
     titleEn: "Preparation of basalt and glass fiber specimens",
@@ -39,7 +39,7 @@ window.masterGalleryData = [
     source: "Mémoire de maîtrise, chapitre 4 - Programme expérimental"
   },
   {
-    src: "assets/master-gallery/mech-arrachement-02.jpg",
+    src: "mech-arrachement-02.jpg",
     figure: "Figure 4.4(a)",
     titleFr: "Tubes d'acier",
     titleEn: "Steel tubes",
@@ -52,7 +52,7 @@ window.masterGalleryData = [
     source: "Mémoire de maîtrise, chapitre 4 - Programme expérimental"
   },
   {
-    src: "assets/master-gallery/mech-arrachement-03.jpg",
+    src: "mech-arrachement-03.jpg",
     figure: "Figure 4.4(b)",
     titleFr: "Ciment expansif",
     titleEn: "Expansive cement",
@@ -65,7 +65,7 @@ window.masterGalleryData = [
     source: "Mémoire de maîtrise, chapitre 4 - Programme expérimental"
   },
   {
-    src: "assets/master-gallery/mech-arrachement-04.jpg",
+    src: "mech-arrachement-04.jpg",
     figure: "Figure 4.4(c)",
     titleFr: "Dispositif anti-retenue",
     titleEn: "Debonding device",
@@ -78,7 +78,7 @@ window.masterGalleryData = [
     source: "Mémoire de maîtrise, chapitre 4 - Programme expérimental"
   },
   {
-    src: "assets/master-gallery/mech-arrachement-05.jpg",
+    src: "mech-arrachement-05.jpg",
     figure: "Figure 4.4(d)",
     titleFr: "Coulage du béton",
     titleEn: "Concrete casting",
@@ -91,7 +91,7 @@ window.masterGalleryData = [
     source: "Mémoire de maîtrise, chapitre 4 - Programme expérimental"
   },
   {
-    src: "assets/master-gallery/mech-arrachement-06.jpg",
+    src: "mech-arrachement-06.jpg",
     figure: "Figure 4.5",
     titleFr: "Blocs de béton pour les essais d'arrachement",
     titleEn: "Concrete blocks for pullout tests",
@@ -104,7 +104,7 @@ window.masterGalleryData = [
     source: "Mémoire de maîtrise, chapitre 4 - Programme expérimental"
   },
   {
-    src: "assets/master-gallery/mech-arrachement-07.jpg",
+    src: "mech-arrachement-07.jpg",
     figure: "Figure 4.6(a)",
     titleFr: "Installation d'un dispositif pour maintenir le bloc de béton",
     titleEn: "Device used to hold the concrete block",
@@ -117,7 +117,7 @@ window.masterGalleryData = [
     source: "Mémoire de maîtrise, chapitre 4 - Programme expérimental"
   },
   {
-    src: "assets/master-gallery/mech-arrachement-08.jpg",
+    src: "mech-arrachement-08.jpg",
     figure: "Figure 4.6(b)",
     titleFr: "Installation du LVDT sur le bloc de béton",
     titleEn: "LVDT installation on the concrete block",
@@ -130,7 +130,7 @@ window.masterGalleryData = [
     source: "Mémoire de maîtrise, chapitre 4 - Programme expérimental"
   },
   {
-    src: "assets/master-gallery/mech-arrachement-09.jpg",
+    src: "mech-arrachement-09.jpg",
     figure: "Figure 4.6(c)",
     titleFr: "Mise en place de l'ensemble de l'échantillon dans la machine MTS",
     titleEn: "Specimen assembly placed in the MTS machine",
@@ -143,7 +143,7 @@ window.masterGalleryData = [
     source: "Mémoire de maîtrise, chapitre 4 - Programme expérimental"
   },
   {
-    src: "assets/master-gallery/mech-arrachement-10.jpg",
+    src: "mech-arrachement-10.jpg",
     figure: "Figure 4.7",
     titleFr: "Blocs de béton après l'arrachement des barres",
     titleEn: "Concrete blocks after bar pullout",
@@ -156,7 +156,7 @@ window.masterGalleryData = [
     source: "Mémoire de maîtrise, chapitre 4 - Programme expérimental"
   },
   {
-    src: "assets/master-gallery/mech-cisaillement-interlaminaire-01.jpg",
+    src: "mech-cisaillement-interlaminaire-01.jpg",
     figure: "Figure 4.9(a)",
     titleFr: "Positionnement de la barre de PRFB sur les lignes tracées",
     titleEn: "BFRP bar positioned on the marked support lines",
@@ -169,7 +169,7 @@ window.masterGalleryData = [
     source: "Mémoire de maîtrise, chapitre 4 - Programme expérimental"
   },
   {
-    src: "assets/master-gallery/mech-cisaillement-interlaminaire-02.jpg",
+    src: "mech-cisaillement-interlaminaire-02.jpg",
     figure: "Figure 4.9(b)",
     titleFr: "Positionnement de la barre de PRFV sur les lignes tracées",
     titleEn: "GFRP bar positioned on the marked support lines",
@@ -182,7 +182,7 @@ window.masterGalleryData = [
     source: "Mémoire de maîtrise, chapitre 4 - Programme expérimental"
   },
   {
-    src: "assets/master-gallery/mech-cisaillement-transversal-01.jpg",
+    src: "mech-cisaillement-transversal-01.jpg",
     figure: "Figure 4.10(a)",
     titleFr: "Mâchoire hydraulique inférieure",
     titleEn: "Lower hydraulic grip",
@@ -195,7 +195,7 @@ window.masterGalleryData = [
     source: "Mémoire de maîtrise, chapitre 4 - Programme expérimental"
   },
   {
-    src: "assets/master-gallery/mech-cisaillement-transversal-02.jpg",
+    src: "mech-cisaillement-transversal-02.jpg",
     figure: "Figure 4.10(b)",
     titleFr: "Mâchoire hydraulique supérieure",
     titleEn: "Upper hydraulic grip",
@@ -208,7 +208,7 @@ window.masterGalleryData = [
     source: "Mémoire de maîtrise, chapitre 4 - Programme expérimental"
   },
   {
-    src: "assets/master-gallery/mech-cisaillement-transversal-03.jpg",
+    src: "mech-cisaillement-transversal-03.jpg",
     figure: "Figure 4.10(c)",
     titleFr: "Machine hydraulique MTS 647",
     titleEn: "MTS 647 hydraulic machine",
@@ -221,7 +221,7 @@ window.masterGalleryData = [
     source: "Mémoire de maîtrise, chapitre 4 - Programme expérimental"
   },
   {
-    src: "assets/master-gallery/mech-cisaillement-transversal-04.jpg",
+    src: "mech-cisaillement-transversal-04.jpg",
     figure: "Figure 4.11(a)",
     titleFr: "Mise en place de la barre sur les deux lames inférieures",
     titleEn: "Bar placed on the two lower blades",
@@ -234,7 +234,7 @@ window.masterGalleryData = [
     source: "Mémoire de maîtrise, chapitre 4 - Programme expérimental"
   },
   {
-    src: "assets/master-gallery/mech-cisaillement-transversal-05.jpg",
+    src: "mech-cisaillement-transversal-05.jpg",
     figure: "Figure 4.11(b)",
     titleFr: "Fixation de la barre avec les vis",
     titleEn: "Bar fixed with screws",
@@ -247,7 +247,7 @@ window.masterGalleryData = [
     source: "Mémoire de maîtrise, chapitre 4 - Programme expérimental"
   },
   {
-    src: "assets/master-gallery/mech-cisaillement-transversal-06.jpg",
+    src: "mech-cisaillement-transversal-06.jpg",
     figure: "Figure 4.11(c)",
     titleFr: "Descente de la lame supérieure sur la barre",
     titleEn: "Upper blade lowered onto the bar",
@@ -260,7 +260,7 @@ window.masterGalleryData = [
     source: "Mémoire de maîtrise, chapitre 4 - Programme expérimental"
   },
   {
-    src: "assets/master-gallery/mech-alcalins-01.jpg",
+    src: "mech-alcalins-01.jpg",
     figure: "Figure 4.12",
     titleFr: "Mise en place des barres PRF dans le bassin de conditionnement alcalin",
     titleEn: "FRP bars placed in the alkaline conditioning tank",
@@ -273,7 +273,7 @@ window.masterGalleryData = [
     source: "Mémoire de maîtrise, chapitre 4 - Programme expérimental"
   },
   {
-    src: "assets/master-gallery/mech-alcalins-charge-01.jpg",
+    src: "mech-alcalins-charge-01.jpg",
     figure: "Figure 4.13",
     titleFr: "Dispositif de conditionnement des spécimens soumis à une charge",
     titleEn: "Conditioning device for loaded specimens",
@@ -286,7 +286,7 @@ window.masterGalleryData = [
     source: "Mémoire de maîtrise, chapitre 4 - Programme expérimental"
   },
   {
-    src: "assets/master-gallery/phys-section-effective-01.jpg",
+    src: "phys-section-effective-01.jpg",
     figure: "Figure 4.14(a)",
     titleFr: "Longueur du spécimen",
     titleEn: "Specimen length",
@@ -299,7 +299,7 @@ window.masterGalleryData = [
     source: "Mémoire de maîtrise, chapitre 4 - Programme expérimental"
   },
   {
-    src: "assets/master-gallery/phys-section-effective-02.jpg",
+    src: "phys-section-effective-02.jpg",
     figure: "Figure 4.14(b)",
     titleFr: "Poids du spécimen sec",
     titleEn: "Dry specimen weight",
@@ -312,7 +312,7 @@ window.masterGalleryData = [
     source: "Mémoire de maîtrise, chapitre 4 - Programme expérimental"
   },
   {
-    src: "assets/master-gallery/phys-section-effective-03.jpg",
+    src: "phys-section-effective-03.jpg",
     figure: "Figure 4.14(c)",
     titleFr: "Poids du spécimen dans l'eau",
     titleEn: "Specimen weight in water",
@@ -325,7 +325,7 @@ window.masterGalleryData = [
     source: "Mémoire de maîtrise, chapitre 4 - Programme expérimental"
   },
   {
-    src: "assets/master-gallery/phys-section-effective-04.jpg",
+    src: "phys-section-effective-04.jpg",
     figure: "Figure 4.14(d)",
     titleFr: "Poids du récipient avec l'eau",
     titleEn: "Container weight with water",
@@ -338,7 +338,7 @@ window.masterGalleryData = [
     source: "Mémoire de maîtrise, chapitre 4 - Programme expérimental"
   },
   {
-    src: "assets/master-gallery/phys-teneur-fibres-01.jpg",
+    src: "phys-teneur-fibres-01.jpg",
     figure: "Figure 4.15(a)",
     titleFr: "Barres en PRFV sablées",
     titleEn: "Sanded GFRP bars",
@@ -351,7 +351,7 @@ window.masterGalleryData = [
     source: "Mémoire de maîtrise, chapitre 4 - Programme expérimental"
   },
   {
-    src: "assets/master-gallery/phys-teneur-fibres-02.jpg",
+    src: "phys-teneur-fibres-02.jpg",
     figure: "Figure 4.15(b)",
     titleFr: "Barres en PRFB sablées",
     titleEn: "Sanded BFRP bars",
@@ -364,7 +364,7 @@ window.masterGalleryData = [
     source: "Mémoire de maîtrise, chapitre 4 - Programme expérimental"
   },
   {
-    src: "assets/master-gallery/phys-teneur-fibres-03.jpg",
+    src: "phys-teneur-fibres-03.jpg",
     figure: "Figure 4.15(c)",
     titleFr: "Barres en PRFB non sablées",
     titleEn: "Non-sanded BFRP bars",
@@ -377,7 +377,7 @@ window.masterGalleryData = [
     source: "Mémoire de maîtrise, chapitre 4 - Programme expérimental"
   },
   {
-    src: "assets/master-gallery/phys-teneur-fibres-04.jpg",
+    src: "phys-teneur-fibres-04.jpg",
     figure: "Figure 4.16(a)",
     titleFr: "Poids du contenant vide",
     titleEn: "Empty container weight",
@@ -390,7 +390,7 @@ window.masterGalleryData = [
     source: "Mémoire de maîtrise, chapitre 4 - Programme expérimental"
   },
   {
-    src: "assets/master-gallery/phys-teneur-fibres-05.jpg",
+    src: "phys-teneur-fibres-05.jpg",
     figure: "Figure 4.16(b)",
     titleFr: "Poids du spécimen, fibres et résine",
     titleEn: "Specimen weight, fibers and resin",
@@ -403,7 +403,7 @@ window.masterGalleryData = [
     source: "Mémoire de maîtrise, chapitre 4 - Programme expérimental"
   },
   {
-    src: "assets/master-gallery/phys-teneur-fibres-06.jpg",
+    src: "phys-teneur-fibres-06.jpg",
     figure: "Figure 4.16(c)",
     titleFr: "Poids des résidus, fibres et sable",
     titleEn: "Residue weight, fibers and sand",
@@ -416,7 +416,7 @@ window.masterGalleryData = [
     source: "Mémoire de maîtrise, chapitre 4 - Programme expérimental"
   },
   {
-    src: "assets/master-gallery/phys-teneur-fibres-07.jpg",
+    src: "phys-teneur-fibres-07.jpg",
     figure: "Figure 4.16(d)",
     titleFr: "Poids du sable",
     titleEn: "Sand weight",
@@ -429,7 +429,7 @@ window.masterGalleryData = [
     source: "Mémoire de maîtrise, chapitre 4 - Programme expérimental"
   },
   {
-    src: "assets/master-gallery/phys-absorption-humidite-01.jpg",
+    src: "phys-absorption-humidite-01.jpg",
     figure: "Figure 4.17(a)",
     titleFr: "Barres non sablées",
     titleEn: "Non-sanded bars",
@@ -442,7 +442,7 @@ window.masterGalleryData = [
     source: "Mémoire de maîtrise, chapitre 4 - Programme expérimental"
   },
   {
-    src: "assets/master-gallery/phys-absorption-humidite-02.jpg",
+    src: "phys-absorption-humidite-02.jpg",
     figure: "Figure 4.17(b)",
     titleFr: "Taille du spécimen",
     titleEn: "Specimen size",
@@ -455,7 +455,7 @@ window.masterGalleryData = [
     source: "Mémoire de maîtrise, chapitre 4 - Programme expérimental"
   },
   {
-    src: "assets/master-gallery/phys-absorption-humidite-03.jpg",
+    src: "phys-absorption-humidite-03.jpg",
     figure: "Figure 4.17(c)",
     titleFr: "Température du four",
     titleEn: "Oven temperature",
@@ -468,7 +468,7 @@ window.masterGalleryData = [
     source: "Mémoire de maîtrise, chapitre 4 - Programme expérimental"
   },
   {
-    src: "assets/master-gallery/phys-transition-vitreuse-01.jpg",
+    src: "phys-transition-vitreuse-01.jpg",
     figure: "Figure 4.18(a)",
     titleFr: "Spécimen composite préparé pour l'essai DSC",
     titleEn: "Composite specimen prepared for the DSC test",
@@ -481,7 +481,7 @@ window.masterGalleryData = [
     source: "Mémoire de maîtrise, chapitre 4 - Programme expérimental"
   },
   {
-    src: "assets/master-gallery/phys-transition-vitreuse-02.jpg",
+    src: "phys-transition-vitreuse-02.jpg",
     figure: "Figure 4.18(b)",
     titleFr: "Mesure de la masse du spécimen",
     titleEn: "Specimen mass measurement",
@@ -494,7 +494,7 @@ window.masterGalleryData = [
     source: "Mémoire de maîtrise, chapitre 4 - Programme expérimental"
   },
   {
-    src: "assets/master-gallery/phys-transition-vitreuse-03.jpg",
+    src: "phys-transition-vitreuse-03.jpg",
     figure: "Figure 4.18(c)",
     titleFr: "Positionnement du spécimen dans l'appareil DSC",
     titleEn: "Specimen positioned in the DSC device",
@@ -507,7 +507,7 @@ window.masterGalleryData = [
     source: "Mémoire de maîtrise, chapitre 4 - Programme expérimental"
   },
   {
-    src: "assets/master-gallery/phys-meb-01.jpg",
+    src: "phys-meb-01.jpg",
     figure: "Figure 4.22(a)",
     titleFr: "Découpe des échantillons",
     titleEn: "Sample cutting",
@@ -520,7 +520,7 @@ window.masterGalleryData = [
     source: "Mémoire de maîtrise, chapitre 4 - Programme expérimental"
   },
   {
-    src: "assets/master-gallery/phys-meb-02.jpg",
+    src: "phys-meb-02.jpg",
     figure: "Figure 4.22(b)",
     titleFr: "Enrobage dans la résine",
     titleEn: "Embedding in resin",
@@ -533,7 +533,7 @@ window.masterGalleryData = [
     source: "Mémoire de maîtrise, chapitre 4 - Programme expérimental"
   },
   {
-    src: "assets/master-gallery/phys-meb-03.jpg",
+    src: "phys-meb-03.jpg",
     figure: "Figure 4.22(c)",
     titleFr: "Meulage initial",
     titleEn: "Initial grinding",
@@ -546,7 +546,7 @@ window.masterGalleryData = [
     source: "Mémoire de maîtrise, chapitre 4 - Programme expérimental"
   },
   {
-    src: "assets/master-gallery/phys-meb-04.jpg",
+    src: "phys-meb-04.jpg",
     figure: "Figure 4.22(d)",
     titleFr: "Polissage",
     titleEn: "Polishing",
@@ -559,7 +559,7 @@ window.masterGalleryData = [
     source: "Mémoire de maîtrise, chapitre 4 - Programme expérimental"
   },
   {
-    src: "assets/master-gallery/phys-meb-05.jpg",
+    src: "phys-meb-05.jpg",
     figure: "Figure 4.22(e)",
     titleFr: "Métallisation",
     titleEn: "Coating",
@@ -572,4 +572,5 @@ window.masterGalleryData = [
     source: "Mémoire de maîtrise, chapitre 4 - Programme expérimental"
   }
 ];
+
 
