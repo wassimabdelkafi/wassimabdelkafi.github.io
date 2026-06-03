@@ -2133,7 +2133,7 @@
       }
 
       html {
-        scroll-padding-top: calc(var(--topbar-space) + var(--topbar-clearance));
+        scroll-padding-top: var(--topbar-clearance);
       }
 
       .hero,
@@ -2702,7 +2702,7 @@
         <a href="#guide"><span class="fr">Guide</span><span class="en">Guide</span></a>
         <a href="#profil"><span class="fr">Profil</span><span class="en">Profile</span></a>
         <a href="#experience"><span class="fr">Expérience</span><span class="en">Experience</span></a>
-        <a href="#projets"><span class="fr">Projets</span><span class="en">Projects</span></a>
+        <a href="#projets-liste"><span class="fr">Projets</span><span class="en">Projects</span></a>
         <a href="#competences"><span class="fr">Compétences</span><span class="en">Skills</span></a>
         <a href="#documents"><span class="fr">Documents</span><span class="en">Documents</span></a>
         <a href="#contact"><span class="fr">Contact</span><span class="en">Contact</span></a>
@@ -2945,7 +2945,7 @@
           </div>
         </div>
 
-        <div class="project-grid">
+        <div class="project-grid" id="projets-liste">
           <article class="project-card">
             <h3><span class="fr">Impression 3D et mécanique des roches</span><span class="en">3D Printing and Rock Mechanics</span></h3>
             <p class="date"><span class="fr">Avr. 2021 - Août 2021</span><span class="en">Apr. 2021 - Aug. 2021</span></p>
@@ -3887,6 +3887,7 @@
       var cvDownload = document.getElementById("cv-download");
       var letterDownload = document.getElementById("letter-download");
       var contactForm = document.getElementById("contact-form");
+      var anchorLinks = document.querySelectorAll("a[href^='#']");
       var welcomeMessage = document.getElementById("welcome-message");
       var welcomeCloseButtons = document.querySelectorAll("[data-welcome-close]");
       var cookieConsent = document.getElementById("cookie-consent");
@@ -4071,7 +4072,6 @@
         if (progress) {
           progress.style.width = percent + "%";
         }
-
         if (topbar) {
           topbar.classList.toggle("is-scrolled", scrollTop > 80);
           updateMobileTopbar(scrollTop);
@@ -4117,6 +4117,62 @@
         lastScrollTop = Math.max(scrollTop, 0);
       }
 
+      function getAnchorTarget(hash) {
+        if (!hash || hash === "#") {
+          return null;
+        }
+
+        var targetId = hash.slice(1);
+
+        try {
+          targetId = decodeURIComponent(targetId);
+        } catch (error) {
+          return null;
+        }
+
+        return document.getElementById(targetId);
+      }
+
+      function getTopbarClearance() {
+        var value = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--topbar-clearance"));
+        return Number.isFinite(value) ? value : 18;
+      }
+
+      function scrollToAnchorOnMobile(target) {
+        if (!target || !window.matchMedia("(max-width: 768px)").matches) {
+          return false;
+        }
+
+        var currentTop = window.scrollY || document.documentElement.scrollTop;
+        var targetTop = target.getBoundingClientRect().top + currentTop;
+        var isGoingDown = targetTop >= currentTop;
+        var offset = getTopbarClearance();
+
+        if (topbar) {
+          if (isGoingDown) {
+            setMobileTopbarHidden(true);
+          } else {
+            setMobileTopbarHidden(false);
+            offset += topbar.offsetHeight;
+          }
+        }
+
+        window.scrollTo({
+          top: Math.max(0, targetTop - offset),
+          behavior: "smooth"
+        });
+
+        return true;
+      }
+
+      function alignCurrentHashOnMobile() {
+        var target = getAnchorTarget(window.location.hash);
+
+        if (target) {
+          scrollToAnchorOnMobile(target);
+        }
+      }
+
       function closeWelcomeMessage() {
         if (!welcomeMessage) {
           body.classList.remove("welcome-active");
@@ -4127,6 +4183,7 @@
         welcomeMessage.setAttribute("aria-hidden", "true");
         body.classList.remove("welcome-active");
         updateChrome();
+        window.setTimeout(alignCurrentHashOnMobile, 80);
       }
 
       function isOverlayOpen(overlay) {
@@ -4701,6 +4758,25 @@
         syncViewerLock();
       }
 
+      anchorLinks.forEach(function (link) {
+        link.addEventListener("click", function (event) {
+          var hash = link.getAttribute("href");
+          var target = getAnchorTarget(hash);
+
+          if (!target || !window.matchMedia("(max-width: 768px)").matches) {
+            return;
+          }
+
+          event.preventDefault();
+
+          if (window.location.hash !== hash) {
+            history.pushState(null, "", hash);
+          }
+
+          scrollToAnchorOnMobile(target);
+        });
+      });
+
       langButtons.forEach(function (button) {
         button.addEventListener("click", function () {
           setLanguage(button.getAttribute("data-lang-btn"));
@@ -4935,6 +5011,7 @@
       syncTopbarSpace();
       initCookieConsent();
       updateChrome();
+      window.setTimeout(alignCurrentHashOnMobile, 120);
     })();
   </script>
 </body>
