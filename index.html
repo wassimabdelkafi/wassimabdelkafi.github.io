@@ -48,6 +48,10 @@
       --container: 1220px;
       --scale: 1;
       --site-zoom: 1;
+      --viewer-width: 100vw;
+      --viewer-height: 100vh;
+      --topbar-space: 104px;
+      --topbar-clearance: 24px;
     }
 
     * {
@@ -56,9 +60,14 @@
       padding: 0;
     }
 
+    [hidden],
+    [data-gallery-archive] {
+      display: none !important;
+    }
+
     html {
       scroll-behavior: smooth;
-      scroll-padding-top: 110px;
+      scroll-padding-top: calc(var(--topbar-space) + var(--topbar-clearance));
     }
 
     body {
@@ -85,6 +94,20 @@
         linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
         linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px);
       background-size: 28px 28px;
+    }
+
+    body:not(.welcome-active)::after {
+      content: "";
+      position: fixed;
+      top: 0;
+      right: 0;
+      left: 0;
+      z-index: 250;
+      height: calc(var(--topbar-space) + var(--topbar-clearance));
+      background:
+        linear-gradient(180deg, rgba(247, 239, 229, 0.98) 0%, rgba(247, 239, 229, 0.96) 74%, rgba(247, 239, 229, 0) 100%);
+      backdrop-filter: blur(10px);
+      pointer-events: none;
     }
 
     .welcome-overlay {
@@ -311,7 +334,7 @@
       position: fixed;
       top: 0;
       left: 0;
-      z-index: 100;
+      z-index: 360;
       width: 100%;
       height: 4px;
       background: transparent;
@@ -331,22 +354,31 @@
     }
 
     .topbar {
-      position: sticky;
+      position: fixed;
       top: 16px;
-      z-index: 80;
-      margin: 16px auto 0;
+      left: 50%;
+      z-index: 300;
+      width: min(var(--container), calc(100% - 34px));
+      margin: 0 auto;
       padding: 10px;
       border: 1px solid rgba(255,255,255,0.42);
       border-radius: 999px;
-      background: rgba(255, 250, 243, 0.78);
-      box-shadow: 0 18px 55px rgba(16, 25, 34, 0.11);
-      backdrop-filter: blur(18px);
+      background: var(--paper);
+      box-shadow: 0 18px 55px rgba(16, 25, 34, 0.16);
+      transform: translateX(-50%);
       transition: background 0.25s ease, box-shadow 0.25s ease;
     }
 
+    body.welcome-active .topbar {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
     .topbar.is-scrolled {
-      background: rgba(16, 25, 34, 0.94);
-      box-shadow: 0 18px 65px rgba(16, 25, 34, 0.25);
+      background: var(--deep);
+      border-color: rgba(255,255,255,0.16);
+      box-shadow: 0 20px 70px rgba(16, 25, 34, 0.34);
     }
 
     .topbar-inner {
@@ -385,6 +417,11 @@
       color: rgba(255,255,255,0.9);
     }
 
+    .topbar.is-scrolled .brand-mark span:first-child {
+      background: rgba(255,255,255,0.92);
+      color: var(--deep);
+    }
+
     .topbar nav {
       display: flex;
       justify-content: center;
@@ -393,23 +430,59 @@
     }
 
     .topbar nav a {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
       padding: 9px 12px;
       border-radius: 999px;
       color: var(--deep);
       font-size: calc(14px * var(--scale));
       font-weight: 750;
       white-space: nowrap;
-      transition: 0.22s ease;
+      box-shadow: 0 0 0 rgba(16, 25, 34, 0);
+      transition: color 0.22s ease, background 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease;
     }
 
-    .topbar nav a:hover {
+    .topbar nav a::after {
+      content: "";
+      position: absolute;
+      inset: 5px;
+      z-index: -1;
+      border-radius: inherit;
+      background: linear-gradient(135deg, rgba(255,255,255,0.26), rgba(255,255,255,0));
+      opacity: 0;
+      transform: translateX(-28%) scale(0.82);
+      transition: opacity 0.22s ease, transform 0.22s ease;
+      pointer-events: none;
+    }
+
+    .topbar nav a:hover,
+    .topbar nav a:focus-visible {
       background: var(--deep);
       color: white;
-      transform: translateY(-1px);
+      box-shadow: 0 18px 36px rgba(16, 25, 34, 0.24);
+      transform: translateY(-2px) scale(1.03);
     }
 
-    .topbar.is-scrolled nav a:hover {
+    .topbar nav a:hover::after,
+    .topbar nav a:focus-visible::after {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+    }
+
+    .topbar nav a:focus-visible {
+      outline: 2px solid rgba(196, 125, 67, 0.7);
+      outline-offset: 3px;
+    }
+
+    .topbar nav a:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    .topbar.is-scrolled nav a:hover,
+    .topbar.is-scrolled nav a:focus-visible {
       background: rgba(255,255,255,0.14);
+      box-shadow: 0 16px 34px rgba(0, 0, 0, 0.26);
     }
 
     .toolbar {
@@ -461,7 +534,8 @@
     }
 
     .hero {
-      padding: 38px 0 24px;
+      padding: calc(var(--topbar-space) + var(--topbar-clearance)) 0 24px;
+      scroll-margin-top: calc(var(--topbar-space) + var(--topbar-clearance));
     }
 
     .hero-shell {
@@ -554,7 +628,9 @@
       gap: 10px;
       min-height: 56px;
       padding: 15px 22px;
+      border: 0;
       border-radius: 999px;
+      cursor: pointer;
       font-size: calc(15px * var(--scale));
       font-weight: 850;
       text-align: center;
@@ -645,6 +721,7 @@
 
     .section {
       margin: 26px auto;
+      scroll-margin-top: calc(var(--topbar-space) + var(--topbar-clearance));
     }
 
     .section-shell {
@@ -870,6 +947,867 @@
     .project-card h3 {
       font-size: calc(28px * var(--scale));
       margin-bottom: 10px;
+    }
+
+    .master-project {
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 22px;
+      padding: 32px;
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 34px;
+      background:
+        radial-gradient(circle at top right, rgba(196, 125, 67, 0.28), transparent 34%),
+        linear-gradient(135deg, rgba(16, 25, 34, 0.98), rgba(35, 52, 63, 0.96));
+      color: white;
+      box-shadow: 0 26px 70px rgba(16, 25, 34, 0.18);
+      isolation: isolate;
+    }
+
+    .master-project::before {
+      content: "";
+      position: absolute;
+      inset: auto -80px -180px auto;
+      z-index: -1;
+      width: 420px;
+      height: 420px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(35, 103, 166, 0.34), transparent 68%);
+    }
+
+    .master-project-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      gap: 28px;
+      align-items: start;
+    }
+
+    .master-project-layout > div:first-child {
+      grid-column: 1 / -1;
+    }
+
+    .master-project .tag {
+      color: rgba(255, 214, 179, 0.95);
+    }
+
+    .master-project h3 {
+      max-width: 760px;
+      margin-bottom: 16px;
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(42px, 5vw, 66px);
+      line-height: 0.96;
+      letter-spacing: -0.035em;
+      color: white;
+    }
+
+    .master-project p,
+    .master-project li {
+      color: rgba(255,255,255,0.78);
+    }
+
+    .master-project .date {
+      color: rgba(255,255,255,0.72);
+    }
+
+    .master-highlights {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin: 22px 0;
+    }
+
+    .master-highlight {
+      padding: 14px;
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 18px;
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(10px);
+    }
+
+    .master-highlight strong {
+      display: block;
+      margin-bottom: 4px;
+      font-family: "Cormorant Garamond", serif;
+      font-size: calc(30px * var(--scale));
+      line-height: 1;
+      color: white;
+    }
+
+    .master-highlight span {
+      color: rgba(255,255,255,0.72);
+      font-size: calc(12px * var(--scale));
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    .master-project ul {
+      margin-top: 14px;
+      padding-left: 20px;
+    }
+
+    .master-project li {
+      margin-bottom: 8px;
+    }
+
+    .master-gallery {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-auto-rows: clamp(118px, 12vw, 152px);
+      gap: 10px;
+    }
+
+    .master-gallery a {
+      position: relative;
+      overflow: hidden;
+      min-height: 0;
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 18px;
+      background: rgba(255,255,255,0.08);
+      box-shadow: 0 16px 34px rgba(0,0,0,0.16);
+    }
+
+    .master-gallery a::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 1;
+      height: 54%;
+      background: linear-gradient(180deg, rgba(16, 25, 34, 0), rgba(16, 25, 34, 0.82));
+      pointer-events: none;
+    }
+
+    .master-gallery a:first-child {
+      grid-column: span 2;
+      grid-row: span 2;
+    }
+
+    .master-gallery img {
+      display: block;
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.32s ease, filter 0.32s ease;
+    }
+
+    .master-gallery a:hover img {
+      transform: scale(1.06);
+      filter: contrast(1.05);
+    }
+
+    .master-gallery a > span {
+      position: absolute;
+      right: 9px;
+      bottom: 9px;
+      left: 9px;
+      z-index: 2;
+      padding: 7px 9px;
+      border-radius: 999px;
+      background: rgba(16, 25, 34, 0.94);
+      color: white;
+      font-size: calc(11px * var(--scale));
+      font-weight: 800;
+      line-height: 1.2;
+      text-shadow: 0 1px 8px rgba(0,0,0,0.42);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.2);
+      backdrop-filter: blur(8px);
+    }
+
+    .master-gallery a > span span {
+      position: static;
+      inset: auto;
+      display: inline;
+      padding: 0;
+      border-radius: 0;
+      background: transparent;
+      color: inherit;
+      font-size: inherit;
+      font-weight: inherit;
+      line-height: inherit;
+      text-shadow: inherit;
+      box-shadow: none;
+      backdrop-filter: none;
+    }
+
+    .master-gallery-featured {
+      align-self: stretch;
+    }
+
+    .master-media-sections {
+      margin-top: 28px;
+    }
+
+    .master-media-intro {
+      max-width: 940px;
+      margin-bottom: 18px;
+    }
+
+    .master-media-intro h4,
+    .master-media-head h4 {
+      margin-bottom: 8px;
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(30px, 3.8vw, 46px);
+      line-height: 1;
+      color: white;
+    }
+
+    .master-media-intro p,
+    .master-media-head p {
+      color: rgba(255,255,255,0.72);
+      font-size: calc(15px * var(--scale));
+      font-weight: 650;
+      line-height: 1.7;
+    }
+
+    .master-media-section {
+      margin-top: 18px;
+      padding: 18px;
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 28px;
+      background: rgba(255,255,255,0.07);
+      backdrop-filter: blur(12px);
+    }
+
+    .master-media-head {
+      display: grid;
+      gap: 4px;
+      margin-bottom: 16px;
+    }
+
+    .report-figure {
+      margin-top: 18px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .report-figure:first-of-type {
+      margin-top: 0;
+      padding-top: 0;
+      border-top: 0;
+    }
+
+    .report-figure-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .report-figure-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 34px;
+      padding: 8px 13px;
+      border-radius: 999px;
+      background: rgba(210, 130, 62, 0.18);
+      color: #f4c28d;
+      font-size: calc(12px * var(--scale));
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .report-figure h5 {
+      margin: 0;
+      color: white;
+      font-size: calc(18px * var(--scale));
+      line-height: 1.35;
+    }
+
+    .report-figure p {
+      color: rgba(255,255,255,0.68);
+      font-size: calc(14px * var(--scale));
+      font-weight: 650;
+      line-height: 1.65;
+    }
+
+    .report-figure .master-gallery {
+      margin-top: 12px;
+    }
+
+    .master-media-section .master-gallery {
+      grid-auto-rows: clamp(112px, 10vw, 142px);
+    }
+
+    .experimental-galleries {
+      display: grid;
+      gap: 28px;
+      margin-top: 28px;
+    }
+
+    .experimental-category {
+      display: grid;
+      gap: 18px;
+      padding: clamp(18px, 2.2vw, 26px);
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 30px;
+      background:
+        radial-gradient(circle at 18% 12%, rgba(210, 130, 62, 0.14), transparent 34%),
+        rgba(255,255,255,0.07);
+      backdrop-filter: blur(12px);
+    }
+
+    .experimental-category-head {
+      max-width: 900px;
+    }
+
+    .experimental-category-head h4 {
+      margin-bottom: 8px;
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(30px, 3.8vw, 46px);
+      line-height: 1;
+      color: white;
+    }
+
+    .experimental-category-head p {
+      color: rgba(255,255,255,0.72);
+      font-size: calc(15px * var(--scale));
+      font-weight: 650;
+      line-height: 1.7;
+    }
+
+    .experimental-test-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+      gap: 18px;
+    }
+
+    .experimental-test-card {
+      display: grid;
+      gap: 14px;
+      min-width: 0;
+      padding: 16px;
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 26px;
+      background: rgba(16, 25, 34, 0.42);
+      box-shadow: 0 22px 46px rgba(0,0,0,0.16);
+    }
+
+    .experimental-test-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      min-height: 42px;
+    }
+
+    .experimental-test-head span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 32px;
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: rgba(210, 130, 62, 0.18);
+      color: #f4c28d;
+      font-size: calc(11px * var(--scale));
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .experimental-test-head h5 {
+      margin: 0;
+      color: white;
+      font-size: calc(18px * var(--scale));
+      line-height: 1.25;
+    }
+
+    .experiment-carousel {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 24px;
+      background: rgba(255,255,255,0.08);
+    }
+
+    .experiment-carousel-viewport {
+      position: relative;
+      aspect-ratio: 16 / 10;
+      min-height: 260px;
+      overflow: hidden;
+    }
+
+    .experiment-slide {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      border: 0;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateX(26px) scale(0.98);
+      background: transparent;
+      pointer-events: none;
+      transition: opacity 0.42s ease, transform 0.42s ease;
+    }
+
+    .experiment-slide.is-active {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+      pointer-events: auto;
+    }
+
+    .experiment-slide img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02)),
+        rgba(16, 25, 34, 0.44);
+      transition: transform 0.3s ease, filter 0.3s ease;
+    }
+
+    .experiment-slide:hover img,
+    .experiment-slide:focus-visible img {
+      transform: scale(1.025);
+      filter: contrast(1.04);
+    }
+
+    .experiment-control {
+      position: absolute;
+      top: 50%;
+      z-index: 3;
+      display: inline-grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border: 0;
+      border-radius: 50%;
+      cursor: pointer;
+      background: rgba(255, 250, 243, 0.94);
+      color: var(--deep);
+      font-size: 25px;
+      font-weight: 900;
+      line-height: 1;
+      box-shadow: 0 14px 32px rgba(0,0,0,0.22);
+      transform: translateY(-50%);
+      transition: transform 0.22s ease, background 0.22s ease;
+    }
+
+    .experiment-control:hover {
+      transform: translateY(-50%) scale(1.05);
+      background: white;
+    }
+
+    .experiment-control.prev {
+      left: 12px;
+    }
+
+    .experiment-control.next {
+      right: 12px;
+    }
+
+    .experiment-counter {
+      position: absolute;
+      right: 12px;
+      bottom: 12px;
+      z-index: 3;
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: rgba(16, 25, 34, 0.86);
+      color: white;
+      font-size: calc(12px * var(--scale));
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.2);
+      backdrop-filter: blur(10px);
+    }
+
+    .photo-details {
+      display: grid;
+      gap: 10px;
+      width: min(920px, 100%);
+      padding: 16px;
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 22px;
+      background: rgba(16, 25, 34, 0.78);
+      color: white;
+      backdrop-filter: blur(12px);
+    }
+
+    .photo-detail-top {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .photo-figure,
+    .photo-test-type,
+    .photo-source {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: calc(11px * var(--scale));
+      font-weight: 900;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .photo-figure {
+      background: rgba(210, 130, 62, 0.2);
+      color: #f4c28d;
+    }
+
+    .photo-test-type,
+    .photo-source {
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.78);
+    }
+
+    .photo-description {
+      margin: 0;
+      color: rgba(255,255,255,0.78);
+      font-size: calc(14px * var(--scale));
+      font-weight: 650;
+      line-height: 1.6;
+    }
+
+    .master-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      margin-top: 22px;
+    }
+
+    .master-report-note {
+      max-width: 520px;
+      color: rgba(255,255,255,0.68);
+      font-size: calc(13px * var(--scale));
+      font-weight: 700;
+      line-height: 1.5;
+    }
+
+    body.viewer-open {
+      overflow: hidden;
+    }
+
+    .viewer-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 520;
+      display: grid;
+      place-items: center;
+      width: var(--viewer-width);
+      height: var(--viewer-height);
+      padding: 24px;
+      background: rgba(16, 25, 34, 0.84);
+      backdrop-filter: blur(16px);
+      transition: opacity 0.24s ease, visibility 0.24s ease;
+    }
+
+    .viewer-overlay.is-hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .viewer-panel {
+      position: relative;
+      width: min(1180px, calc(var(--viewer-width) - 48px));
+      max-height: calc(var(--viewer-height) - 48px);
+      padding: 18px;
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 30px;
+      background: linear-gradient(145deg, rgba(16, 25, 34, 0.98), rgba(35, 52, 63, 0.98));
+      box-shadow: 0 34px 90px rgba(0,0,0,0.36);
+    }
+
+    .viewer-close,
+    .viewer-arrow {
+      border: 0;
+      cursor: pointer;
+      background: rgba(255, 250, 243, 0.94);
+      color: var(--deep);
+      box-shadow: 0 14px 34px rgba(0,0,0,0.2);
+      transition: transform 0.22s ease, background 0.22s ease;
+    }
+
+    .viewer-close:hover,
+    .viewer-arrow:hover {
+      transform: translateY(-2px);
+      background: white;
+    }
+
+    .viewer-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      z-index: 3;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      font-size: 24px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .photo-stage {
+      position: relative;
+      display: grid;
+      grid-template-rows: minmax(0, 1fr) auto auto;
+      place-items: center;
+      gap: 14px;
+      height: min(86vh, 860px);
+      min-height: 520px;
+      padding: 16px 72px;
+    }
+
+    .photo-frame {
+      display: grid;
+      place-items: center;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      border-radius: 24px;
+      overscroll-behavior: contain;
+    }
+
+    .photo-frame.is-zoomed {
+      overflow: auto;
+      align-items: start;
+      justify-items: center;
+    }
+
+    .photo-stage img {
+      display: block;
+      width: auto;
+      height: auto;
+      border-radius: 22px;
+      object-fit: contain;
+      box-shadow: 0 26px 70px rgba(0,0,0,0.34);
+      transition: width 0.22s ease, height 0.22s ease;
+      cursor: zoom-in;
+    }
+
+    .photo-stage img.is-zoomed {
+      cursor: grab;
+    }
+
+    .viewer-arrow {
+      position: absolute;
+      top: 50%;
+      z-index: 2;
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      transform: translateY(-50%);
+      font-size: 34px;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .viewer-arrow:hover {
+      transform: translateY(-50%) scale(1.04);
+    }
+
+    .viewer-arrow.prev {
+      left: 16px;
+    }
+
+    .viewer-arrow.next {
+      right: 16px;
+    }
+
+    .photo-meta {
+      position: static;
+      width: min(720px, 100%);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 16px;
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 20px;
+      background: rgba(16, 25, 34, 0.78);
+      color: white;
+      backdrop-filter: blur(12px);
+    }
+
+    .photo-caption {
+      font-weight: 850;
+    }
+
+    .photo-counter {
+      color: rgba(255,255,255,0.7);
+      font-size: calc(13px * var(--scale));
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .photo-tools {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px;
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+    }
+
+    .photo-zoom-btn,
+    .photo-zoom-readout {
+      min-width: 42px;
+      min-height: 38px;
+      border: 0;
+      border-radius: 999px;
+      background: rgba(255, 250, 243, 0.94);
+      color: var(--deep);
+      font-size: calc(13px * var(--scale));
+      font-weight: 900;
+      text-align: center;
+    }
+
+    .photo-zoom-btn {
+      cursor: pointer;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .photo-zoom-btn:hover:not(:disabled) {
+      transform: translateY(-1px);
+    }
+
+    .photo-zoom-btn:disabled {
+      cursor: not-allowed;
+      opacity: 0.48;
+    }
+
+    .photo-zoom-readout {
+      display: inline-grid;
+      place-items: center;
+      min-width: 68px;
+      background: rgba(16, 25, 34, 0.86);
+      color: white;
+    }
+
+    .pdf-panel {
+      display: flex;
+      flex-direction: column;
+      width: min(1500px, calc(var(--viewer-width) - 32px));
+      height: calc(var(--viewer-height) - 32px);
+      max-height: none;
+      overflow: hidden;
+    }
+
+    .pdf-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 2px 58px 10px 4px;
+      color: white;
+    }
+
+    .pdf-head h3 {
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(28px, 3vw, 42px);
+      line-height: 1;
+    }
+
+    .pdf-head p {
+      color: rgba(255,255,255,0.72);
+      font-size: calc(14px * var(--scale));
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .pdf-reader {
+      display: flex;
+      flex: 1;
+      min-height: 0;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .pdf-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 8px;
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 20px;
+      background: rgba(255,255,255,0.08);
+    }
+
+    .pdf-page-btn {
+      min-height: 42px;
+      padding: 10px 16px;
+      border: 0;
+      border-radius: 999px;
+      background: rgba(255, 250, 243, 0.94);
+      color: var(--deep);
+      cursor: pointer;
+      font-weight: 850;
+      transition: opacity 0.22s ease, transform 0.22s ease;
+    }
+
+    .pdf-page-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+    }
+
+    .pdf-page-btn:disabled {
+      cursor: not-allowed;
+      opacity: 0.46;
+    }
+
+    .pdf-page-status {
+      min-width: 130px;
+      color: white;
+      font-weight: 850;
+      text-align: center;
+    }
+
+    .pdf-canvas-wrap {
+      position: relative;
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+      padding: 12px;
+      border-radius: 22px;
+      background: rgba(255,255,255,0.92);
+    }
+
+    .pdf-canvas-wrap canvas {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      border-radius: 10px;
+      background: white;
+      box-shadow: 0 12px 30px rgba(16, 25, 34, 0.16);
+    }
+
+    .pdf-loading {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      color: var(--deep);
+      font-weight: 850;
+      text-align: center;
+      background: rgba(255,255,255,0.88);
+    }
+
+    .pdf-loading.is-hidden {
+      display: none;
     }
 
     .skills-grid {
@@ -1138,6 +2076,7 @@
       .hero-shell,
       .section-head,
       .profile-layout,
+      .master-project-layout,
       .contact-grid {
         grid-template-columns: 1fr;
       }
@@ -1168,11 +2107,19 @@
       .skills-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
+
+      .master-gallery {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
     }
 
     @media (max-width: 760px) {
+      :root {
+        --topbar-clearance: 18px;
+      }
+
       html {
-        scroll-padding-top: 24px;
+        scroll-padding-top: calc(var(--topbar-space) + var(--topbar-clearance));
       }
 
       .container {
@@ -1202,10 +2149,13 @@
       }
 
       .topbar {
-        position: static;
+        position: sticky;
+        top: 8px;
+        left: auto;
         border-radius: 26px;
         margin-top: 10px;
         padding: 10px;
+        transform: none;
       }
 
       .topbar-inner {
@@ -1265,6 +2215,205 @@
       .section-shell {
         padding: 24px 18px;
         border-radius: 30px;
+      }
+
+      .master-project {
+        padding: 24px 18px;
+        border-radius: 30px;
+      }
+
+      .master-project h3 {
+        font-size: clamp(40px, 12vw, 54px);
+      }
+
+      .master-highlights {
+        grid-template-columns: 1fr;
+      }
+
+      .master-gallery {
+        display: flex;
+        gap: 12px;
+        overflow-x: auto;
+        padding-bottom: 10px;
+        scroll-snap-type: x mandatory;
+      }
+
+      .master-gallery a,
+      .master-gallery a:first-child {
+        flex: 0 0 min(82%, 330px);
+        height: 220px;
+        min-height: 0;
+        grid-column: auto;
+        grid-row: auto;
+        scroll-snap-align: start;
+      }
+
+      .master-actions .btn {
+        width: 100%;
+        white-space: normal;
+      }
+
+      .master-report-note {
+        text-align: center;
+      }
+
+      .master-media-sections {
+        margin-top: 22px;
+      }
+
+      .master-media-section {
+        padding: 16px;
+        border-radius: 24px;
+      }
+
+      .master-media-intro h4,
+      .master-media-head h4 {
+        font-size: clamp(30px, 10vw, 42px);
+      }
+
+      .experimental-galleries {
+        gap: 22px;
+      }
+
+      .experimental-category {
+        padding: 16px;
+        border-radius: 24px;
+      }
+
+      .experimental-category-head h4 {
+        font-size: clamp(30px, 10vw, 42px);
+      }
+
+      .experimental-test-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .experimental-test-card {
+        padding: 12px;
+        border-radius: 22px;
+      }
+
+      .experimental-test-head {
+        justify-content: center;
+        text-align: center;
+      }
+
+      .experiment-carousel-viewport {
+        min-height: 230px;
+        aspect-ratio: 4 / 3;
+      }
+
+      .experiment-control {
+        width: 38px;
+        height: 38px;
+        font-size: 23px;
+      }
+
+      .experiment-counter {
+        right: 10px;
+        bottom: 10px;
+      }
+
+      .viewer-overlay {
+        padding: 10px;
+      }
+
+      .viewer-panel {
+        width: 100%;
+        max-height: calc(100vh - 20px);
+        padding: 10px;
+        border-radius: 24px;
+      }
+
+      .viewer-close {
+        top: 12px;
+        right: 12px;
+        width: 42px;
+        height: 42px;
+      }
+
+      .photo-stage {
+        height: calc(100vh - 20px);
+        min-height: 0;
+        padding: 62px 0 18px;
+      }
+
+      .photo-stage img {
+        max-height: 100%;
+        border-radius: 18px;
+      }
+
+      .viewer-arrow {
+        top: auto;
+        bottom: 22px;
+        width: 48px;
+        height: 48px;
+        transform: none;
+        font-size: 30px;
+      }
+
+      .viewer-arrow:hover {
+        transform: scale(1.04);
+      }
+
+      .viewer-arrow.prev {
+        left: 16px;
+      }
+
+      .viewer-arrow.next {
+        right: 16px;
+      }
+
+      .photo-meta {
+        width: 100%;
+        min-height: 64px;
+        justify-content: center;
+        text-align: center;
+      }
+
+      .photo-details {
+        gap: 8px;
+        padding: 12px;
+        text-align: left;
+      }
+
+      .photo-detail-top {
+        justify-content: center;
+      }
+
+      .photo-tools {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .photo-zoom-btn,
+      .photo-zoom-readout {
+        min-width: 0;
+        flex: 1;
+      }
+
+      .pdf-panel {
+        height: calc(var(--viewer-height) - 20px);
+      }
+
+      .pdf-head {
+        padding: 54px 6px 12px;
+      }
+
+      .pdf-canvas-wrap {
+        min-height: 320px;
+        border-radius: 16px;
+        padding: 10px;
+      }
+
+      .pdf-toolbar {
+        gap: 8px;
+      }
+
+      .pdf-page-btn,
+      .pdf-page-status {
+        flex: 1;
+        min-width: 0;
       }
 
       .hero-shell {
@@ -1427,7 +2576,7 @@
     }
   </style>
 </head>
-<body id="top" data-lang="fr">
+<body id="top" data-lang="fr" class="welcome-active">
   <div class="welcome-overlay" id="welcome-message" role="dialog" aria-modal="true" aria-labelledby="welcome-title" aria-hidden="false">
     <div class="welcome-card">
       <div class="welcome-heading-row">
@@ -1734,20 +2883,531 @@
           </div>
         </div>
 
-        <div class="project-grid">
-          <article class="project-card">
-            <h3><span class="fr">Maîtrise - Barres BFRP</span><span class="en">Master's Project - BFRP Bars</span></h3>
-            <p class="date"><span class="fr">Août 2021 - Mars 2024</span><span class="en">Aug. 2021 - Mar. 2024</span></p>
-            <ul>
-              <li><span class="fr">Réalisation d'un projet de recherche appliquée portant sur les barres en polymères renforcés de fibres de basalte (BFRP) utilisées dans les structures en béton armé.</span><span class="en">Applied research project on basalt fiber reinforced polymer (BFRP) bars used in reinforced concrete structures.</span></li>
-              <li><span class="fr">Étude approfondie des propriétés physiques et mécaniques des matériaux composites destinés aux infrastructures et ouvrages de génie civil.</span><span class="en">In-depth study of the physical and mechanical properties of composite materials for infrastructure and civil engineering works.</span></li>
-              <li><span class="fr">Analyse des effets de l'humidité, de l'alcalinité et des conditions environnementales agressives sur la durabilité et la performance structurale des barres BFRP.</span><span class="en">Analysis of humidity, alkalinity and aggressive environmental effects on BFRP durability and structural performance.</span></li>
-              <li><span class="fr">Réalisation d'essais expérimentaux en laboratoire afin d'évaluer la résistance mécanique et le comportement à long terme des matériaux composites.</span><span class="en">Laboratory experimental testing to evaluate mechanical resistance and long-term behavior of composite materials.</span></li>
-              <li><span class="fr">Analyse et interprétation des résultats expérimentaux pour l'évaluation de solutions innovantes en infrastructures durables.</span><span class="en">Analysis and interpretation of experimental results to assess innovative solutions for sustainable infrastructure.</span></li>
-              <li><span class="fr">Développement de compétences avancées en recherche appliquée, analyse technique et résolution de problèmes complexes.</span><span class="en">Development of advanced skills in applied research, technical analysis and complex problem solving.</span></li>
-            </ul>
-          </article>
+        <article class="master-project" id="projet-maitrise">
+          <div class="master-project-layout">
+            <div>
+              <span class="tag"><span class="fr">Projet de maîtrise</span><span class="en">Master's project</span></span>
+              <h3><span class="fr">Durabilité et comportement mécanique des barres PRFB.</span><span class="en">Durability and mechanical behavior of BFRP bars.</span></h3>
+              <p class="date"><span class="fr">Université de Sherbrooke | Août 2021 - Mars 2024</span><span class="en">Université de Sherbrooke | Aug. 2021 - Mar. 2024</span></p>
+              <p>
+                <span class="fr">Projet de recherche appliquée portant sur la caractérisation des propriétés physiques et mécaniques des barres en polymères renforcés de fibres de basalte (PRFB) utilisées dans les structures en béton armé et les infrastructures durables.</span>
+                <span class="en">Applied research project focused on characterizing the physical and mechanical properties of basalt fiber reinforced polymer (BFRP) bars used in reinforced concrete structures and sustainable infrastructure.</span>
+              </p>
 
+              <ul>
+                <li><span class="fr">Préparation d'échantillons, organisation des barres de référence et suivi des spécimens conditionnés en laboratoire.</span><span class="en">Specimen preparation, organization of reference bars and monitoring of conditioned laboratory samples.</span></li>
+                <li><span class="fr">Étude des effets de l'humidité, de l'alcalinité et des environnements agressifs sur la durabilité et la performance structurale des barres PRFB.</span><span class="en">Study of humidity, alkalinity and aggressive environmental effects on the durability and structural performance of BFRP bars.</span></li>
+                <li><span class="fr">Réalisation d'essais mécaniques et expérimentaux afin d'évaluer la résistance, l'adhérence et le comportement à long terme des matériaux composites.</span><span class="en">Mechanical and experimental testing to evaluate strength, bond behavior and long-term performance of composite materials.</span></li>
+                <li><span class="fr">Analyse et interprétation des résultats pour soutenir l'évaluation de solutions innovantes en infrastructures durables.</span><span class="en">Analysis and interpretation of results to support the assessment of innovative solutions for sustainable infrastructure.</span></li>
+              </ul>
+
+              <div class="master-actions">
+                <a class="btn btn-light" href="M%C3%A9moire_de_maitrise_mise_a_jour/Abdelkafi_Wassim_MScA_2024.pdf" target="_blank" rel="noopener">
+                  <span class="btn-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                      <path d="M7 3h7l4 4v14H7z"></path>
+                      <path d="M14 3v5h4"></path>
+                      <path d="M8.8 16.5h6.4"></path>
+                      <path d="M8.8 13.5h6.4"></path>
+                      <path d="M8.8 10.5h3.2"></path>
+                    </svg>
+                  </span>
+                  <span class="fr">Mémoire de maîtrise</span>
+                  <span class="en">Master's thesis</span>
+                </a>
+              </div>
+            </div>
+
+          </div>
+
+          <div id="experimental-galleries" class="experimental-galleries"></div>
+
+          <div class="master-media-sections" data-gallery-archive hidden aria-hidden="true" aria-label="Photos classées selon les propriétés mécaniques et physiques">
+            <div class="master-media-intro">
+              <h4><span class="fr">Photos classées selon les essais du programme expérimental</span><span class="en">Photos classified by experimental test program</span></h4>
+              <p><span class="fr">Les photos sont maintenant organisées selon votre nouveau classement : essais de propriétés mécaniques et essais de propriétés physiques. Les légendes utilisent les noms corrigés de chaque photo.</span><span class="en">The photos are now organized according to your new structure: mechanical property tests and physical property tests. Captions use the corrected names of each photo.</span></p>
+            </div>
+
+            <section class="master-media-section">
+              <div class="master-media-head">
+                <h4><span class="fr">Essais de propriétés mécaniques</span><span class="en">Mechanical property tests</span></h4>
+                <p><span class="fr">Essais de traction, arrachement, cisaillement et conditionnement alcalin avec charges pour évaluer le comportement mécanique des barres PRFB et PRFV.</span><span class="en">Tension, pullout, shear and alkaline conditioning with sustained loads used to evaluate the mechanical behavior of BFRP and GFRP bars.</span></p>
+              </div>
+
+              <div class="report-figure">
+                <div class="report-figure-meta">
+                  <span class="report-figure-number"><span class="fr">Mécanique</span><span class="en">Mechanical</span></span>
+                  <h5><span class="fr">Résistance à la traction</span><span class="en">Tensile strength</span></h5>
+                </div>
+                <div class="master-gallery">
+                  <a href="Photo%20ma%C3%AEtrise/Essais%20classes/web/mech-traction-01.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Essais%20classes/web/mech-traction-01.jpg" alt="Préparation des barres de fibre de verre et de basalte" loading="lazy"><span><span class="fr">Préparation des barres de fibre de verre et de basalte</span><span class="en">Preparation of glass and basalt fiber bars</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Essais%20classes/web/mech-traction-02.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Essais%20classes/web/mech-traction-02.jpg" alt="Mise en place de l'extensomètre de 200 mm" loading="lazy"><span><span class="fr">Mise en place de l'extensomètre de 200 mm</span><span class="en">Installation of the 200 mm extensometer</span></span></a>
+                </div>
+              </div>
+
+              <div class="report-figure">
+                <div class="report-figure-meta">
+                  <span class="report-figure-number"><span class="fr">Mécanique</span><span class="en">Mechanical</span></span>
+                  <h5><span class="fr">Résistance à l'arrachement des barres en PRF</span><span class="en">Pullout resistance of FRP bars</span></h5>
+                </div>
+                <div class="master-gallery">
+                  <a href="Photo%20ma%C3%AEtrise/Essais%20classes/web/mech-arrachement-01.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Essais%20classes/web/mech-arrachement-01.jpg" alt="Préparation des spécimens en fibre de basalte et de verre pour les tests d'arrachement" loading="lazy"><span><span class="fr">Préparation des spécimens en fibre de basalte et de verre</span><span class="en">Preparation of basalt and glass fiber specimens</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Essais%20classes/web/mech-arrachement-02.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Essais%20classes/web/mech-arrachement-02.jpg" alt="Tubes d'acier" loading="lazy"><span><span class="fr">Tubes d'acier</span><span class="en">Steel tubes</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Essais%20classes/web/mech-arrachement-03.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Essais%20classes/web/mech-arrachement-03.jpg" alt="Ciment expansif" loading="lazy"><span><span class="fr">Ciment expansif</span><span class="en">Expansive cement</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Essais%20classes/web/mech-arrachement-04.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Essais%20classes/web/mech-arrachement-04.jpg" alt="Dispositif anti-retenue" loading="lazy"><span><span class="fr">Dispositif anti-retenue</span><span class="en">Debonding device</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Essais%20classes/web/mech-arrachement-05.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Essais%20classes/web/mech-arrachement-05.jpg" alt="Coulage du béton" loading="lazy"><span><span class="fr">Coulage du béton</span><span class="en">Concrete casting</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Essais%20classes/web/mech-arrachement-06.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Essais%20classes/web/mech-arrachement-06.jpg" alt="Blocs de béton pour les essais d'arrachement" loading="lazy"><span><span class="fr">Blocs de béton pour les essais d'arrachement</span><span class="en">Concrete blocks for pullout tests</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Essais%20classes/web/mech-arrachement-07.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Essais%20classes/web/mech-arrachement-07.jpg" alt="Installation d'un dispositif pour maintenir le bloc de béton à sa place" loading="lazy"><span><span class="fr">Installation d'un dispositif pour maintenir le bloc de béton</span><span class="en">Device used to hold the concrete block</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Essais%20classes/web/mech-arrachement-08.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Essais%20classes/web/mech-arrachement-08.jpg" alt="Installation du LVDT sur le bloc du béton" loading="lazy"><span><span class="fr">Installation du LVDT sur le bloc du béton</span><span class="en">LVDT installation on the concrete block</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Essais%20classes/web/mech-arrachement-09.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Essais%20classes/web/mech-arrachement-09.jpg" alt="Mise en place de l'ensemble de l'échantillon dans la machine MTS" loading="lazy"><span><span class="fr">Mise en place de l'ensemble de l'échantillon dans la machine MTS</span><span class="en">Specimen assembly placed in the MTS machine</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Essais%20classes/web/mech-arrachement-10.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Essais%20classes/web/mech-arrachement-10.jpg" alt="Blocs de béton après l'arrachement des barres" loading="lazy"><span><span class="fr">Blocs de béton après l'arrachement des barres</span><span class="en">Concrete blocks after bar pullout</span></span></a>
+                </div>
+              </div>
+
+              <div class="report-figure">
+                <div class="report-figure-meta">
+                  <span class="report-figure-number"><span class="fr">Mécanique</span><span class="en">Mechanical</span></span>
+                  <h5><span class="fr">Résistance au cisaillement interlaminaire</span><span class="en">Interlaminar shear strength</span></h5>
+                </div>
+                <div class="master-gallery">
+                  <a href="Photo%20ma%C3%AEtrise/Essais%20classes/web/mech-cisaillement-interlaminaire-01.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Essais%20classes/web/mech-cisaillement-interlaminaire-01.jpg" alt="Positionnement de la barre de PRFB sur les lignes tracées sur les appuis" loading="lazy"><span><span class="fr">Positionnement de la barre de PRFB sur les lignes tracées</span><span class="en">BFRP bar positioned on the marked support lines</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Essais%20classes/web/mech-cisaillement-interlaminaire-02.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Essais%20classes/web/mech-cisaillement-interlaminaire-02.jpg" alt="Positionnement de la barre de PRFV sur les lignes tracées sur les appuis" loading="lazy"><span><span class="fr">Positionnement de la barre de PRFV sur les lignes tracées</span><span class="en">GFRP bar positioned on the marked support lines</span></span></a>
+                </div>
+              </div>
+
+              <div class="report-figure">
+                <div class="report-figure-meta">
+                  <span class="report-figure-number"><span class="fr">Mécanique</span><span class="en">Mechanical</span></span>
+                  <h5><span class="fr">Résistance au cisaillement transversal</span><span class="en">Transverse shear strength</span></h5>
+                </div>
+                <div class="master-gallery">
+                  <a href="Photo%20ma%C3%AEtrise/Essais%20classes/web/mech-cisaillement-transversal-01.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Essais%20classes/web/mech-cisaillement-transversal-01.jpg" alt="Mâchoire hydraulique inférieure" loading="lazy"><span><span class="fr">Mâchoire hydraulique inférieure</span><span class="en">Lower hydraulic grip</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Essais%20classes/web/mech-cisaillement-transversal-02.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Essais%20classes/web/mech-cisaillement-transversal-02.jpg" alt="Mâchoire hydraulique supérieure" loading="lazy"><span><span class="fr">Mâchoire hydraulique supérieure</span><span class="en">Upper hydraulic grip</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Essais%20classes/web/mech-cisaillement-transversal-03.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Essais%20classes/web/mech-cisaillement-transversal-03.jpg" alt="Machine hydraulique MTS 647" loading="lazy"><span><span class="fr">Machine hydraulique MTS 647</span><span class="en">MTS 647 hydraulic machine</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Essais%20classes/web/mech-cisaillement-transversal-04.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Essais%20classes/web/mech-cisaillement-transversal-04.jpg" alt="Mise en place de la barre sur les deux lames inférieures" loading="lazy"><span><span class="fr">Mise en place de la barre sur les deux lames inférieures</span><span class="en">Bar placed on the two lower blades</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Essais%20classes/web/mech-cisaillement-transversal-05.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Essais%20classes/web/mech-cisaillement-transversal-05.jpg" alt="Fixation de la barre avec les vis" loading="lazy"><span><span class="fr">Fixation de la barre avec les vis</span><span class="en">Bar fixed with screws</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Essais%20classes/web/mech-cisaillement-transversal-06.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Essais%20classes/web/mech-cisaillement-transversal-06.jpg" alt="Descente de la lame supérieure sur la barre" loading="lazy"><span><span class="fr">Descente de la lame supérieure sur la barre</span><span class="en">Upper blade lowered onto the bar</span></span></a>
+                </div>
+              </div>
+
+              <div class="report-figure">
+                <div class="report-figure-meta">
+                  <span class="report-figure-number"><span class="fr">Mécanique</span><span class="en">Mechanical</span></span>
+                  <h5><span class="fr">Résistance aux alcalins avec charges</span><span class="en">Alkaline resistance with sustained loads</span></h5>
+                </div>
+                <div class="master-gallery">
+                  <a href="Photo%20ma%C3%AEtrise/Essais%20classes/web/mech-alcalins-charge-01.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Essais%20classes/web/mech-alcalins-charge-01.jpg" alt="Dispositif de conditionnement des spécimens soumis à une charge" loading="lazy"><span><span class="fr">Dispositif de conditionnement des spécimens soumis à une charge</span><span class="en">Conditioning device for loaded specimens</span></span></a>
+                </div>
+              </div>
+            </section>
+
+            <section class="master-media-section">
+              <div class="master-media-head">
+                <h4><span class="fr">Essais de propriétés physiques</span><span class="en">Physical property tests</span></h4>
+                <p><span class="fr">Mesures de section effective, teneur en fibres, absorption d'humidité et température de transition vitreuse pour caractériser les barres composites.</span><span class="en">Effective area, fiber content, moisture absorption and glass transition temperature measurements used to characterize composite bars.</span></p>
+              </div>
+
+              <div class="report-figure">
+                <div class="report-figure-meta">
+                  <span class="report-figure-number"><span class="fr">Physique</span><span class="en">Physical</span></span>
+                  <h5><span class="fr">Section effective</span><span class="en">Effective area</span></h5>
+                </div>
+                <div class="master-gallery">
+                  <a href="Photo%20ma%C3%AEtrise/Essais%20classes/web/phys-section-effective-01.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Essais%20classes/web/phys-section-effective-01.jpg" alt="Longueur du spécimen" loading="lazy"><span><span class="fr">Longueur du spécimen</span><span class="en">Specimen length</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Essais%20classes/web/phys-section-effective-02.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Essais%20classes/web/phys-section-effective-02.jpg" alt="Poids du spécimen sec" loading="lazy"><span><span class="fr">Poids du spécimen sec</span><span class="en">Dry specimen weight</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Essais%20classes/web/phys-section-effective-03.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Essais%20classes/web/phys-section-effective-03.jpg" alt="Poids du spécimen dans l'eau" loading="lazy"><span><span class="fr">Poids du spécimen dans l'eau</span><span class="en">Specimen weight in water</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Essais%20classes/web/phys-section-effective-04.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Essais%20classes/web/phys-section-effective-04.jpg" alt="Poids du récipient avec l'eau" loading="lazy"><span><span class="fr">Poids du récipient avec l'eau</span><span class="en">Container weight with water</span></span></a>
+                </div>
+              </div>
+
+              <div class="report-figure">
+                <div class="report-figure-meta">
+                  <span class="report-figure-number"><span class="fr">Physique</span><span class="en">Physical</span></span>
+                  <h5><span class="fr">Teneur en fibres</span><span class="en">Fiber content</span></h5>
+                </div>
+                <div class="master-gallery">
+                  <a href="Photo%20ma%C3%AEtrise/Essais%20classes/web/phys-teneur-fibres-01.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Essais%20classes/web/phys-teneur-fibres-01.jpg" alt="Barres en PRFV sablées" loading="lazy"><span><span class="fr">Barres en PRFV sablées</span><span class="en">Sanded GFRP bars</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Essais%20classes/web/phys-teneur-fibres-02.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Essais%20classes/web/phys-teneur-fibres-02.jpg" alt="Barres en PRFB sablées" loading="lazy"><span><span class="fr">Barres en PRFB sablées</span><span class="en">Sanded BFRP bars</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Essais%20classes/web/phys-teneur-fibres-03.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Essais%20classes/web/phys-teneur-fibres-03.jpg" alt="Barres en PRFB non sablées" loading="lazy"><span><span class="fr">Barres en PRFB non sablées</span><span class="en">Non-sanded BFRP bars</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Essais%20classes/web/phys-teneur-fibres-04.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Essais%20classes/web/phys-teneur-fibres-04.jpg" alt="Poids du contenant vide" loading="lazy"><span><span class="fr">Poids du contenant vide</span><span class="en">Empty container weight</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Essais%20classes/web/phys-teneur-fibres-05.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Essais%20classes/web/phys-teneur-fibres-05.jpg" alt="Poids du spécimen fibres et résine" loading="lazy"><span><span class="fr">Poids du spécimen (fibres et résine)</span><span class="en">Specimen weight (fibers and resin)</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Essais%20classes/web/phys-teneur-fibres-06.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Essais%20classes/web/phys-teneur-fibres-06.jpg" alt="Poids des résidus fibres et sable" loading="lazy"><span><span class="fr">Poids des résidus (fibres et sable)</span><span class="en">Residue weight (fibers and sand)</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Essais%20classes/web/phys-teneur-fibres-07.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Essais%20classes/web/phys-teneur-fibres-07.jpg" alt="Poids du sable" loading="lazy"><span><span class="fr">Poids du sable</span><span class="en">Sand weight</span></span></a>
+                </div>
+              </div>
+
+              <div class="report-figure">
+                <div class="report-figure-meta">
+                  <span class="report-figure-number"><span class="fr">Physique</span><span class="en">Physical</span></span>
+                  <h5><span class="fr">Taux d'absorption d'humidité</span><span class="en">Moisture absorption rate</span></h5>
+                </div>
+                <div class="master-gallery">
+                  <a href="Photo%20ma%C3%AEtrise/Essais%20classes/web/phys-absorption-humidite-01.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Essais%20classes/web/phys-absorption-humidite-01.jpg" alt="Barres non sablées" loading="lazy"><span><span class="fr">Barres non sablées</span><span class="en">Non-sanded bars</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Essais%20classes/web/phys-absorption-humidite-02.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Essais%20classes/web/phys-absorption-humidite-02.jpg" alt="Taille du spécimen" loading="lazy"><span><span class="fr">Taille du spécimen</span><span class="en">Specimen size</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Essais%20classes/web/phys-absorption-humidite-03.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Essais%20classes/web/phys-absorption-humidite-03.jpg" alt="Température du four" loading="lazy"><span><span class="fr">Température du four</span><span class="en">Oven temperature</span></span></a>
+                </div>
+              </div>
+
+              <div class="report-figure">
+                <div class="report-figure-meta">
+                  <span class="report-figure-number"><span class="fr">Physique</span><span class="en">Physical</span></span>
+                  <h5><span class="fr">Température de transition vitreuse</span><span class="en">Glass transition temperature</span></h5>
+                </div>
+                <div class="master-gallery">
+                  <a href="Photo%20ma%C3%AEtrise/Essais%20classes/web/phys-transition-vitreuse-01.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Essais%20classes/web/phys-transition-vitreuse-01.jpg" alt="Spécimen composite préparé pour l'essai DSC" loading="lazy"><span><span class="fr">Spécimen composite préparé pour l'essai DSC</span><span class="en">Composite specimen prepared for the DSC test</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Essais%20classes/web/phys-transition-vitreuse-02.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Essais%20classes/web/phys-transition-vitreuse-02.jpg" alt="Mesure de la masse du spécimen" loading="lazy"><span><span class="fr">Mesure de la masse du spécimen</span><span class="en">Specimen mass measurement</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Essais%20classes/web/phys-transition-vitreuse-03.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Essais%20classes/web/phys-transition-vitreuse-03.jpg" alt="Positionnement du spécimen dans l'appareil DSC" loading="lazy"><span><span class="fr">Positionnement du spécimen dans l'appareil DSC</span><span class="en">Specimen positioned in the DSC device</span></span></a>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <div class="master-media-sections" data-gallery-archive hidden aria-hidden="true" aria-label="Ancien classement par figures du mémoire">
+            <div class="master-media-intro">
+              <h4><span class="fr">Photos regroupées selon le rapport de maîtrise</span><span class="en">Photos grouped according to the master's report</span></h4>
+              <p><span class="fr">Chaque bloc reprend l'ordre du mémoire : numéro de figure, titre de la figure et sous-légendes des images. Les visiteurs peuvent ouvrir chaque photo dans la visionneuse, naviguer avec les flèches et utiliser le zoom.</span><span class="en">Each block follows the thesis order: figure number, figure title and image subcaptions. Visitors can open each photo in the viewer, navigate with arrows and use zoom controls.</span></p>
+            </div>
+
+            <section class="master-media-section">
+              <div class="master-media-head">
+                <h4><span class="fr">Essais de traction</span><span class="en">Tension testing</span></h4>
+                <p><span class="fr">Préparation, instrumentation et mise en charge des barres PRFB et PRFV pour l'évaluation du comportement mécanique.</span><span class="en">Preparation, instrumentation and loading of BFRP and GFRP bars to evaluate mechanical behavior.</span></p>
+              </div>
+
+              <div class="report-figure">
+                <div class="report-figure-meta">
+                  <span class="report-figure-number">Figure 4.1</span>
+                  <h5><span class="fr">Préparation des barres de fibre de verre et de basalte pour les tests de traction</span><span class="en">Preparation of glass and basalt fiber bars for tension tests</span></h5>
+                </div>
+                <div class="master-gallery">
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-01-a.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-01-a.jpg" alt="Préparation des barres PRFV et PRFB pour les tests de traction" loading="lazy"><span><span class="fr">Barres PRFV et PRFB</span><span class="en">GFRP and BFRP bars</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-01-b.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-01-b.jpg" alt="Préparation des barres pour les essais de traction" loading="lazy"><span><span class="fr">Préparation des spécimens</span><span class="en">Specimen preparation</span></span></a>
+                </div>
+              </div>
+
+              <div class="report-figure">
+                <div class="report-figure-meta">
+                  <span class="report-figure-number">Figure 4.2</span>
+                  <h5><span class="fr">Mise en place de l'extensomètre de 200 mm</span><span class="en">Installation of the 200 mm extensometer</span></h5>
+                </div>
+                <div class="master-gallery">
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-02.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-02.jpg" alt="Mise en place de l'extensomètre de 200 mm" loading="lazy"><span><span class="fr">Extensomètre de 200 mm</span><span class="en">200 mm extensometer</span></span></a>
+                </div>
+              </div>
+
+              <div class="report-figure">
+                <div class="report-figure-meta">
+                  <span class="report-figure-number">Figure 4.13</span>
+                  <h5><span class="fr">Préparation des spécimens pour les tests de traction avec charges</span><span class="en">Specimen preparation for loaded tension tests</span></h5>
+                </div>
+                <div class="master-gallery">
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-13-a.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-13-a.jpg" alt="Préparation des spécimens pour traction avec charges - étape 1" loading="lazy"><span><span class="fr">Traction avec charges - 1</span><span class="en">Loaded tension - 1</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-13-b.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-13-b.jpg" alt="Préparation des spécimens pour traction avec charges - étape 2" loading="lazy"><span><span class="fr">Traction avec charges - 2</span><span class="en">Loaded tension - 2</span></span></a>
+                </div>
+              </div>
+            </section>
+
+            <section class="master-media-section">
+              <div class="master-media-head">
+                <h4><span class="fr">Essais d'arrachement</span><span class="en">Pullout testing</span></h4>
+                <p><span class="fr">Préparation des spécimens, coulage des blocs, instrumentation et essais d'arrachement pour étudier l'adhérence barre-béton.</span><span class="en">Specimen preparation, concrete casting, instrumentation and pullout testing to study bar-concrete bond.</span></p>
+              </div>
+
+              <div class="report-figure">
+                <div class="report-figure-meta">
+                  <span class="report-figure-number">Figure 4.3</span>
+                  <h5><span class="fr">Préparation des spécimens en fibre de basalte et de verre pour les tests d'arrachement</span><span class="en">Preparation of basalt and glass fiber specimens for pullout tests</span></h5>
+                </div>
+                <div class="master-gallery">
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-03.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-03.jpg" alt="Préparation des spécimens pour les tests d'arrachement" loading="lazy"><span><span class="fr">Préparation des spécimens</span><span class="en">Specimen preparation</span></span></a>
+                </div>
+              </div>
+
+              <div class="report-figure">
+                <div class="report-figure-meta">
+                  <span class="report-figure-number">Figure 4.4</span>
+                  <h5><span class="fr">Remplissage des tubes d'acier avec le ciment expansif et coulage des blocs de béton</span><span class="en">Filling steel tubes with expansive cement and casting concrete blocks</span></h5>
+                </div>
+                <div class="master-gallery">
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-04-a.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-04-a.jpg" alt="Tubes d'acier utilisés pour les essais d'arrachement" loading="lazy"><span><span class="fr">Tubes d'acier</span><span class="en">Steel tubes</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-04-b.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-04-b.jpg" alt="Ciment expansif utilisé pour les essais d'arrachement" loading="lazy"><span><span class="fr">Ciment expansif</span><span class="en">Expansive cement</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-04-c.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-04-c.jpg" alt="Dispositif anti-retenue pour les essais d'arrachement" loading="lazy"><span><span class="fr">Dispositif anti-retenue</span><span class="en">Debonding device</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-04-d.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-04-d.jpg" alt="Coulage des blocs de béton pour les essais d'arrachement" loading="lazy"><span><span class="fr">Coulage du béton</span><span class="en">Concrete casting</span></span></a>
+                </div>
+              </div>
+
+              <div class="report-figure">
+                <div class="report-figure-meta">
+                  <span class="report-figure-number">Figure 4.5</span>
+                  <h5><span class="fr">Blocs de béton pour les essais d'arrachement</span><span class="en">Concrete blocks for pullout tests</span></h5>
+                </div>
+                <div class="master-gallery">
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-05.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-05.jpg" alt="Blocs de béton pour les essais d'arrachement" loading="lazy"><span><span class="fr">Blocs de béton</span><span class="en">Concrete blocks</span></span></a>
+                </div>
+              </div>
+
+              <div class="report-figure">
+                <div class="report-figure-meta">
+                  <span class="report-figure-number">Figure 4.6</span>
+                  <h5><span class="fr">Procédure de mise en place d'un ensemble d'échantillon sur la machine MTS</span><span class="en">Procedure for placing a specimen assembly on the MTS machine</span></h5>
+                </div>
+                <div class="master-gallery">
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-06-a.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-06-a.jpg" alt="Installation d'un dispositif pour maintenir le bloc de béton à sa place" loading="lazy"><span><span class="fr">Maintien du bloc de béton</span><span class="en">Concrete block support</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-06-b.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-06-b.jpg" alt="Installation du LVDT sur le bloc de béton" loading="lazy"><span><span class="fr">Installation du LVDT</span><span class="en">LVDT installation</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-06-c.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-06-c.jpg" alt="Mise en place de l'ensemble de l'échantillon dans la machine MTS" loading="lazy"><span><span class="fr">Ensemble dans la MTS</span><span class="en">Assembly in MTS</span></span></a>
+                </div>
+              </div>
+
+              <div class="report-figure">
+                <div class="report-figure-meta">
+                  <span class="report-figure-number">Figure 4.7</span>
+                  <h5><span class="fr">Blocs de béton après l'arrachement des barres</span><span class="en">Concrete blocks after bar pullout</span></h5>
+                </div>
+                <div class="master-gallery">
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-07.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-07.jpg" alt="Blocs de béton après l'arrachement des barres" loading="lazy"><span><span class="fr">Après arrachement</span><span class="en">After pullout</span></span></a>
+                </div>
+              </div>
+            </section>
+
+            <section class="master-media-section">
+              <div class="master-media-head">
+                <h4><span class="fr">Essais de cisaillement</span><span class="en">Shear testing</span></h4>
+                <p><span class="fr">Montages de cisaillement interlaminaire et transversal, incluant la machine MTS 647 et le dispositif de cisaillement transversal.</span><span class="en">Interlaminar and transverse shear setups, including the MTS 647 machine and transverse shear device.</span></p>
+              </div>
+
+              <div class="report-figure">
+                <div class="report-figure-meta">
+                  <span class="report-figure-number">Figure 4.8</span>
+                  <h5><span class="fr">Configuration de la portée avec les détails des distances entre les appuis</span><span class="en">Span configuration with support distance details</span></h5>
+                </div>
+                <div class="master-gallery">
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-08.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-08.jpg" alt="Configuration de la portée pour le cisaillement interlaminaire" loading="lazy"><span><span class="fr">Détails de la norme</span><span class="en">Standard details</span></span></a>
+                </div>
+              </div>
+
+              <div class="report-figure">
+                <div class="report-figure-meta">
+                  <span class="report-figure-number">Figure 4.9</span>
+                  <h5><span class="fr">Mise en place des barres de PRFB et PRFV sur les appuis</span><span class="en">Placement of BFRP and GFRP bars on the supports</span></h5>
+                </div>
+                <div class="master-gallery">
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-09-a.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-09-a.jpg" alt="Positionnement de la barre de PRFB sur les lignes tracées sur les appuis" loading="lazy"><span><span class="fr">Positionnement PRFB</span><span class="en">BFRP positioning</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-09-b.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-09-b.jpg" alt="Positionnement de la barre de PRFV sur les lignes tracées sur les appuis" loading="lazy"><span><span class="fr">Positionnement PRFV</span><span class="en">GFRP positioning</span></span></a>
+                </div>
+              </div>
+
+              <div class="report-figure">
+                <div class="report-figure-meta">
+                  <span class="report-figure-number">Figure 4.10</span>
+                  <h5><span class="fr">Composants de la machine hydraulique MTS 647 conçue pour les essais de cisaillement</span><span class="en">Components of the MTS 647 hydraulic machine designed for shear tests</span></h5>
+                </div>
+                <div class="master-gallery">
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-10-a.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-10-a.jpg" alt="Mâchoire hydraulique inférieure de la machine MTS 647" loading="lazy"><span><span class="fr">Mâchoire hydraulique inférieure</span><span class="en">Lower hydraulic grip</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-10-b.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-10-b.jpg" alt="Mâchoire hydraulique supérieure de la machine MTS 647" loading="lazy"><span><span class="fr">Mâchoire hydraulique supérieure</span><span class="en">Upper hydraulic grip</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-10-c.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-10-c.jpg" alt="Machine hydraulique MTS 647 conçue pour les essais de cisaillement" loading="lazy"><span><span class="fr">Machine hydraulique MTS 647</span><span class="en">MTS 647 hydraulic machine</span></span></a>
+                </div>
+              </div>
+
+              <div class="report-figure">
+                <div class="report-figure-meta">
+                  <span class="report-figure-number">Figure 4.11</span>
+                  <h5><span class="fr">Dispositif utilisé dans les essais de cisaillement transversal</span><span class="en">Device used for transverse shear tests</span></h5>
+                </div>
+                <div class="master-gallery">
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-11-a.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-11-a.jpg" alt="Mise en place de la barre sur les deux lames inférieures" loading="lazy"><span><span class="fr">Barre sur les lames inférieures</span><span class="en">Bar on lower blades</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-11-b.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-11-b.jpg" alt="Fixation de la barre avec les vis" loading="lazy"><span><span class="fr">Fixation avec les vis</span><span class="en">Screw fixation</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-11-c.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-11-c.jpg" alt="Descente de la lame supérieure sur la barre" loading="lazy"><span><span class="fr">Descente de la lame supérieure</span><span class="en">Upper blade lowering</span></span></a>
+                </div>
+              </div>
+            </section>
+
+            <section class="master-media-section">
+              <div class="master-media-head">
+                <h4><span class="fr">Conditionnement, section effective et teneur en fibres</span><span class="en">Conditioning, effective area and fiber content</span></h4>
+                <p><span class="fr">Préparation des spécimens en solution alcaline, mesures de section effective, teneur en fibres et absorption d'humidité.</span><span class="en">Specimen preparation in alkaline solution, effective area measurements, fiber content and moisture absorption.</span></p>
+              </div>
+
+              <div class="report-figure">
+                <div class="report-figure-meta">
+                  <span class="report-figure-number">Figure 4.12</span>
+                  <h5><span class="fr">Préparation des spécimens pour les tests de traction sans charges</span><span class="en">Specimen preparation for unloaded tension tests</span></h5>
+                </div>
+                <div class="master-gallery">
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-12-a.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-12-a.jpg" alt="Barres dans la solution alcaline" loading="lazy"><span><span class="fr">Solution alcaline - 1</span><span class="en">Alkaline solution - 1</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-12-b.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-12-b.jpg" alt="Barres conditionnées dans la solution alcaline" loading="lazy"><span><span class="fr">Solution alcaline - 2</span><span class="en">Alkaline solution - 2</span></span></a>
+                </div>
+              </div>
+
+              <div class="report-figure">
+                <div class="report-figure-meta">
+                  <span class="report-figure-number">Figure 4.14</span>
+                  <h5><span class="fr">Procédure pour déterminer la section effective</span><span class="en">Procedure used to determine the effective area</span></h5>
+                </div>
+                <div class="master-gallery">
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-14-a.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-14-a.jpg" alt="Longueur du spécimen pour la section effective" loading="lazy"><span><span class="fr">Longueur du spécimen</span><span class="en">Specimen length</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-14-b.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-14-b.jpg" alt="Poids du spécimen sec pour la section effective" loading="lazy"><span><span class="fr">Poids du spécimen sec</span><span class="en">Dry specimen weight</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-14-c.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-14-c.jpg" alt="Poids du spécimen dans l'eau" loading="lazy"><span><span class="fr">Poids dans l'eau</span><span class="en">Weight in water</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-14-d.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-14-d.jpg" alt="Poids du récipient avec l'eau" loading="lazy"><span><span class="fr">Récipient avec l'eau</span><span class="en">Container with water</span></span></a>
+                </div>
+              </div>
+
+              <div class="report-figure">
+                <div class="report-figure-meta">
+                  <span class="report-figure-number">Figure 4.15</span>
+                  <h5><span class="fr">Teneur en fibres des barres sablées et non sablées</span><span class="en">Fiber content of sand-coated and non-sand-coated bars</span></h5>
+                </div>
+                <div class="master-gallery">
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-15-a.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-15-a.jpg" alt="Barres en PRFV sablées de type 1" loading="lazy"><span><span class="fr">PRFV sablées - type 1</span><span class="en">Sanded GFRP - type 1</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-15-b.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-15-b.jpg" alt="Barres en PRFB sablées de type 1" loading="lazy"><span><span class="fr">PRFB sablées - type 1</span><span class="en">Sanded BFRP - type 1</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-15-c.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-15-c.jpg" alt="Barres en PRFB non sablées de type 2" loading="lazy"><span><span class="fr">PRFB non sablées - type 2</span><span class="en">Non-sanded BFRP - type 2</span></span></a>
+                </div>
+              </div>
+
+              <div class="report-figure">
+                <div class="report-figure-meta">
+                  <span class="report-figure-number">Figure 4.16</span>
+                  <h5><span class="fr">Procédure pour déterminer la teneur en fibres : exemple avec une barre en fibre de verre sablée</span><span class="en">Procedure for determining fiber content: example with a sand-coated glass fiber bar</span></h5>
+                </div>
+                <div class="master-gallery">
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-16-a.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-16-a.jpg" alt="Poids du contenant vide" loading="lazy"><span><span class="fr">Poids du contenant vide</span><span class="en">Empty container weight</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-16-b.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-16-b.jpg" alt="Poids du spécimen fibres et résine" loading="lazy"><span><span class="fr">Fibres et résine</span><span class="en">Fibers and resin</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-16-c.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-16-c.jpg" alt="Poids des résidus fibres et sable" loading="lazy"><span><span class="fr">Résidus fibres et sable</span><span class="en">Fiber and sand residue</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-16-d.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-16-d.jpg" alt="Poids du sable" loading="lazy"><span><span class="fr">Poids du sable</span><span class="en">Sand weight</span></span></a>
+                </div>
+              </div>
+
+              <div class="report-figure">
+                <div class="report-figure-meta">
+                  <span class="report-figure-number">Figure 4.17</span>
+                  <h5><span class="fr">Taux d'absorption des barres non sablées</span><span class="en">Absorption rate of non-sand-coated bars</span></h5>
+                </div>
+                <div class="master-gallery">
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-17-a.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-17-a.jpg" alt="Barres non sablées utilisées pour l'absorption" loading="lazy"><span><span class="fr">Barres non sablées</span><span class="en">Non-sanded bars</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-17-b.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-17-b.jpg" alt="Taille du spécimen" loading="lazy"><span><span class="fr">Taille du spécimen</span><span class="en">Specimen size</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-17-c.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-17-c.jpg" alt="Température du four" loading="lazy"><span><span class="fr">Température du four</span><span class="en">Oven temperature</span></span></a>
+                </div>
+              </div>
+            </section>
+
+            <section class="master-media-section">
+              <div class="master-media-head">
+                <h4><span class="fr">Analyses thermiques, FTIR et MEB</span><span class="en">Thermal, FTIR and SEM analyses</span></h4>
+                <p><span class="fr">Préparation des spécimens et équipements utilisés pour les analyses physico-chimiques et microscopiques.</span><span class="en">Specimen preparation and equipment used for physicochemical and microscopic analyses.</span></p>
+              </div>
+
+              <div class="report-figure">
+                <div class="report-figure-meta">
+                  <span class="report-figure-number">Figure 4.18</span>
+                  <h5><span class="fr">Préparation du spécimen pour le test de détermination de la température de transition vitreuse</span><span class="en">Specimen preparation for the glass transition temperature test</span></h5>
+                </div>
+                <div class="master-gallery">
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-18-a.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-18-a.jpg" alt="Préparation du spécimen pour la transition vitreuse - étape 1" loading="lazy"><span><span class="fr">Transition vitreuse - 1</span><span class="en">Glass transition - 1</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-18-b.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-18-b.jpg" alt="Préparation du spécimen pour la transition vitreuse - étape 2" loading="lazy"><span><span class="fr">Transition vitreuse - 2</span><span class="en">Glass transition - 2</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-18-c.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-18-c.jpg" alt="Préparation du spécimen pour la transition vitreuse - étape 3" loading="lazy"><span><span class="fr">Transition vitreuse - 3</span><span class="en">Glass transition - 3</span></span></a>
+                </div>
+              </div>
+
+              <div class="report-figure">
+                <div class="report-figure-meta">
+                  <span class="report-figure-number">Figure 4.19</span>
+                  <h5><span class="fr">Analyseur thermique utilisé pour la température de transition vitreuse</span><span class="en">Thermal analyzer used for glass transition temperature</span></h5>
+                </div>
+                <div class="master-gallery">
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-19.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-19.jpg" alt="Analyseur thermique pour la transition vitreuse" loading="lazy"><span><span class="fr">Analyseur thermique</span><span class="en">Thermal analyzer</span></span></a>
+                </div>
+              </div>
+
+              <div class="report-figure">
+                <div class="report-figure-meta">
+                  <span class="report-figure-number">Figure 4.20</span>
+                  <h5><span class="fr">Spectromètre FT/IR-4600 FTIR</span><span class="en">FT/IR-4600 FTIR spectrometer</span></h5>
+                </div>
+                <div class="master-gallery">
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-20.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-20.jpg" alt="Spectromètre FT/IR-4600 FTIR" loading="lazy"><span><span class="fr">Spectromètre FTIR</span><span class="en">FTIR spectrometer</span></span></a>
+                </div>
+              </div>
+
+              <div class="report-figure">
+                <div class="report-figure-meta">
+                  <span class="report-figure-number">Figure 4.21</span>
+                  <h5><span class="fr">Différents défauts microscopiques dans les barres en PRF</span><span class="en">Different microscopic defects in FRP bars</span></h5>
+                </div>
+                <div class="master-gallery">
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-21.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-21.jpg" alt="Différents défauts microscopiques dans les barres en PRF" loading="lazy"><span><span class="fr">Défauts microscopiques</span><span class="en">Microscopic defects</span></span></a>
+                </div>
+              </div>
+
+              <div class="report-figure">
+                <div class="report-figure-meta">
+                  <span class="report-figure-number">Figure 4.22</span>
+                  <h5><span class="fr">Procédure de test au microscope électronique à balayage (MEB)</span><span class="en">Scanning electron microscope (SEM) test procedure</span></h5>
+                </div>
+                <div class="master-gallery">
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-22-a.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-22-a.jpg" alt="Procédure de test MEB - étape 0" loading="lazy"><span><span class="fr">MEB - étape 0</span><span class="en">SEM - step 0</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-22-b.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-22-b.jpg" alt="Procédure de test MEB - étape 1" loading="lazy"><span><span class="fr">MEB - étape 1</span><span class="en">SEM - step 1</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-22-c.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-22-c.jpg" alt="Procédure de test MEB - étape 2" loading="lazy"><span><span class="fr">MEB - étape 2</span><span class="en">SEM - step 2</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-22-d.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-22-d.jpg" alt="Procédure de test MEB - étape 3" loading="lazy"><span><span class="fr">MEB - étape 3</span><span class="en">SEM - step 3</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-22-e.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-4-22-e.jpg" alt="Procédure de test MEB - étape 4" loading="lazy"><span><span class="fr">MEB - étape 4</span><span class="en">SEM - step 4</span></span></a>
+                </div>
+              </div>
+            </section>
+
+            <section class="master-media-section">
+              <div class="master-media-head">
+                <h4><span class="fr">Résultats et observations microscopiques</span><span class="en">Results and microscopic observations</span></h4>
+                <p><span class="fr">Images et analyses utilisées pour comparer les barres de référence et les barres conditionnées.</span><span class="en">Images and analyses used to compare reference bars and conditioned bars.</span></p>
+              </div>
+
+              <div class="report-figure">
+                <div class="report-figure-meta">
+                  <span class="report-figure-number">Figure 5.1</span>
+                  <h5><span class="fr">Analyse par infrarouge des barres en PRFB</span><span class="en">Infrared analysis of BFRP bars</span></h5>
+                </div>
+                <div class="master-gallery">
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-5-01.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-5-01.jpg" alt="Analyse par infrarouge des barres en PRFB" loading="lazy"><span><span class="fr">FTIR - PRFB</span><span class="en">FTIR - BFRP</span></span></a>
+                </div>
+              </div>
+
+              <div class="report-figure">
+                <div class="report-figure-meta">
+                  <span class="report-figure-number">Figure 5.2</span>
+                  <h5><span class="fr">Analyse par infrarouge des barres en PRFV</span><span class="en">Infrared analysis of GFRP bars</span></h5>
+                </div>
+                <div class="master-gallery">
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-5-02.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-5-02.jpg" alt="Analyse par infrarouge des barres en PRFV" loading="lazy"><span><span class="fr">FTIR - PRFV</span><span class="en">FTIR - GFRP</span></span></a>
+                </div>
+              </div>
+
+              <div class="report-figure">
+                <div class="report-figure-meta">
+                  <span class="report-figure-number">Figure 5.3</span>
+                  <h5><span class="fr">Balayage MEB d'une coupe transversale des barres de basalte #3 de type 1</span><span class="en">SEM scan of a cross-section of type 1 basalt bars #3</span></h5>
+                </div>
+                <div class="master-gallery">
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-5-03-a.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-5-03-a.jpg" alt="Barre de basalte de référence observée au MEB" loading="lazy"><span><span class="fr">Basalte référence - 1</span><span class="en">Reference basalt - 1</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-5-03-b.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-5-03-b.jpg" alt="Barre de basalte de référence observée au MEB - vue 2" loading="lazy"><span><span class="fr">Basalte référence - 2</span><span class="en">Reference basalt - 2</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-5-03-c.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-5-03-c.jpg" alt="Barre de basalte conditionnée observée au MEB" loading="lazy"><span><span class="fr">Basalte conditionné - 1</span><span class="en">Conditioned basalt - 1</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-5-03-d.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-5-03-d.jpg" alt="Barre de basalte conditionnée observée au MEB - vue 2" loading="lazy"><span><span class="fr">Basalte conditionné - 2</span><span class="en">Conditioned basalt - 2</span></span></a>
+                </div>
+              </div>
+
+              <div class="report-figure">
+                <div class="report-figure-meta">
+                  <span class="report-figure-number">Figure 5.4</span>
+                  <h5><span class="fr">Balayage MEB d'une coupe transversale des barres de verre #3 de type 1</span><span class="en">SEM scan of a cross-section of type 1 glass bars #3</span></h5>
+                </div>
+                <div class="master-gallery">
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-5-04-a.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-5-04-a.jpg" alt="Barre de verre de référence observée au MEB" loading="lazy"><span><span class="fr">Verre référence - 1</span><span class="en">Reference glass - 1</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-5-04-b.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-5-04-b.jpg" alt="Barre de verre de référence observée au MEB - vue 2" loading="lazy"><span><span class="fr">Verre référence - 2</span><span class="en">Reference glass - 2</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-5-04-c.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-5-04-c.jpg" alt="Barre de verre conditionnée observée au MEB" loading="lazy"><span><span class="fr">Verre conditionné - 1</span><span class="en">Conditioned glass - 1</span></span></a>
+                  <a href="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-5-04-d.jpg" data-gallery-item><img src="Photo%20ma%C3%AEtrise/Rapport%20figures/web/rapport-fig-5-04-d.jpg" alt="Barre de verre conditionnée observée au MEB - vue 2" loading="lazy"><span><span class="fr">Verre conditionné - 2</span><span class="en">Conditioned glass - 2</span></span></a>
+                </div>
+              </div>
+            </section>
+          </div>
+        </article>
+
+        <div class="project-grid">
           <article class="project-card">
             <h3><span class="fr">Impression 3D et mécanique des roches</span><span class="en">3D Printing and Rock Mechanics</span></h3>
             <p class="date"><span class="fr">Avr. 2021 - Août 2021</span><span class="en">Apr. 2021 - Aug. 2021</span></p>
@@ -2084,6 +3744,72 @@
     <p>© 2026 Wassim Abdelkafi - Génie civil</p>
   </footer>
 
+  <div class="viewer-overlay is-hidden" id="photo-viewer" role="dialog" aria-modal="true" aria-label="Visionneuse photo" aria-hidden="true">
+    <div class="viewer-panel">
+      <button class="viewer-close" type="button" data-photo-close aria-label="Fermer la photo">&times;</button>
+      <div class="photo-stage">
+        <button class="viewer-arrow prev" type="button" data-photo-prev aria-label="Photo précédente">‹</button>
+        <div class="photo-frame" id="photo-frame">
+          <img id="photo-viewer-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="">
+        </div>
+        <button class="viewer-arrow next" type="button" data-photo-next aria-label="Photo suivante">›</button>
+        <div class="photo-details" aria-live="polite">
+          <div class="photo-detail-top">
+            <span class="photo-figure" id="photo-viewer-figure"></span>
+            <span class="photo-test-type" id="photo-viewer-test"></span>
+          </div>
+          <span class="photo-caption" id="photo-viewer-caption"></span>
+          <p class="photo-description" id="photo-viewer-description"></p>
+          <span class="photo-source" id="photo-viewer-source"></span>
+        </div>
+        <div class="photo-meta">
+          <span class="photo-tools" aria-label="Zoom de la photo">
+            <button class="photo-zoom-btn" type="button" data-photo-zoom="out" aria-label="Réduire la photo">-</button>
+            <button class="photo-zoom-readout" type="button" data-photo-zoom="reset" id="photo-zoom-readout" aria-label="Réinitialiser le zoom">100%</button>
+            <button class="photo-zoom-btn" type="button" data-photo-zoom="in" aria-label="Agrandir la photo">+</button>
+          </span>
+          <span class="photo-counter" id="photo-viewer-counter"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="viewer-overlay is-hidden" id="pdf-viewer" role="dialog" aria-modal="true" aria-label="Rapport de maîtrise" aria-hidden="true">
+    <div class="viewer-panel pdf-panel">
+      <button class="viewer-close" type="button" data-pdf-close aria-label="Fermer le rapport">&times;</button>
+      <div class="pdf-head">
+        <div>
+          <h3><span class="fr">Rapport de maîtrise</span><span class="en">Master's report</span></h3>
+          <p>
+            <span class="fr">Consultation intégrée au site, sans bouton de téléchargement affiché.</span>
+            <span class="en">Integrated website preview with no visible download button.</span>
+          </p>
+        </div>
+      </div>
+      <div class="pdf-reader" id="master-report-reader" data-pdf-src="M%C3%A9moire_de_maitrise_mise_a_jour/Abdelkafi_Wassim_MScA_2024.pdf">
+        <div class="pdf-toolbar" aria-label="Navigation du rapport de maîtrise">
+          <button class="pdf-page-btn" type="button" data-pdf-prev-page>
+            <span class="fr">Page précédente</span>
+            <span class="en">Previous page</span>
+          </button>
+          <span class="pdf-page-status" id="pdf-page-status">Page 1</span>
+          <button class="pdf-page-btn" type="button" data-pdf-next-page>
+            <span class="fr">Page suivante</span>
+            <span class="en">Next page</span>
+          </button>
+        </div>
+        <div class="pdf-canvas-wrap" oncontextmenu="return false;">
+          <canvas id="master-report-canvas" aria-label="Page du rapport de maîtrise"></canvas>
+          <p class="pdf-loading" id="pdf-loading">
+            <span class="fr">Chargement du rapport...</span>
+            <span class="en">Loading report...</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="galleryData.js"></script>
   <script>
     (function () {
       var body = document.body;
@@ -2101,8 +3827,43 @@
       var welcomeCloseButtons = document.querySelectorAll("[data-welcome-close]");
       var cookieConsent = document.getElementById("cookie-consent");
       var cookieConsentButtons = document.querySelectorAll("[data-cookie-consent]");
+      var photoViewer = document.getElementById("photo-viewer");
+      var photoFrame = document.getElementById("photo-frame");
+      var photoViewerImage = document.getElementById("photo-viewer-image");
+      var photoViewerFigure = document.getElementById("photo-viewer-figure");
+      var photoViewerTest = document.getElementById("photo-viewer-test");
+      var photoViewerCaption = document.getElementById("photo-viewer-caption");
+      var photoViewerDescription = document.getElementById("photo-viewer-description");
+      var photoViewerSource = document.getElementById("photo-viewer-source");
+      var photoViewerCounter = document.getElementById("photo-viewer-counter");
+      var experimentalGalleries = document.getElementById("experimental-galleries");
+      var photoCloseButtons = document.querySelectorAll("[data-photo-close]");
+      var photoPrevButtons = document.querySelectorAll("[data-photo-prev]");
+      var photoNextButtons = document.querySelectorAll("[data-photo-next]");
+      var photoZoomButtons = document.querySelectorAll("[data-photo-zoom]");
+      var photoZoomReadout = document.getElementById("photo-zoom-readout");
+      var pdfViewer = document.getElementById("pdf-viewer");
+      var pdfReader = document.getElementById("master-report-reader");
+      var pdfCanvas = document.getElementById("master-report-canvas");
+      var pdfLoading = document.getElementById("pdf-loading");
+      var pdfPageStatus = document.getElementById("pdf-page-status");
+      var pdfOpenButtons = document.querySelectorAll("[data-pdf-open]");
+      var pdfCloseButtons = document.querySelectorAll("[data-pdf-close]");
+      var pdfPrevPageButtons = document.querySelectorAll("[data-pdf-prev-page]");
+      var pdfNextPageButtons = document.querySelectorAll("[data-pdf-next-page]");
       var currentZoom = 100;
       var currentLang = "fr";
+      var currentPhotoIndex = 0;
+      var currentPhotoZoom = 100;
+      var photoFitWidth = 0;
+      var photoFitHeight = 0;
+      var photoGalleryItems = [];
+      var carouselStates = [];
+      var pdfDocument = null;
+      var pdfCurrentPage = 1;
+      var pdfRendering = false;
+      var pdfPendingPage = null;
+      var pdfJsPromise = null;
       var contactEmail = "contact@wassimabdelkafi.com";
       var files = {
         fr: {
@@ -2137,12 +3898,24 @@
             link.setAttribute("href", files[currentLang].letter);
           }
         });
+
+        renderExperimentalGalleries();
+
+        if (isOverlayOpen(photoViewer)) {
+          updatePhotoViewer(currentPhotoIndex);
+        }
+
+        updatePdfControls();
+        syncTopbarSpace();
       }
 
       function applyZoom(nextZoom) {
         currentZoom = Math.min(170, Math.max(70, Math.round(nextZoom / 10) * 10));
         var baseZoomMultiplier = window.matchMedia("(max-width: 760px)").matches ? 1 : 1.2;
-        document.documentElement.style.setProperty("--site-zoom", String(currentZoom / 100 * baseZoomMultiplier));
+        var siteZoom = currentZoom / 100 * baseZoomMultiplier;
+        document.documentElement.style.setProperty("--site-zoom", String(siteZoom));
+        document.documentElement.style.setProperty("--viewer-width", window.innerWidth / siteZoom + "px");
+        document.documentElement.style.setProperty("--viewer-height", window.innerHeight / siteZoom + "px");
 
         if (zoomReadout) {
           zoomReadout.textContent = currentZoom + "%";
@@ -2152,6 +3925,20 @@
           var action = button.getAttribute("data-zoom");
           button.disabled = action === "down" && currentZoom <= 70 || action === "up" && currentZoom >= 170;
         });
+      }
+
+      function syncTopbarSpace() {
+        if (!topbar) {
+          return;
+        }
+
+        if (body.classList.contains("welcome-active")) {
+          document.documentElement.style.setProperty("--topbar-space", "0px");
+          return;
+        }
+
+        var extraSpace = window.matchMedia("(max-width: 760px)").matches ? 16 : 40;
+        document.documentElement.style.setProperty("--topbar-space", topbar.offsetHeight + extraSpace + "px");
       }
 
       function getCookieConsentChoice() {
@@ -2208,6 +3995,8 @@
       }
 
       function updateChrome() {
+        syncTopbarSpace();
+
         var scrollTop = window.scrollY || document.documentElement.scrollTop;
         var height = document.documentElement.scrollHeight - window.innerHeight;
         var percent = height > 0 ? scrollTop / height * 100 : 0;
@@ -2223,11 +4012,580 @@
 
       function closeWelcomeMessage() {
         if (!welcomeMessage) {
+          body.classList.remove("welcome-active");
           return;
         }
 
         welcomeMessage.classList.add("is-hidden");
         welcomeMessage.setAttribute("aria-hidden", "true");
+        body.classList.remove("welcome-active");
+        syncTopbarSpace();
+      }
+
+      function isOverlayOpen(overlay) {
+        return overlay && !overlay.classList.contains("is-hidden");
+      }
+
+      function syncViewerLock() {
+        body.classList.toggle("viewer-open", isOverlayOpen(photoViewer) || isOverlayOpen(pdfViewer));
+      }
+
+      function getLocalizedText(element) {
+        if (!element) {
+          return "";
+        }
+
+        var localized = element.querySelector(currentLang === "en" ? ".en" : ".fr");
+        return (localized || element).textContent.trim();
+      }
+
+      function getLocalizedItemText(item, key) {
+        if (!item) {
+          return "";
+        }
+
+        if (currentLang === "en" && item[key + "En"]) {
+          return item[key + "En"];
+        }
+
+        return item[key] || item[key + "Fr"] || "";
+      }
+
+      function clearCarouselTimers() {
+        carouselStates.forEach(function (state) {
+          window.clearInterval(state.timer);
+        });
+        carouselStates = [];
+      }
+
+      function normalizeGalleryItem(item, index) {
+        return Object.assign({}, item, {
+          id: "gallery-photo-" + index,
+          index: index
+        });
+      }
+
+      function getGroupedGalleryItems(items) {
+        var categories = [];
+        var categoryMap = {};
+
+        items.forEach(function (item) {
+          var categoryKey = item.category || "";
+          var testKey = item.testType || "";
+
+          if (!categoryMap[categoryKey]) {
+            categoryMap[categoryKey] = {
+              category: categoryKey,
+              categoryEn: item.categoryEn || "",
+              tests: [],
+              testMap: {}
+            };
+            categories.push(categoryMap[categoryKey]);
+          }
+
+          if (!categoryMap[categoryKey].testMap[testKey]) {
+            categoryMap[categoryKey].testMap[testKey] = {
+              testType: testKey,
+              testTypeEn: item.testTypeEn || "",
+              items: []
+            };
+            categoryMap[categoryKey].tests.push(categoryMap[categoryKey].testMap[testKey]);
+          }
+
+          categoryMap[categoryKey].testMap[testKey].items.push(item);
+        });
+
+        return categories;
+      }
+
+      function makeElement(tagName, className, text) {
+        var element = document.createElement(tagName);
+
+        if (className) {
+          element.className = className;
+        }
+
+        if (text) {
+          element.textContent = text;
+        }
+
+        return element;
+      }
+
+      function updateCarouselState(state, nextIndex) {
+        var total = state.items.length;
+
+        if (!total) {
+          return;
+        }
+
+        state.current = (nextIndex + total) % total;
+        state.slides.forEach(function (slide, slideIndex) {
+          slide.classList.toggle("is-active", slideIndex === state.current);
+          slide.setAttribute("aria-hidden", slideIndex === state.current ? "false" : "true");
+          slide.tabIndex = slideIndex === state.current ? 0 : -1;
+        });
+        state.counter.textContent = state.current + 1 + " / " + total;
+      }
+
+      function startCarousel(state) {
+        window.clearInterval(state.timer);
+
+        if (state.items.length <= 1) {
+          return;
+        }
+
+        state.timer = window.setInterval(function () {
+          updateCarouselState(state, state.current + 1);
+        }, 2000);
+      }
+
+      function stopCarousel(state) {
+        window.clearInterval(state.timer);
+      }
+
+      function renderCarousel(test) {
+        var card = makeElement("article", "experimental-test-card");
+        var head = makeElement("div", "experimental-test-head");
+        var badge = makeElement("span", "", currentLang === "en" ? "Test" : "Essai");
+        var title = makeElement("h5", "", currentLang === "en" && test.testTypeEn ? test.testTypeEn : test.testType);
+        var carousel = makeElement("div", "experiment-carousel");
+        var viewport = makeElement("div", "experiment-carousel-viewport");
+        var prevButton = makeElement("button", "experiment-control prev", "‹");
+        var nextButton = makeElement("button", "experiment-control next", "›");
+        var counter = makeElement("span", "experiment-counter");
+        var state = {
+          current: 0,
+          counter: counter,
+          items: test.items,
+          slides: [],
+          timer: null
+        };
+
+        prevButton.type = "button";
+        nextButton.type = "button";
+        prevButton.setAttribute("aria-label", currentLang === "en" ? "Previous image" : "Image précédente");
+        nextButton.setAttribute("aria-label", currentLang === "en" ? "Next image" : "Image suivante");
+
+        test.items.forEach(function (item, itemIndex) {
+          var slide = makeElement("button", "experiment-slide");
+          var image = document.createElement("img");
+          var titleText = getLocalizedItemText(item, "title");
+
+          slide.type = "button";
+          slide.setAttribute("aria-label", currentLang === "en" ? "Open image details" : "Ouvrir les détails de l'image");
+          slide.addEventListener("click", function () {
+            openPhotoViewer(item.index);
+          });
+
+          image.src = item.src;
+          image.alt = titleText;
+          image.loading = itemIndex === 0 ? "eager" : "lazy";
+          slide.appendChild(image);
+          viewport.appendChild(slide);
+          state.slides.push(slide);
+        });
+
+        prevButton.addEventListener("click", function () {
+          updateCarouselState(state, state.current - 1);
+          startCarousel(state);
+        });
+
+        nextButton.addEventListener("click", function () {
+          updateCarouselState(state, state.current + 1);
+          startCarousel(state);
+        });
+
+        carousel.addEventListener("mouseenter", function () {
+          stopCarousel(state);
+        });
+
+        carousel.addEventListener("mouseleave", function () {
+          startCarousel(state);
+        });
+
+        carousel.addEventListener("focusin", function () {
+          stopCarousel(state);
+        });
+
+        carousel.addEventListener("focusout", function () {
+          startCarousel(state);
+        });
+
+        head.appendChild(badge);
+        head.appendChild(title);
+        carousel.appendChild(viewport);
+        carousel.appendChild(prevButton);
+        carousel.appendChild(nextButton);
+        carousel.appendChild(counter);
+        card.appendChild(head);
+        card.appendChild(carousel);
+        carouselStates.push(state);
+        updateCarouselState(state, 0);
+        startCarousel(state);
+
+        return card;
+      }
+
+      function renderExperimentalGalleries() {
+        if (!experimentalGalleries || !Array.isArray(window.masterGalleryData)) {
+          return;
+        }
+
+        clearCarouselTimers();
+        photoGalleryItems = window.masterGalleryData.map(normalizeGalleryItem);
+        experimentalGalleries.textContent = "";
+
+        getGroupedGalleryItems(photoGalleryItems).forEach(function (category) {
+          var categorySection = makeElement("section", "experimental-category");
+          var head = makeElement("div", "experimental-category-head");
+          var title = makeElement("h4", "", currentLang === "en" && category.categoryEn ? category.categoryEn : category.category);
+          var intro = makeElement("p", "", currentLang === "en"
+            ? "Each carousel groups the experimental photos by test type. Open an image to view the figure number, title and detailed notes from the master's report."
+            : "Chaque carrousel regroupe les photos expérimentales par type d'essai. Ouvrez une image pour consulter le numéro de figure, le titre et les détails issus du mémoire.");
+          var grid = makeElement("div", "experimental-test-grid");
+
+          head.appendChild(title);
+          head.appendChild(intro);
+          category.tests.forEach(function (test) {
+            grid.appendChild(renderCarousel(test));
+          });
+          categorySection.appendChild(head);
+          categorySection.appendChild(grid);
+          experimentalGalleries.appendChild(categorySection);
+        });
+      }
+
+      function updatePhotoFitSize() {
+        if (!photoFrame || !photoViewerImage || !photoViewerImage.naturalWidth || !photoViewerImage.naturalHeight) {
+          return false;
+        }
+
+        var frameWidth = photoFrame.clientWidth || photoFrame.getBoundingClientRect().width;
+        var frameHeight = photoFrame.clientHeight || photoFrame.getBoundingClientRect().height;
+
+        if (!frameWidth || !frameHeight) {
+          return false;
+        }
+
+        var ratio = Math.min(frameWidth / photoViewerImage.naturalWidth, frameHeight / photoViewerImage.naturalHeight);
+
+        if (!isFinite(ratio) || ratio <= 0) {
+          return false;
+        }
+
+        photoFitWidth = Math.max(1, Math.floor(photoViewerImage.naturalWidth * ratio));
+        photoFitHeight = Math.max(1, Math.floor(photoViewerImage.naturalHeight * ratio));
+        return true;
+      }
+
+      function applyPhotoZoom(nextZoom) {
+        currentPhotoZoom = Math.min(300, Math.max(100, Math.round(nextZoom)));
+        var hasFitSize = updatePhotoFitSize();
+
+        if (photoViewerImage) {
+          if (hasFitSize) {
+            var scale = currentPhotoZoom / 100;
+            photoViewerImage.style.width = Math.round(photoFitWidth * scale) + "px";
+            photoViewerImage.style.height = Math.round(photoFitHeight * scale) + "px";
+          }
+
+          photoViewerImage.classList.toggle("is-zoomed", currentPhotoZoom > 100);
+        }
+
+        if (photoFrame) {
+          photoFrame.classList.toggle("is-zoomed", currentPhotoZoom > 100);
+        }
+
+        if (photoZoomReadout) {
+          photoZoomReadout.textContent = currentPhotoZoom + "%";
+        }
+
+        photoZoomButtons.forEach(function (button) {
+          var action = button.getAttribute("data-photo-zoom");
+          button.disabled = action === "out" && currentPhotoZoom <= 100 || action === "in" && currentPhotoZoom >= 300;
+        });
+
+        if (photoFrame) {
+          if (currentPhotoZoom === 100) {
+            photoFrame.scrollTop = 0;
+            photoFrame.scrollLeft = 0;
+          } else {
+            requestAnimationFrame(function () {
+              photoFrame.scrollLeft = Math.max(0, (photoFrame.scrollWidth - photoFrame.clientWidth) / 2);
+              photoFrame.scrollTop = Math.max(0, (photoFrame.scrollHeight - photoFrame.clientHeight) / 2);
+            });
+          }
+        }
+      }
+
+      function changePhotoZoom(action) {
+        if (action === "in") {
+          applyPhotoZoom(currentPhotoZoom + 25);
+          return;
+        }
+
+        if (action === "out") {
+          applyPhotoZoom(currentPhotoZoom - 25);
+          return;
+        }
+
+        applyPhotoZoom(100);
+      }
+
+      function updatePhotoViewer(index) {
+        if (!photoGalleryItems.length || !photoViewerImage) {
+          return;
+        }
+
+        currentPhotoIndex = (index + photoGalleryItems.length) % photoGalleryItems.length;
+        var item = photoGalleryItems[currentPhotoIndex];
+        var title = getLocalizedItemText(item, "title");
+        var description = getLocalizedItemText(item, "description");
+        var category = currentLang === "en" && item.categoryEn ? item.categoryEn : item.category;
+        var testType = currentLang === "en" && item.testTypeEn ? item.testTypeEn : item.testType;
+        var source = currentLang === "en" && item.source === "Mémoire de maîtrise, chapitre 4 - Programme expérimental"
+          ? "Master's thesis, Chapter 4 - Experimental program"
+          : item.source;
+
+        photoFitWidth = 0;
+        photoFitHeight = 0;
+        photoViewerImage.style.width = "";
+        photoViewerImage.style.height = "";
+        photoViewerImage.onload = function () {
+          applyPhotoZoom(100);
+        };
+        photoViewerImage.src = item.src;
+        photoViewerImage.alt = title;
+
+        if (photoViewerFigure) {
+          photoViewerFigure.textContent = item.figure || "";
+          photoViewerFigure.hidden = !item.figure;
+        }
+
+        if (photoViewerTest) {
+          photoViewerTest.textContent = [category, testType].filter(Boolean).join(" • ");
+        }
+
+        if (photoViewerCaption) {
+          photoViewerCaption.textContent = title;
+        }
+
+        if (photoViewerDescription) {
+          photoViewerDescription.textContent = description;
+          photoViewerDescription.hidden = !description;
+        }
+
+        if (photoViewerSource) {
+          photoViewerSource.textContent = source || "";
+          photoViewerSource.hidden = !source;
+        }
+
+        if (photoViewerCounter) {
+          photoViewerCounter.textContent = currentPhotoIndex + 1 + " / " + photoGalleryItems.length;
+        }
+
+        applyPhotoZoom(100);
+      }
+
+      function openPhotoViewer(index) {
+        if (!photoViewer) {
+          return;
+        }
+
+        updatePhotoViewer(index);
+        carouselStates.forEach(stopCarousel);
+        photoViewer.classList.remove("is-hidden");
+        photoViewer.setAttribute("aria-hidden", "false");
+        syncViewerLock();
+
+        var closeButton = photoViewer.querySelector("[data-photo-close]");
+        if (closeButton) {
+          closeButton.focus();
+        }
+      }
+
+      function closePhotoViewer() {
+        if (!photoViewer) {
+          return;
+        }
+
+        photoViewer.classList.add("is-hidden");
+        photoViewer.setAttribute("aria-hidden", "true");
+        carouselStates.forEach(startCarousel);
+        syncViewerLock();
+      }
+
+      function showAdjacentPhoto(direction) {
+        updatePhotoViewer(currentPhotoIndex + direction);
+      }
+
+      function setPdfLoading(message) {
+        if (!pdfLoading) {
+          return;
+        }
+
+        pdfLoading.textContent = message;
+        pdfLoading.classList.remove("is-hidden");
+      }
+
+      function hidePdfLoading() {
+        if (pdfLoading) {
+          pdfLoading.classList.add("is-hidden");
+        }
+      }
+
+      function updatePdfControls() {
+        var pageCount = pdfDocument ? pdfDocument.numPages : 0;
+        var status = currentLang === "fr" ? "Page " : "Page ";
+
+        if (pdfPageStatus) {
+          pdfPageStatus.textContent = pageCount ? status + pdfCurrentPage + " / " + pageCount : status + "-";
+        }
+
+        pdfPrevPageButtons.forEach(function (button) {
+          button.disabled = !pageCount || pdfCurrentPage <= 1 || pdfRendering;
+        });
+
+        pdfNextPageButtons.forEach(function (button) {
+          button.disabled = !pageCount || pdfCurrentPage >= pageCount || pdfRendering;
+        });
+      }
+
+      function loadPdfJs() {
+        if (window.pdfjsLib) {
+          return Promise.resolve(window.pdfjsLib);
+        }
+
+        if (pdfJsPromise) {
+          return pdfJsPromise;
+        }
+
+        pdfJsPromise = new Promise(function (resolve, reject) {
+          var script = document.createElement("script");
+          script.src = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js";
+          script.async = true;
+          script.onload = function () {
+            if (!window.pdfjsLib) {
+              reject(new Error("PDF.js unavailable"));
+              return;
+            }
+
+            window.pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+            resolve(window.pdfjsLib);
+          };
+          script.onerror = function () {
+            reject(new Error("PDF.js loading failed"));
+          };
+          document.head.appendChild(script);
+        });
+
+        return pdfJsPromise;
+      }
+
+      function renderPdfPage(pageNumber) {
+        if (!pdfDocument || !pdfCanvas || !pdfReader) {
+          return Promise.resolve();
+        }
+
+        if (pdfRendering) {
+          pdfPendingPage = pageNumber;
+          return Promise.resolve();
+        }
+
+        pdfRendering = true;
+        pdfCurrentPage = Math.min(Math.max(pageNumber, 1), pdfDocument.numPages);
+        updatePdfControls();
+        setPdfLoading(currentLang === "fr" ? "Chargement de la page..." : "Loading page...");
+
+        return pdfDocument.getPage(pdfCurrentPage).then(function (page) {
+          var wrap = pdfCanvas.parentElement;
+          var unscaledViewport = page.getViewport({ scale: 1 });
+          var availableWidth = Math.max(280, (wrap ? wrap.clientWidth : 920) - 24);
+          var availableHeight = Math.max(360, (wrap ? wrap.clientHeight : window.innerHeight) - 24);
+          var scale = Math.min(
+            1.65,
+            availableWidth / unscaledViewport.width,
+            availableHeight / unscaledViewport.height
+          );
+          var viewport = page.getViewport({ scale: scale });
+          var pixelRatio = window.devicePixelRatio || 1;
+          var context = pdfCanvas.getContext("2d");
+
+          pdfCanvas.width = Math.floor(viewport.width * pixelRatio);
+          pdfCanvas.height = Math.floor(viewport.height * pixelRatio);
+          pdfCanvas.style.width = Math.floor(viewport.width) + "px";
+          pdfCanvas.style.height = Math.floor(viewport.height) + "px";
+
+          context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+          if (wrap) {
+            wrap.scrollTop = 0;
+            wrap.scrollLeft = 0;
+          }
+
+          return page.render({
+            canvasContext: context,
+            viewport: viewport
+          }).promise;
+        }).then(function () {
+          hidePdfLoading();
+        }).catch(function () {
+          setPdfLoading(currentLang === "fr"
+            ? "Le rapport ne peut pas être affiché pour le moment. Veuillez réessayer plus tard."
+            : "The report cannot be displayed at the moment. Please try again later.");
+        }).finally(function () {
+          pdfRendering = false;
+          updatePdfControls();
+
+          if (pdfPendingPage !== null) {
+            var pending = pdfPendingPage;
+            pdfPendingPage = null;
+            renderPdfPage(pending);
+          }
+        });
+      }
+
+      function openPdfViewer() {
+        if (!pdfViewer || !pdfReader) {
+          return;
+        }
+
+        pdfViewer.classList.remove("is-hidden");
+        pdfViewer.setAttribute("aria-hidden", "false");
+        syncViewerLock();
+        updatePdfControls();
+        setPdfLoading(currentLang === "fr" ? "Chargement du rapport..." : "Loading report...");
+
+        var closeButton = pdfViewer.querySelector("[data-pdf-close]");
+        if (closeButton) {
+          closeButton.focus();
+        }
+
+        loadPdfJs().then(function (pdfjsLib) {
+          if (pdfDocument) {
+            return renderPdfPage(pdfCurrentPage);
+          }
+
+          return pdfjsLib.getDocument(pdfReader.getAttribute("data-pdf-src")).promise.then(function (loadedPdf) {
+            pdfDocument = loadedPdf;
+            pdfCurrentPage = 1;
+            return renderPdfPage(pdfCurrentPage);
+          });
+        }).catch(function () {
+          setPdfLoading(currentLang === "fr"
+            ? "Le lecteur du rapport ne peut pas être chargé. Vérifiez votre connexion puis réessayez."
+            : "The report reader cannot be loaded. Please check your connection and try again.");
+        });
+      }
+
+      function closePdfViewer() {
+        if (!pdfViewer) {
+          return;
+        }
+
+        pdfViewer.classList.add("is-hidden");
+        pdfViewer.setAttribute("aria-hidden", "true");
+        syncViewerLock();
       }
 
       langButtons.forEach(function (button) {
@@ -2272,7 +4630,113 @@
         });
       }
 
+      photoCloseButtons.forEach(function (button) {
+        button.addEventListener("click", closePhotoViewer);
+      });
+
+      photoPrevButtons.forEach(function (button) {
+        button.addEventListener("click", function () {
+          showAdjacentPhoto(-1);
+        });
+      });
+
+      photoNextButtons.forEach(function (button) {
+        button.addEventListener("click", function () {
+          showAdjacentPhoto(1);
+        });
+      });
+
+      photoZoomButtons.forEach(function (button) {
+        button.addEventListener("click", function () {
+          changePhotoZoom(button.getAttribute("data-photo-zoom"));
+        });
+      });
+
+      if (photoViewerImage) {
+        photoViewerImage.addEventListener("dblclick", function () {
+          applyPhotoZoom(currentPhotoZoom === 100 ? 175 : 100);
+        });
+      }
+
+      if (photoViewer) {
+        photoViewer.addEventListener("click", function (event) {
+          if (event.target === photoViewer) {
+            closePhotoViewer();
+          }
+        });
+      }
+
+      pdfOpenButtons.forEach(function (button) {
+        button.addEventListener("click", openPdfViewer);
+      });
+
+      pdfCloseButtons.forEach(function (button) {
+        button.addEventListener("click", closePdfViewer);
+      });
+
+      pdfPrevPageButtons.forEach(function (button) {
+        button.addEventListener("click", function () {
+          renderPdfPage(pdfCurrentPage - 1);
+        });
+      });
+
+      pdfNextPageButtons.forEach(function (button) {
+        button.addEventListener("click", function () {
+          renderPdfPage(pdfCurrentPage + 1);
+        });
+      });
+
+      if (pdfViewer) {
+        pdfViewer.addEventListener("click", function (event) {
+          if (event.target === pdfViewer) {
+            closePdfViewer();
+          }
+        });
+      }
+
       document.addEventListener("keydown", function (event) {
+        if (isOverlayOpen(photoViewer)) {
+          if (event.key === "Escape") {
+            closePhotoViewer();
+            return;
+          }
+
+          if (event.key === "ArrowLeft") {
+            event.preventDefault();
+            showAdjacentPhoto(-1);
+            return;
+          }
+
+          if (event.key === "ArrowRight") {
+            event.preventDefault();
+            showAdjacentPhoto(1);
+            return;
+          }
+
+          if (event.key === "+" || event.key === "=") {
+            event.preventDefault();
+            changePhotoZoom("in");
+            return;
+          }
+
+          if (event.key === "-" || event.key === "_") {
+            event.preventDefault();
+            changePhotoZoom("out");
+            return;
+          }
+
+          if (event.key === "0") {
+            event.preventDefault();
+            changePhotoZoom("reset");
+            return;
+          }
+        }
+
+        if (isOverlayOpen(pdfViewer) && event.key === "Escape") {
+          closePdfViewer();
+          return;
+        }
+
         if (event.key === "Escape") {
           closeWelcomeMessage();
         }
@@ -2336,11 +4800,21 @@
       window.addEventListener("scroll", updateChrome, { passive: true });
       window.addEventListener("resize", function () {
         applyZoom(currentZoom);
+        syncTopbarSpace();
         updateChrome();
+
+        if (isOverlayOpen(pdfViewer) && pdfDocument) {
+          renderPdfPage(pdfCurrentPage);
+        }
+
+        if (isOverlayOpen(photoViewer)) {
+          applyPhotoZoom(currentPhotoZoom);
+        }
       });
 
       setLanguage("fr");
       applyZoom(100);
+      syncTopbarSpace();
       initCookieConsent();
       updateChrome();
     })();
