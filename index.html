@@ -118,7 +118,10 @@
       background:
         linear-gradient(180deg, rgba(247, 239, 229, 0.98) 0%, rgba(247, 239, 229, 0.96) 74%, rgba(247, 239, 229, 0) 100%);
       backdrop-filter: blur(10px);
+      opacity: 1;
       pointer-events: none;
+      transition: opacity 0.32s ease, visibility 0.32s ease;
+      visibility: visible;
     }
 
     .welcome-overlay {
@@ -2178,6 +2181,11 @@
         transform: translateY(calc(-100% - 18px));
       }
 
+      body.mobile-topbar-hidden:not(.welcome-active)::after {
+        opacity: 0;
+        visibility: hidden;
+      }
+
       .topbar-inner {
         gap: 10px;
       }
@@ -4045,6 +4053,11 @@
         }
       }
 
+      function setMobileTopbarHidden(isHidden) {
+        topbar.classList.toggle("is-mobile-hidden", isHidden);
+        body.classList.toggle("mobile-topbar-hidden", isHidden);
+      }
+
       function updateMobileTopbar(scrollTop) {
         if (!topbar) {
           return;
@@ -4053,14 +4066,14 @@
         var isMobile = window.matchMedia("(max-width: 768px)").matches;
 
         if (!isMobile || body.classList.contains("welcome-active")) {
-          topbar.classList.remove("is-mobile-hidden");
+          setMobileTopbarHidden(false);
           lastScrollTop = Math.max(scrollTop, 0);
           mobileTopbarReady = false;
           return;
         }
 
         if (!mobileTopbarReady) {
-          topbar.classList.remove("is-mobile-hidden");
+          setMobileTopbarHidden(false);
           lastScrollTop = Math.max(scrollTop, 0);
           mobileTopbarReady = true;
           return;
@@ -4069,11 +4082,11 @@
         var delta = scrollTop - lastScrollTop;
 
         if (scrollTop <= 12) {
-          topbar.classList.remove("is-mobile-hidden");
+          setMobileTopbarHidden(false);
         } else if (delta > 10 && scrollTop > 120) {
-          topbar.classList.add("is-mobile-hidden");
+          setMobileTopbarHidden(true);
         } else if (delta < -10) {
-          topbar.classList.remove("is-mobile-hidden");
+          setMobileTopbarHidden(false);
         }
 
         lastScrollTop = Math.max(scrollTop, 0);
