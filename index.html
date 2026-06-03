@@ -2209,22 +2209,33 @@
       }
 
       .toolbar {
-        display: grid;
+        display: flex;
+        justify-content: center;
         width: 100%;
-        gap: 8px;
+        gap: 0;
       }
 
-      .segmented {
-        width: 100%;
+      .toolbar .language-switch {
+        width: auto;
+        gap: 3px;
+        padding: 3px;
         justify-content: center;
       }
 
-      .tool-btn,
-      .zoom-readout {
-        min-width: 0;
-        flex: 1;
-        padding: 8px 10px;
+      .toolbar .language-switch .tool-btn {
+        flex: 0 0 auto;
+        min-width: 42px;
+        padding: 7px 10px;
+        font-size: 0;
+      }
+
+      .toolbar .language-switch .tool-btn::before {
+        content: attr(data-mobile-label);
         font-size: calc(12px * var(--scale));
+      }
+
+      .toolbar .display-zoom {
+        display: none;
       }
 
       .hero {
@@ -2667,11 +2678,11 @@
       </nav>
 
       <div class="toolbar">
-        <div class="segmented" aria-label="Choix de langue">
-          <button class="tool-btn active" type="button" data-lang-btn="fr" aria-pressed="true">Français</button>
-          <button class="tool-btn" type="button" data-lang-btn="en" aria-pressed="false">English</button>
+        <div class="segmented language-switch" aria-label="Choix de langue">
+          <button class="tool-btn active" type="button" data-lang-btn="fr" data-mobile-label="FR" aria-pressed="true">Français</button>
+          <button class="tool-btn" type="button" data-lang-btn="en" data-mobile-label="EN" aria-pressed="false">English</button>
         </div>
-        <div class="segmented" aria-label="Taille de l'affichage">
+        <div class="segmented display-zoom" aria-label="Taille de l'affichage">
           <button class="tool-btn" type="button" data-zoom="down">A-</button>
           <button class="tool-btn" type="button" data-zoom="reset">A</button>
           <button class="tool-btn" type="button" data-zoom="up">A+</button>
@@ -3932,8 +3943,9 @@
       }
 
       function applyZoom(nextZoom) {
-        currentZoom = Math.min(170, Math.max(70, Math.round(nextZoom / 10) * 10));
-        var baseZoomMultiplier = window.matchMedia("(max-width: 760px)").matches ? 1 : 1.2;
+        var isMobileViewport = window.matchMedia("(max-width: 768px)").matches;
+        currentZoom = isMobileViewport ? 100 : Math.min(170, Math.max(70, Math.round(nextZoom / 10) * 10));
+        var baseZoomMultiplier = isMobileViewport ? 1 : 1.2;
         var siteZoom = currentZoom / 100 * baseZoomMultiplier;
         document.documentElement.style.setProperty("--site-zoom", String(siteZoom));
         document.documentElement.style.setProperty("--viewer-width", window.innerWidth / siteZoom + "px");
@@ -3945,7 +3957,7 @@
 
         zoomButtons.forEach(function (button) {
           var action = button.getAttribute("data-zoom");
-          button.disabled = action === "down" && currentZoom <= 70 || action === "up" && currentZoom >= 170;
+          button.disabled = isMobileViewport || action === "down" && currentZoom <= 70 || action === "up" && currentZoom >= 170;
         });
       }
 
@@ -4659,6 +4671,11 @@
 
       zoomButtons.forEach(function (button) {
         button.addEventListener("click", function () {
+          if (window.matchMedia("(max-width: 768px)").matches) {
+            applyZoom(100);
+            return;
+          }
+
           var action = button.getAttribute("data-zoom");
 
           if (action === "down") {
