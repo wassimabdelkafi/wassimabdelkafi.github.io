@@ -4059,7 +4059,13 @@
       }
 
       function normalizeGalleryItem(item, index) {
-        return Object.assign({}, item, {
+        var normalizedItem = Object.assign({}, item);
+
+        if (normalizedItem.src && normalizedItem.src.indexOf("assets/master-gallery/") === 0) {
+          normalizedItem.src = normalizedItem.src.replace("assets/master-gallery/", "");
+        }
+
+        return Object.assign(normalizedItem, {
           id: "gallery-photo-" + index,
           index: index
         });
