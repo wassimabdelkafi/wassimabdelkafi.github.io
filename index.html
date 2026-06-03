@@ -11,9 +11,15 @@
 <meta property="og:description" content="Ingénieur en génie civil et coordonnateur technique. Découvrez mon parcours, mes projets, mon expérience professionnelle et mon mémoire de maîtrise." />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://wassimabdelkafi.com/" />
-<meta property="og:image" content="https://wassimabdelkafi.com/Wassim%20image.png" />
-<meta property="og:image:width" content="1200" />
-<meta property="og:image:height" content="630" />
+<meta property="og:image" content="https://wassimabdelkafi.com/wassim-image.png" />
+<meta property="og:image:width" content="1254" />
+<meta property="og:image:height" content="1254" />
+<meta property="og:image:alt" content="Portrait professionnel de Wassim Abdelkafi" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Wassim Abdelkafi | Portfolio professionnel" />
+<meta name="twitter:description" content="Ingénieur en génie civil et coordonnateur technique. Découvrez mon parcours, mes projets, mon expérience professionnelle et mon mémoire de maîtrise." />
+<meta name="twitter:image" content="https://wassimabdelkafi.com/wassim-image.png" />
+<meta name="twitter:image:alt" content="Portrait professionnel de Wassim Abdelkafi" />
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9476796408476584"
      crossorigin="anonymous"></script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-2CCN6KKBJV"></script>
@@ -2118,7 +2124,7 @@
       }
     }
 
-    @media (max-width: 760px) {
+    @media (max-width: 768px) {
       :root {
         --topbar-clearance: 18px;
       }
@@ -2161,6 +2167,15 @@
         margin-top: 10px;
         padding: 10px;
         transform: none;
+        opacity: 1;
+        will-change: transform, opacity;
+        transition: transform 0.32s ease, opacity 0.32s ease, background 0.25s ease, box-shadow 0.25s ease;
+      }
+
+      .topbar.is-mobile-hidden {
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(calc(-100% - 18px));
       }
 
       .topbar-inner {
@@ -3862,6 +3877,8 @@
       var currentPhotoZoom = 100;
       var photoFitWidth = 0;
       var photoFitHeight = 0;
+      var lastScrollTop = 0;
+      var mobileTopbarReady = false;
       var photoGalleryItems = [];
       var carouselStates = [];
       var pdfDocument = null;
@@ -4012,7 +4029,42 @@
 
         if (topbar) {
           topbar.classList.toggle("is-scrolled", scrollTop > 80);
+          updateMobileTopbar(scrollTop);
         }
+      }
+
+      function updateMobileTopbar(scrollTop) {
+        if (!topbar) {
+          return;
+        }
+
+        var isMobile = window.matchMedia("(max-width: 768px)").matches;
+
+        if (!isMobile || body.classList.contains("welcome-active")) {
+          topbar.classList.remove("is-mobile-hidden");
+          lastScrollTop = Math.max(scrollTop, 0);
+          mobileTopbarReady = false;
+          return;
+        }
+
+        if (!mobileTopbarReady) {
+          topbar.classList.remove("is-mobile-hidden");
+          lastScrollTop = Math.max(scrollTop, 0);
+          mobileTopbarReady = true;
+          return;
+        }
+
+        var delta = scrollTop - lastScrollTop;
+
+        if (scrollTop <= 12) {
+          topbar.classList.remove("is-mobile-hidden");
+        } else if (delta > 10 && scrollTop > 120) {
+          topbar.classList.add("is-mobile-hidden");
+        } else if (delta < -10) {
+          topbar.classList.remove("is-mobile-hidden");
+        }
+
+        lastScrollTop = Math.max(scrollTop, 0);
       }
 
       function closeWelcomeMessage() {
@@ -4024,7 +4076,7 @@
         welcomeMessage.classList.add("is-hidden");
         welcomeMessage.setAttribute("aria-hidden", "true");
         body.classList.remove("welcome-active");
-        syncTopbarSpace();
+        updateChrome();
       }
 
       function isOverlayOpen(overlay) {
