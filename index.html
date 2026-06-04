@@ -971,13 +971,28 @@
       order: 3;
     }
 
+    #projets .experimental-galleries {
+      order: 4;
+    }
+
     .project-card {
       padding: 24px;
+    }
+
+    .master-summary-card {
+      display: none;
     }
 
     .project-card h3 {
       font-size: calc(28px * var(--scale));
       margin-bottom: 10px;
+    }
+
+    .project-card a {
+      color: var(--deep);
+      font-weight: 850;
+      text-decoration-thickness: 2px;
+      text-underline-offset: 4px;
     }
 
     .master-project {
@@ -2560,12 +2575,16 @@
       }
 
       #projets .project-grid {
-        order: 3;
+        order: 2;
       }
 
       #projets .master-project {
-        order: 2;
-        margin-top: 0;
+        order: 3;
+        margin-top: 18px;
+      }
+
+      .master-summary-card {
+        display: block;
       }
 
       .timeline-item {
@@ -2963,6 +2982,16 @@
         </div>
 
         <div class="project-grid" id="projets-liste">
+          <article class="project-card master-summary-card">
+            <h3><span class="fr">Projet de maîtrise - Barres PRFB</span><span class="en">Master's project - BFRP bars</span></h3>
+            <p class="date"><span class="fr">Août 2021 - Mars 2024</span><span class="en">Aug. 2021 - Mar. 2024</span></p>
+            <ul>
+              <li><span class="fr">Recherche appliquée sur les propriétés physiques et mécaniques des barres PRFB utilisées dans les structures en béton armé.</span><span class="en">Applied research on the physical and mechanical properties of BFRP bars used in reinforced concrete structures.</span></li>
+              <li><span class="fr">Essais expérimentaux, analyse de durabilité et évaluation du comportement des matériaux composites.</span><span class="en">Experimental testing, durability analysis and evaluation of composite material behavior.</span></li>
+              <li><span class="fr"><a href="#projet-maitrise">Voir le mémoire et les essais expérimentaux</a></span><span class="en"><a href="#projet-maitrise">View the thesis and experimental tests</a></span></li>
+            </ul>
+          </article>
+
           <article class="project-card">
             <h3><span class="fr">Impression 3D et mécanique des roches</span><span class="en">3D Printing and Rock Mechanics</span></h3>
             <p class="date"><span class="fr">Avr. 2021 - Août 2021</span><span class="en">Apr. 2021 - Aug. 2021</span></p>
@@ -3062,9 +3091,6 @@
             </div>
 
           </div>
-
-          <div id="experimental-galleries" class="experimental-galleries"></div>
-
           <div class="master-media-sections" data-gallery-archive hidden aria-hidden="true" aria-label="Photos classées selon les propriétés mécaniques et physiques">
             <div class="master-media-intro">
               <h4><span class="fr">Photos classées selon les essais du programme expérimental</span><span class="en">Photos classified by experimental test program</span></h4>
@@ -3550,6 +3576,7 @@
           </div>
         </article>
 
+        <div id="experimental-galleries" class="experimental-galleries"></div>
 
       </div>
     </section>
