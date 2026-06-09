@@ -8,7 +8,7 @@
   <meta name="keywords" content="Wassim Abdelkafi, génie civil, coordination technique, suivi de chantier, contrôle qualité, gestion de projet, Sherbrooke, Québec" />
   <meta name="author" content="Wassim Abdelkafi" />
 <meta property="og:title" content="Wassim Abdelkafi | Portfolio professionnel" />
-<meta property="og:description" content="Ingénieur en génie civil et coordonnateur technique. Découvrez mon parcours, mes projets, mon expérience professionnelle et mon mémoire de maîtrise." />
+<meta property="og:description" content="Diplômé en génie civil et coordonnateur technique. Découvrez mon parcours, mes projets, mon expérience professionnelle et mon mémoire de maîtrise." />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://wassimabdelkafi.com/" />
 <meta property="og:image" content="https://wassimabdelkafi.com/wassim-image.png" />
@@ -17,7 +17,7 @@
 <meta property="og:image:alt" content="Portrait professionnel de Wassim Abdelkafi" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Wassim Abdelkafi | Portfolio professionnel" />
-<meta name="twitter:description" content="Ingénieur en génie civil et coordonnateur technique. Découvrez mon parcours, mes projets, mon expérience professionnelle et mon mémoire de maîtrise." />
+<meta name="twitter:description" content="Diplômé en génie civil et coordonnateur technique. Découvrez mon parcours, mes projets, mon expérience professionnelle et mon mémoire de maîtrise." />
 <meta name="twitter:image" content="https://wassimabdelkafi.com/wassim-image.png" />
 <meta name="twitter:image:alt" content="Portrait professionnel de Wassim Abdelkafi" />
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9476796408476584"
@@ -2073,6 +2073,53 @@
       box-shadow: 0 16px 36px rgba(35, 103, 166, 0.24);
     }
 
+    .floating-back-top {
+      position: fixed;
+      right: max(18px, env(safe-area-inset-right) + 18px);
+      bottom: max(18px, env(safe-area-inset-bottom) + 18px);
+      z-index: 115;
+      display: inline-grid;
+      place-items: center;
+      width: 60px;
+      height: 60px;
+      border: 1px solid rgba(255,255,255,0.42);
+      border-radius: 22px;
+      background:
+        radial-gradient(circle at 30% 20%, rgba(255,255,255,0.22), transparent 36%),
+        linear-gradient(145deg, var(--copper), #9f5f2f);
+      color: white;
+      box-shadow: 0 22px 48px rgba(16, 25, 34, 0.28);
+      transition: transform 0.24s ease, box-shadow 0.24s ease, filter 0.24s ease;
+    }
+
+    .floating-back-top svg {
+      width: 26px;
+      height: 26px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.6;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .floating-back-top:hover,
+    .floating-back-top:focus-visible {
+      transform: translateY(-5px);
+      filter: saturate(1.08);
+      box-shadow: 0 28px 58px rgba(16, 25, 34, 0.34);
+    }
+
+    .floating-back-top:focus-visible {
+      outline: 3px solid rgba(255,255,255,0.86);
+      outline-offset: 4px;
+    }
+
+    body.welcome-active .floating-back-top {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(16px) scale(0.92);
+    }
+
     footer {
       padding: 34px 0 44px;
       color: var(--muted);
@@ -2156,6 +2203,11 @@
       .hero,
       .section {
         scroll-margin-top: 0;
+      }
+
+      [data-reveal] {
+        opacity: 1;
+        transform: none;
       }
 
       .container {
@@ -2560,11 +2612,11 @@
       }
 
       #projets .project-grid {
-        order: 3;
+        order: 2;
       }
 
       #projets .master-project {
-        order: 2;
+        order: 3;
         margin-top: 0;
       }
 
@@ -2580,6 +2632,19 @@
       .btn,
       .back-top a {
         width: 100%;
+      }
+
+      .floating-back-top {
+        right: max(14px, env(safe-area-inset-right) + 14px);
+        bottom: max(14px, env(safe-area-inset-bottom) + 14px);
+        width: 52px;
+        height: 52px;
+        border-radius: 18px;
+      }
+
+      .floating-back-top svg {
+        width: 23px;
+        height: 23px;
       }
 
       .btn {
@@ -2752,8 +2817,8 @@
           <h1>Wassim Abdelkafi</h1>
 
           <p class="lead">
-            <span class="fr">Ingénieur civil (CPI) et coordonnateur technique combinant expertise en gestion de projets, coordination technique, contrôle qualité et amélioration continue.</span>
-            <span class="en">Civil Engineer (CPI) and technical coordinator combining expertise in project management, technical coordination, quality control and continuous improvement.</span>
+            <span class="fr">Diplômé en génie civil et titulaire d'une M.Sc.A., coordonnateur technique combinant expertise en gestion de projets, coordination technique, contrôle qualité et amélioration continue.</span>
+            <span class="en">Civil Engineering Graduate with an M.Sc.A. and Technical Coordinator combining expertise in project management, technical coordination, quality control and continuous improvement.</span>
           </p>
 
           <div class="hero-actions">
@@ -2865,19 +2930,19 @@
         <div class="profile-layout">
           <div class="profile-copy">
             <p>
-              <span class="fr">Diplômé en génie civil au Canada et en Tunisie, j'ai développé une solide expertise technique en génie civil, coordination de projets, suivi de chantier et contrôle qualité. Ma demande d'admission à l'Ordre des ingénieurs du Québec afin d'obtenir officiellement le statut de CPI a été déposée le 16 mars 2026 et est actuellement en cours d'étude.</span>
-              <span class="en">Civil engineering graduate in Canada and Tunisia, I developed solid technical expertise in civil engineering, project coordination, site supervision and quality control. My application to the Ordre des ingénieurs du Québec to officially obtain CPI status was submitted on March 16, 2026 and is currently under review.</span>
+              <span class="fr">Diplômé en génie civil au Canada et en Tunisie, titulaire d'une M.Sc.A., j'ai développé une solide expertise technique en génie civil, coordination de projets, suivi de chantier et contrôle qualité. Mon dossier d'admission à l'OIQ est actuellement en cours d'étude.</span>
+              <span class="en">Civil Engineering Graduate in Canada and Tunisia with an M.Sc.A., I developed solid technical expertise in civil engineering, project coordination, site supervision and quality control. My OIQ admission file is currently under review.</span>
             </p>
           </div>
 
           <div class="proof-grid">
             <article class="proof-card">
               <h3>2024</h3>
-              <p><span class="fr">Coordination technique en ingénierie.</span><span class="en">Technical coordination in engineering.</span></p>
+              <p><span class="fr">Coordination technique.</span><span class="en">Technical coordination.</span></p>
             </article>
             <article class="proof-card">
               <h3>03.2026</h3>
-              <p><span class="fr">Demande OIQ en cours d'étude.</span><span class="en">OIQ application under review.</span></p>
+              <p><span class="fr">Dossier OIQ en cours d'étude.</span><span class="en">OIQ file under review.</span></p>
             </article>
             <article class="proof-card">
               <h3>CAD</h3>
@@ -2901,7 +2966,7 @@
           <article class="timeline-item">
             <div class="date"><span class="fr">Janv. 2024 - Présent</span><span class="en">Jan. 2024 - Present</span></div>
             <div>
-              <h3><span class="fr">Coordonnateur technique en ingénierie - De La Fontaine</span><span class="en">Technical Engineering Coordinator - De La Fontaine</span></h3>
+              <h3><span class="fr">Coordonnateur technique - De La Fontaine</span><span class="en">Technical Coordinator - De La Fontaine</span></h3>
               <p>Sherbrooke, Québec</p>
               <ul>
                 <li><span class="fr">Coordination d'équipes techniques, de conception et de production au Canada, en Tunisie et au Mexique.</span><span class="en">Coordination of technical, design and production teams in Canada, Tunisia and Mexico.</span></li>
@@ -3820,6 +3885,13 @@
   <div class="back-top container">
     <a href="#top"><span class="fr">Retour en haut de page</span><span class="en">Back to top</span></a>
   </div>
+
+  <a class="floating-back-top" href="#top" aria-label="Retour en haut de page">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 19V5"></path>
+      <path d="M5 12l7-7 7 7"></path>
+    </svg>
+  </a>
 
   <footer>
     <p>© 2026 Wassim Abdelkafi - Génie civil</p>
