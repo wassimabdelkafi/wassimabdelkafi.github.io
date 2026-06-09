@@ -2092,42 +2092,70 @@
       z-index: 115;
       display: inline-grid;
       place-items: center;
-      width: 60px;
-      height: 60px;
-      border: 1px solid rgba(255,255,255,0.42);
-      border-radius: 22px;
-      background:
-        radial-gradient(circle at 30% 20%, rgba(255,255,255,0.22), transparent 36%),
-        linear-gradient(145deg, var(--copper), #9f5f2f);
-      color: white;
-      box-shadow: 0 22px 48px rgba(16, 25, 34, 0.28);
-      transition: transform 0.24s ease, box-shadow 0.24s ease, filter 0.24s ease;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: rgba(250, 246, 239, 0.96);
+      color: var(--deep);
+      box-shadow:
+        inset 0 0 0 1px rgba(16, 25, 34, 0.12),
+        0 18px 42px rgba(16, 25, 34, 0.22);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(12px) scale(0.96);
+      transition: opacity 0.22s ease, visibility 0.22s ease, transform 0.22s ease, box-shadow 0.22s ease;
     }
 
-    .floating-back-top svg {
-      width: 26px;
-      height: 26px;
+    .floating-back-top.active-progress {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0) scale(1);
+    }
+
+    .floating-back-top .progress-circle {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+
+    .floating-back-top .progress-circle path {
+      fill: none;
+      stroke: var(--blue);
+      stroke-width: 5;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 0.08s linear;
+    }
+
+    .floating-back-top .back-top-arrow {
+      position: relative;
+      z-index: 1;
+      width: 18px;
+      height: 18px;
       fill: none;
       stroke: currentColor;
-      stroke-width: 2.6;
+      stroke-width: 3;
       stroke-linecap: round;
       stroke-linejoin: round;
     }
 
     .floating-back-top:hover,
     .floating-back-top:focus-visible {
-      transform: translateY(-5px);
-      filter: saturate(1.08);
-      box-shadow: 0 28px 58px rgba(16, 25, 34, 0.34);
+      transform: translateY(-4px) scale(1.04);
+      box-shadow:
+        inset 0 0 0 1px rgba(16, 25, 34, 0.18),
+        0 24px 52px rgba(16, 25, 34, 0.28);
     }
 
     .floating-back-top:focus-visible {
-      outline: 3px solid rgba(255,255,255,0.86);
+      outline: 3px solid rgba(35, 103, 166, 0.28);
       outline-offset: 4px;
     }
 
     body.welcome-active .floating-back-top {
       opacity: 0;
+      visibility: hidden;
       pointer-events: none;
       transform: translateY(16px) scale(0.92);
     }
@@ -2668,14 +2696,13 @@
       .floating-back-top {
         right: max(14px, env(safe-area-inset-right) + 14px);
         bottom: max(14px, env(safe-area-inset-bottom) + 14px);
-        width: 52px;
-        height: 52px;
-        border-radius: 18px;
+        width: 46px;
+        height: 46px;
       }
 
-      .floating-back-top svg {
-        width: 23px;
-        height: 23px;
+      .floating-back-top .back-top-arrow {
+        width: 16px;
+        height: 16px;
       }
 
       .btn {
@@ -3910,7 +3937,10 @@
   </main>
 
   <a class="floating-back-top" href="#top" aria-label="Retour en haut de page">
-    <svg viewBox="0 0 24 24" aria-hidden="true">
+    <svg class="progress-circle" viewBox="-1 -1 102 102" aria-hidden="true">
+      <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"></path>
+    </svg>
+    <svg class="back-top-arrow" viewBox="0 0 24 24" aria-hidden="true">
       <path d="M12 19V5"></path>
       <path d="M5 12l7-7 7 7"></path>
     </svg>
@@ -3994,6 +4024,9 @@
       var zoomReadout = document.getElementById("zoom-readout");
       var topbar = document.getElementById("topbar");
       var progress = document.getElementById("scroll-progress");
+      var backTop = document.querySelector(".floating-back-top");
+      var backTopProgressPath = backTop ? backTop.querySelector(".progress-circle path") : null;
+      var backTopPathLength = 0;
       var heroCv = document.getElementById("hero-cv");
       var heroLetter = document.getElementById("hero-letter");
       var cvDownload = document.getElementById("cv-download");
@@ -4044,6 +4077,12 @@
       var pdfPendingPage = null;
       var pdfJsPromise = null;
       var contactEmail = "contact@wassimabdelkafi.com";
+      if (backTopProgressPath && backTopProgressPath.getTotalLength) {
+        backTopPathLength = backTopProgressPath.getTotalLength();
+        backTopProgressPath.style.strokeDasharray = backTopPathLength + " " + backTopPathLength;
+        backTopProgressPath.style.strokeDashoffset = backTopPathLength;
+      }
+
       var files = {
         fr: {
           cv: "CV_Wassim_Abdelkafi_FR.pdf",
@@ -4183,6 +4222,11 @@
 
         if (progress) {
           progress.style.width = percent + "%";
+        }
+        if (backTop && backTopProgressPath && backTopPathLength) {
+          var scrollRatio = height > 0 ? scrollTop / height : 0;
+          backTopProgressPath.style.strokeDashoffset = backTopPathLength - (scrollRatio * backTopPathLength);
+          backTop.classList.toggle("active-progress", scrollTop > 80 && !body.classList.contains("welcome-active"));
         }
         if (topbar) {
           topbar.classList.toggle("is-scrolled", scrollTop > 80);
