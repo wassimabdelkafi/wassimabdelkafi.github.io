@@ -2085,25 +2085,6 @@
       resize: vertical;
     }
 
-    .back-top {
-      display: flex;
-      justify-content: center;
-      margin: 30px auto 50px;
-    }
-
-    .back-top a {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 58px;
-      padding: 14px 28px;
-      border-radius: 999px;
-      background: var(--blue);
-      color: white;
-      font-weight: 850;
-      box-shadow: 0 16px 36px rgba(35, 103, 166, 0.24);
-    }
-
     .floating-back-top {
       position: fixed;
       right: max(18px, env(safe-area-inset-right) + 18px);
@@ -2680,8 +2661,7 @@
         display: grid;
       }
 
-      .btn,
-      .back-top a {
+      .btn {
         width: 100%;
       }
 
@@ -3928,10 +3908,6 @@
       </div>
     </section>
   </main>
-
-  <div class="back-top container">
-    <a href="#top"><span class="fr">Retour en haut de page</span><span class="en">Back to top</span></a>
-  </div>
 
   <a class="floating-back-top" href="#top" aria-label="Retour en haut de page">
     <svg viewBox="0 0 24 24" aria-hidden="true">
