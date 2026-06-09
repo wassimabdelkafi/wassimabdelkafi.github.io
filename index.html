@@ -2398,20 +2398,18 @@
         display: flex;
         gap: 12px;
         overflow-x: auto;
-        padding: 0 max(12px, calc((100% - min(84%, 330px)) / 2)) 10px;
+        padding-bottom: 10px;
         scroll-snap-type: x mandatory;
-        scroll-padding-inline: max(12px, calc((100% - min(84%, 330px)) / 2));
-        -webkit-overflow-scrolling: touch;
       }
 
       .master-gallery a,
       .master-gallery a:first-child {
-        flex: 0 0 min(84%, 330px);
+        flex: 0 0 min(82%, 330px);
         height: 220px;
         min-height: 0;
         grid-column: auto;
         grid-row: auto;
-        scroll-snap-align: center;
+        scroll-snap-align: start;
       }
 
       .master-actions .btn {
