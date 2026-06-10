@@ -58,7 +58,7 @@
       --shadow: 0 28px 80px rgba(16, 25, 34, 0.16);
       --container: 1220px;
       --scale: 1;
-      --site-zoom: 1;
+      --site-zoom: 0.96;
       --viewer-width: 100vw;
       --viewer-height: 100vh;
       --topbar-space: 104px;
@@ -2233,6 +2233,7 @@
 
     @media (max-width: 768px) {
       :root {
+        --site-zoom: 1;
         --topbar-clearance: 18px;
       }
 
@@ -4130,7 +4131,7 @@
       function applyZoom(nextZoom) {
         var isMobileViewport = window.matchMedia("(max-width: 768px)").matches;
         currentZoom = isMobileViewport ? 100 : Math.min(170, Math.max(70, Math.round(nextZoom / 10) * 10));
-        var baseZoomMultiplier = isMobileViewport ? 1 : 1.2;
+        var baseZoomMultiplier = isMobileViewport ? 1 : 0.96;
         var siteZoom = currentZoom / 100 * baseZoomMultiplier;
         document.documentElement.style.setProperty("--site-zoom", String(siteZoom));
         document.documentElement.style.setProperty("--viewer-width", window.innerWidth / siteZoom + "px");
