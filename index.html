@@ -1902,10 +1902,15 @@
       font-weight: 750;
     }
 
-    .language-grid,
     .formation-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .language-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 18px;
     }
 
@@ -2931,6 +2936,7 @@
         <a href="#experience"><span class="fr">Expérience</span><span class="en">Experience</span></a>
         <a href="#projets"><span class="fr">Projets</span><span class="en">Projects</span></a>
         <a href="#formation"><span class="fr">Formation</span><span class="en">Education</span></a>
+        <a href="#langues"><span class="fr">Langues</span><span class="en">Languages</span></a>
         <a href="#certifications"><span class="fr">Licences</span><span class="en">Licenses</span></a>
         <a href="#competences"><span class="fr">Compétences</span><span class="en">Skills</span></a>
         <a href="#documents"><span class="fr">Documents</span><span class="en">Documents</span></a>
@@ -3766,7 +3772,7 @@
       <div class="section-shell">
         <div class="section-head">
           <div>
-            <span class="tag"><span class="fr">Formation et langues</span><span class="en">Education and languages</span></span>
+            <span class="tag"><span class="fr">Formation</span><span class="en">Education</span></span>
             <h2><span class="fr">Un parcours académique Canada - Tunisie.</span><span class="en">An academic path across Canada and Tunisia.</span></h2>
           </div>
         </div>
@@ -3793,8 +3799,23 @@
             <p class="date"><span class="fr">Sept. 2015 - Juin 2018</span><span class="en">Sep. 2015 - Jun. 2018</span></p>
           </article>
         </div>
+      </div>
+    </section>
 
-        <div class="language-grid" style="margin-top:18px;">
+    <section class="section container" id="langues" data-reveal>
+      <div class="section-shell">
+        <div class="section-head">
+          <div>
+            <span class="tag"><span class="fr">Langues</span><span class="en">Languages</span></span>
+            <h2><span class="fr">Des langues utiles pour collaborer dans des environnements variés.</span><span class="en">Languages supporting collaboration in diverse environments.</span></h2>
+          </div>
+        </div>
+
+        <div class="language-grid">
+          <article class="language-card">
+            <h3><span class="fr">Arabe</span><span class="en">Arabic</span></h3>
+            <p><span class="fr">Langue maternelle</span><span class="en">Native language</span></p>
+          </article>
           <article class="language-card">
             <h3><span class="fr">Français</span><span class="en">French</span></h3>
             <p><span class="fr">Professionnel</span><span class="en">Professional</span></p>
@@ -3812,7 +3833,7 @@
         <div class="section-head">
           <div>
             <span class="tag"><span class="fr">Licences et certifications</span><span class="en">Licenses and certifications</span></span>
-            <h2><span class="fr">Des formations et validations qui soutiennent mon travail sur le terrain, en laboratoire et en contexte professionnel.</span><span class="en">Training and credential validations supporting field, laboratory and professional work.</span></h2>
+            <h2><span class="fr">Licences et certifications</span><span class="en">Licenses and certifications</span></h2>
           </div>
         </div>
 
