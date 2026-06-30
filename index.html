@@ -807,6 +807,7 @@
     .visitor-grid,
     .proof-grid,
     .skills-grid,
+    .certifications-grid,
     .documents-grid,
     .contact-grid {
       display: grid;
@@ -820,6 +821,7 @@
     .visitor-card,
     .proof-card,
     .skill-card,
+    .certification-card,
     .doc-card,
     .contact-card,
     .timeline-item,
@@ -1924,6 +1926,89 @@
       margin-bottom: 8px;
     }
 
+    .certifications-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .certification-card {
+      position: relative;
+      overflow: hidden;
+      padding: 26px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .certification-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 5px;
+      background: linear-gradient(180deg, var(--copper), var(--blue));
+    }
+
+    .certification-card h3 {
+      font-family: "Cormorant Garamond", serif;
+      font-size: calc(31px * var(--scale));
+      color: var(--deep);
+      line-height: 1;
+    }
+
+    .certification-meta {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .certification-meta p {
+      padding: 12px;
+      border-radius: 18px;
+      background: rgba(16, 25, 34, 0.05);
+      font-size: calc(14px * var(--scale));
+    }
+
+    .certification-meta strong,
+    .certification-status strong {
+      display: block;
+      color: var(--muted);
+      font-size: calc(11px * var(--scale));
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+
+    .certification-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      justify-self: start;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(35, 103, 166, 0.1);
+      color: var(--blue);
+      font-weight: 850;
+    }
+
+    .certification-status.is-valid {
+      background: rgba(80, 105, 94, 0.14);
+      color: var(--moss);
+    }
+
+    .certification-status.is-verified {
+      background: rgba(196, 125, 67, 0.14);
+      color: #995d2d;
+    }
+
+    .certification-description {
+      color: var(--muted);
+    }
+
+    .certification-action {
+      justify-self: start;
+      min-height: 48px;
+      padding: 12px 18px;
+      font-size: calc(14px * var(--scale));
+    }
+
     .documents-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
@@ -2656,6 +2741,7 @@
       .visitor-grid,
       .project-grid,
       .skills-grid,
+      .certifications-grid,
       .documents-grid,
       .language-grid,
       .formation-grid,
@@ -2844,6 +2930,8 @@
         <a href="#profil"><span class="fr">Profil</span><span class="en">Profile</span></a>
         <a href="#experience"><span class="fr">Expérience</span><span class="en">Experience</span></a>
         <a href="#projets"><span class="fr">Projets</span><span class="en">Projects</span></a>
+        <a href="#formation"><span class="fr">Formation</span><span class="en">Education</span></a>
+        <a href="#certifications"><span class="fr">Licences</span><span class="en">Licenses</span></a>
         <a href="#competences"><span class="fr">Compétences</span><span class="en">Skills</span></a>
         <a href="#documents"><span class="fr">Documents</span><span class="en">Documents</span></a>
         <a href="#contact"><span class="fr">Contact</span><span class="en">Contact</span></a>
@@ -3674,6 +3762,116 @@
       </div>
     </section>
 
+    <section class="section container" id="formation" data-reveal>
+      <div class="section-shell">
+        <div class="section-head">
+          <div>
+            <span class="tag"><span class="fr">Formation et langues</span><span class="en">Education and languages</span></span>
+            <h2><span class="fr">Un parcours académique Canada - Tunisie.</span><span class="en">An academic path across Canada and Tunisia.</span></h2>
+          </div>
+        </div>
+
+        <div class="formation-grid">
+          <article class="formation-card">
+            <h3><span class="fr">Maîtrise ès sciences appliquées en génie civil</span><span class="en">Master of Applied Science in Civil Engineering</span></h3>
+            <p>Université de Sherbrooke</p>
+            <p class="date"><span class="fr">Août 2021 - Mars 2024</span><span class="en">Aug. 2021 - Mar. 2024</span></p>
+          </article>
+          <article class="formation-card">
+            <h3><span class="fr">DESS en génie civil</span><span class="en">Graduate Diploma in Civil Engineering</span></h3>
+            <p>Université de Sherbrooke</p>
+            <p class="date"><span class="fr">Août 2020 - Août 2021</span><span class="en">Aug. 2020 - Aug. 2021</span></p>
+          </article>
+          <article class="formation-card">
+            <h3><span class="fr">Baccalauréat en génie civil</span><span class="en">Bachelor's Degree in Civil Engineering</span></h3>
+            <p>Institut International de Technologie</p>
+            <p class="date"><span class="fr">Sept. 2018 - Déc. 2021</span><span class="en">Sep. 2018 - Dec. 2021</span></p>
+          </article>
+          <article class="formation-card">
+            <h3><span class="fr">Licence appliquée en génie civil</span><span class="en">Applied Degree in Civil Engineering</span></h3>
+            <p>Institut Supérieur des Études Technologiques</p>
+            <p class="date"><span class="fr">Sept. 2015 - Juin 2018</span><span class="en">Sep. 2015 - Jun. 2018</span></p>
+          </article>
+        </div>
+
+        <div class="language-grid" style="margin-top:18px;">
+          <article class="language-card">
+            <h3><span class="fr">Français</span><span class="en">French</span></h3>
+            <p><span class="fr">Professionnel</span><span class="en">Professional</span></p>
+          </article>
+          <article class="language-card">
+            <h3><span class="fr">Anglais</span><span class="en">English</span></h3>
+            <p><span class="fr">Intermédiaire</span><span class="en">Intermediate</span></p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section container" id="certifications" data-reveal>
+      <div class="section-shell">
+        <div class="section-head">
+          <div>
+            <span class="tag"><span class="fr">Licences et certifications</span><span class="en">Licenses and certifications</span></span>
+            <h2><span class="fr">Des formations et validations qui soutiennent mon travail sur le terrain, en laboratoire et en contexte professionnel.</span><span class="en">Training and credential validations supporting field, laboratory and professional work.</span></h2>
+          </div>
+        </div>
+
+        <div class="certifications-grid">
+          <article class="certification-card">
+            <div>
+              <h3><span class="fr">Verified International Academic Qualifications</span><span class="en">Verified International Academic Qualifications</span></h3>
+            </div>
+            <div class="certification-meta">
+              <p><strong><span class="fr">Organisme</span><span class="en">Issuer</span></strong>World Education Services (WES)</p>
+              <p><strong><span class="fr">Émise</span><span class="en">Issued</span></strong><span class="fr">Septembre 2022</span><span class="en">September 2022</span></p>
+            </div>
+            <p class="certification-status is-verified"><strong><span class="fr">Statut</span><span class="en">Status</span></strong><span class="fr">Vérifié</span><span class="en">Verified</span></p>
+            <p class="certification-description"><span class="fr">Vérification officielle de mes diplômes universitaires selon les équivalences canadiennes par World Education Services (WES).</span><span class="en">Official verification of my university credentials according to Canadian equivalencies by World Education Services (WES).</span></p>
+            <a class="btn btn-primary certification-action" href="https://www.credly.com/badges/b9898fe2-e49f-4578-a85e-3cb8bf1df8b1/linked_in_profile" target="_blank" rel="noopener">
+              <span class="fr">Voir le diplôme</span>
+              <span class="en">View credential</span>
+            </a>
+          </article>
+
+          <article class="certification-card">
+            <div>
+              <h3><span class="fr">Sécurité dans les laboratoires de recherche</span><span class="en">Research Laboratory Safety</span></h3>
+            </div>
+            <div class="certification-meta">
+              <p><strong><span class="fr">Organisme</span><span class="en">Issuer</span></strong><span class="fr">Université de Sherbrooke</span><span class="en">Université de Sherbrooke</span></p>
+              <p><strong><span class="fr">Émise</span><span class="en">Issued</span></strong><span class="fr">Janvier 2022</span><span class="en">January 2022</span></p>
+              <p><strong><span class="fr">Expire</span><span class="en">Expires</span></strong><span class="fr">Janvier 2027</span><span class="en">January 2027</span></p>
+            </div>
+            <p class="certification-status is-valid"><strong><span class="fr">Statut</span><span class="en">Status</span></strong><span class="fr">Valide</span><span class="en">Valid</span></p>
+            <p class="certification-description"><span class="fr">Formation portant sur les règles de santé et sécurité applicables dans les laboratoires de recherche universitaire.</span><span class="en">Training covering health and safety rules applicable in university research laboratories.</span></p>
+          </article>
+
+          <article class="certification-card">
+            <div>
+              <h3><span class="fr">Santé et sécurité générale sur les chantiers de construction avec SIMDUT 2015 (carte ASP)</span><span class="en">General Health and Safety on Construction Sites with WHMIS 2015 (ASP card)</span></h3>
+            </div>
+            <div class="certification-meta">
+              <p><strong><span class="fr">Organisme</span><span class="en">Issuer</span></strong><span class="fr">Association de la construction du Québec (ACQ)</span><span class="en">Association de la construction du Québec (ACQ)</span></p>
+              <p><strong><span class="fr">Émise</span><span class="en">Issued</span></strong><span class="fr">Juillet 2021</span><span class="en">July 2021</span></p>
+            </div>
+            <p class="certification-status is-valid"><strong><span class="fr">Statut</span><span class="en">Status</span></strong><span class="fr">Valide</span><span class="en">Valid</span></p>
+            <p class="certification-description"><span class="fr">Formation en santé et sécurité permettant l'accès aux chantiers de construction au Québec, incluant les notions de prévention, les risques sur chantier et le SIMDUT 2015.</span><span class="en">Health and safety training required for access to construction sites in Quebec, including prevention principles, site hazards and WHMIS 2015.</span></p>
+          </article>
+
+          <article class="certification-card">
+            <div>
+              <h3><span class="fr">Permis de conduire - Classe 5</span><span class="en">Driver's License - Class 5</span></h3>
+            </div>
+            <div class="certification-meta">
+              <p><strong><span class="fr">Organisme</span><span class="en">Issuer</span></strong><span class="fr">Société de l'assurance automobile du Québec (SAAQ)</span><span class="en">Société de l'assurance automobile du Québec (SAAQ)</span></p>
+            </div>
+            <p class="certification-status is-valid"><strong><span class="fr">Statut</span><span class="en">Status</span></strong><span class="fr">Valide</span><span class="en">Valid</span></p>
+            <p class="certification-description"><span class="fr">Permis de conduire de classe 5, utile pour les déplacements professionnels, les visites de chantier et les rencontres avec les clients.</span><span class="en">Class 5 driver's license, useful for professional travel, site visits and client meetings.</span></p>
+          </article>
+        </div>
+      </div>
+    </section>
+
     <section class="section container" id="competences" data-reveal>
       <div class="section-shell">
         <div class="section-head">
@@ -3716,51 +3914,6 @@
               <span>Microsoft Office</span>
               <span>Microsoft Dynamics AX</span>
             </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section container" id="formation" data-reveal>
-      <div class="section-shell">
-        <div class="section-head">
-          <div>
-            <span class="tag"><span class="fr">Formation et langues</span><span class="en">Education and languages</span></span>
-            <h2><span class="fr">Un parcours académique Canada - Tunisie.</span><span class="en">An academic path across Canada and Tunisia.</span></h2>
-          </div>
-        </div>
-
-        <div class="formation-grid">
-          <article class="formation-card">
-            <h3><span class="fr">Maîtrise ès sciences appliquées en génie civil</span><span class="en">Master of Applied Science in Civil Engineering</span></h3>
-            <p>Université de Sherbrooke</p>
-            <p class="date"><span class="fr">Août 2021 - Mars 2024</span><span class="en">Aug. 2021 - Mar. 2024</span></p>
-          </article>
-          <article class="formation-card">
-            <h3><span class="fr">DESS en génie civil</span><span class="en">Graduate Diploma in Civil Engineering</span></h3>
-            <p>Université de Sherbrooke</p>
-            <p class="date"><span class="fr">Août 2020 - Août 2021</span><span class="en">Aug. 2020 - Aug. 2021</span></p>
-          </article>
-          <article class="formation-card">
-            <h3><span class="fr">Baccalauréat en génie civil</span><span class="en">Bachelor's Degree in Civil Engineering</span></h3>
-            <p>Institut International de Technologie</p>
-            <p class="date"><span class="fr">Sept. 2018 - Déc. 2021</span><span class="en">Sep. 2018 - Dec. 2021</span></p>
-          </article>
-          <article class="formation-card">
-            <h3><span class="fr">Licence appliquée en génie civil</span><span class="en">Applied Degree in Civil Engineering</span></h3>
-            <p>Institut Supérieur des Études Technologiques</p>
-            <p class="date"><span class="fr">Sept. 2015 - Juin 2018</span><span class="en">Sep. 2015 - Jun. 2018</span></p>
-          </article>
-        </div>
-
-        <div class="language-grid" style="margin-top:18px;">
-          <article class="language-card">
-            <h3><span class="fr">Français</span><span class="en">French</span></h3>
-            <p><span class="fr">Professionnel</span><span class="en">Professional</span></p>
-          </article>
-          <article class="language-card">
-            <h3><span class="fr">Anglais</span><span class="en">English</span></h3>
-            <p><span class="fr">Intermédiaire</span><span class="en">Intermediate</span></p>
           </article>
         </div>
       </div>
